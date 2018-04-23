@@ -74,7 +74,7 @@ def biaoding(step=10, lengh=0.02, rad=0.15):
         for n in range(1, step + 1):
             calibrate_point = qc.turn_TCP_axs_rad_len(start_position, axs, rad * n, lengh * n)
             # 为命令赋值
-            command_point = get_command(calibrate_point,n)
+            command_point = qc.get_command_pose(calibrate_point,n)
             # print command_point
             rospy.loginfo(command_point)
             pub.publish(command_point)
@@ -82,7 +82,7 @@ def biaoding(step=10, lengh=0.02, rad=0.15):
             rate.sleep()
             with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
                 write_to_txt(axs, n, ndi.read())
-        command_point = get_command(start_position)
+        command_point = qc.get_command_pose(start_position)
         rospy.loginfo(command_point)
         pub.publish(command_point)
         rate = rospy.Rate(0.3)  # 0.3hz
@@ -92,17 +92,7 @@ def biaoding(step=10, lengh=0.02, rad=0.15):
     eng.MinTwoSolveTJM(nargout=0)
 
 
-def get_command(calibrate_point,n=0):
-    command_point = PoseStamped()
-    command_point.header.seq = n
-    command_point.pose.position.x = calibrate_point[0]
-    command_point.pose.position.y = calibrate_point[1]
-    command_point.pose.position.z = calibrate_point[2]
-    command_point.pose.orientation.x = calibrate_point[3]
-    command_point.pose.orientation.y = calibrate_point[4]
-    command_point.pose.orientation.z = calibrate_point[5]
-    command_point.pose.orientation.w = calibrate_point[6]
-    return command_point
+
 
 
 def write_to_txt(axs, n, str):

@@ -4,6 +4,7 @@
 
 import numpy as np
 import math
+from geometry_msgs.msg import PoseStamped
 
 
 def quat2matrix((dx, dy, dz, x, y, z, w)):
@@ -21,25 +22,18 @@ def quat2matrix((dx, dy, dz, x, y, z, w)):
 
 def matrix2quat(matrix):
     #输入numpy矩阵
-    for i in (0,1,2,3):
-        for j in (0,1,2,3):
-            matrix[i][j]=round(matrix[i][j],5)
     mw=1+matrix[0][0]+matrix[1][1]+matrix[2][2]
     mx=1+matrix[0][0]-matrix[1][1]-matrix[2][2]
     my=1-matrix[0][0]+matrix[1][1]-matrix[2][2]
     mz=1-matrix[0][0]-matrix[1][1]+matrix[2][2]
     if abs(mw)<1e-8:
         mw=0
-        print ('mw归零')
     if abs(mx)<1e-8:
         mx=0
-        print ('mx归零')
     if abs(my)<1e-8:
         my=0
-        print ('my归零')
     if abs(mz)<1e-8:
         mz=0
-        print ('mw归零')
 
     w = 0.5*math.sqrt(mw)
     x = 0.5*math.sqrt(mx)
@@ -87,6 +81,19 @@ def quat2angle(quat):#没用
     q4=2*(quat[4]*quat[5]+ quat[6]*quat[3])
     q5=quat[6]**2 - quat[3]**2 - quat[4]**2 + quat[5]**2
     return (quat[0],quat[1],quat[2],math.atan2(q1,q2),math.asin(q3),math.atan2(q4,q5))
+
+
+def get_command_pose(calibrate_point,n=0):
+    command_point = PoseStamped()
+    command_point.header.seq = n
+    command_point.pose.position.x = calibrate_point[0]
+    command_point.pose.position.y = calibrate_point[1]
+    command_point.pose.position.z = calibrate_point[2]
+    command_point.pose.orientation.x = calibrate_point[3]
+    command_point.pose.orientation.y = calibrate_point[4]
+    command_point.pose.orientation.z = calibrate_point[5]
+    command_point.pose.orientation.w = calibrate_point[6]
+    return command_point
 
 
 if __name__ == '__main__':

@@ -11,14 +11,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="talker.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="talker.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/talker.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="744">
-              <caret line="163" column="26" lean-forward="true" selection-start-line="163" selection-start-column="26" selection-end-line="163" selection-end-column="26" />
+            <state relative-caret-position="75">
+              <caret line="38" column="41" lean-forward="true" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="41" />
               <folding>
                 <element signature="n#!!doc" />
-                <element signature="e#1653#1665#0" expanded="true" />
                 <element signature="e#4301#6041#0" />
               </folding>
             </state>
@@ -28,8 +27,8 @@
       <file leaf-file-name="quaternion_calculate.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+            <state relative-caret-position="479">
+              <caret line="52" column="17" selection-start-line="52" selection-start-column="11" selection-end-line="52" selection-end-column="17" />
               <folding>
                 <element signature="e#48#66#0" expanded="true" />
               </folding>
@@ -40,8 +39,20 @@
       <file leaf-file-name="jointcommend.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+            <state relative-caret-position="195">
+              <caret line="13" column="42" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
+              <folding>
+                <element signature="e#47#59#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="follow.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/follow.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="402">
+              <caret line="29" column="30" lean-forward="true" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
               <folding>
                 <element signature="e#47#59#0" expanded="true" />
               </folding>
@@ -59,22 +70,23 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/scripts/mintwoTJM.py" />
-        <option value="$PROJECT_DIR$/scripts/follow.py" />
         <option value="$PROJECT_DIR$/scripts/quaternion_calculate.py" />
         <option value="$PROJECT_DIR$/scripts/talker.py" />
+        <option value="$PROJECT_DIR$/scripts/jointcommend.py" />
+        <option value="$PROJECT_DIR$/scripts/follow.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="132" />
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="x" value="455" />
     <option name="y" value="24" />
-    <option name="width" value="926" />
+    <option name="width" value="921" />
     <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager">
@@ -85,7 +97,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -102,10 +113,11 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -119,7 +131,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.talker">
+  <component name="RunManager" selected="Python.follow">
     <configuration name="follow" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="iiwa_li" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -200,9 +212,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.talker" />
         <item itemvalue="Python.follow" />
         <item itemvalue="Python.jointcommend" />
+        <item itemvalue="Python.talker" />
         <item itemvalue="Python.mintwoTJM" />
       </list>
     </recent_temporary>
@@ -221,18 +233,19 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="455" y="24" width="921" height="1056" extended-state="4" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.123362444" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2516704" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50054586" side_tool="true" weight="0.31966352" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.31966352" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.31960997" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -254,16 +267,47 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
+      <option name="time" value="1" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/scripts/talker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2445">
+          <caret line="163" column="26" lean-forward="true" selection-start-line="163" selection-start-column="26" selection-end-line="163" selection-end-column="26" />
+          <folding>
+            <element signature="n#!!doc" />
+            <element signature="e#4301#6041#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="e#48#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding>
+            <element signature="e#47#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/talker.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="735">
           <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
           <folding>
             <element signature="n#!!doc" />
-            <element signature="e#1653#1665#0" expanded="true" />
             <element signature="e#4301#6041#0" />
           </folding>
         </state>
@@ -295,7 +339,6 @@
           <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
           <folding>
             <element signature="n#!!doc" />
-            <element signature="e#1653#1665#0" expanded="true" />
             <element signature="e#4301#6041#0" />
           </folding>
         </state>
@@ -330,35 +373,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/follow.py" />
-    <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
+    <entry file="file://$PROJECT_DIR$/scripts/talker.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        <state relative-caret-position="75">
+          <caret line="38" column="41" lean-forward="true" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="41" />
           <folding>
-            <element signature="e#47#59#0" expanded="true" />
+            <element signature="n#!!doc" />
+            <element signature="e#4301#6041#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="479">
+          <caret line="52" column="17" selection-start-line="52" selection-start-column="11" selection-end-line="52" selection-end-column="17" />
           <folding>
             <element signature="e#48#66#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/talker.py">
+    <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="744">
-          <caret line="163" column="26" lean-forward="true" selection-start-line="163" selection-start-column="26" selection-end-line="163" selection-end-column="26" />
+        <state relative-caret-position="195">
+          <caret line="13" column="42" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
           <folding>
-            <element signature="n#!!doc" />
-            <element signature="e#1653#1665#0" expanded="true" />
-            <element signature="e#4301#6041#0" />
+            <element signature="e#47#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/follow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="29" column="30" lean-forward="true" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
+          <folding>
+            <element signature="e#47#59#0" expanded="true" />
           </folding>
         </state>
       </provider>

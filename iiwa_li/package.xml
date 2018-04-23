@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>iiwa_li</name>
+  <version>0.1.0</version>
+  <description>package with functions to puncture</description>
+
+  <maintainer email="hitlizq@outlook.com">lizq</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>iiwa_msgs</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <build_export_depend>iiwa_msgs</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+
+  <exec_depend>iiwa_msgs</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+</package>

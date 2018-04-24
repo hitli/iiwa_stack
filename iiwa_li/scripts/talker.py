@@ -53,8 +53,7 @@ def get_TCP_position():
     else:
         start_position = TCP_position
         print('TCP position get :', start_position)
-        with open('/home/lizq/win7share/TCP.txt', 'w') as f:  # 覆盖从头写入
-            # string = ','.join(str(i) for i in qc.quat2angle(start_position))
+        with open('/home/lizq/win7share/TCP.txt', 'w') as f:  # 记录TCP位置
             string = ','.join(str(i) for i in start_position)
             f.write(string)
 
@@ -63,7 +62,6 @@ def save_start_position(start):
     global TCP_position
     TCP_position = (start.pose.position.x, start.pose.position.y, start.pose.position.z, start.pose.orientation.x,
                     start.pose.orientation.y, start.pose.orientation.z, start.pose.orientation.w)
-    # print TCP_position
 
 
 def biaoding(step=10, lengh=0.02, rad=0.15):
@@ -95,7 +93,7 @@ def biaoding(step=10, lengh=0.02, rad=0.15):
 
 
 
-def write_to_txt(axs, n, str):
+def write_to_txt(axs, n, str):  #写入txt文件
     if axs == 'rx':
         if n == 1:
             with open('/home/lizq/win7share/Rx.txt', 'w') as f:  # 覆盖从头写入

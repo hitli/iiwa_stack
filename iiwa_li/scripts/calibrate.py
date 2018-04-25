@@ -33,30 +33,123 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+
 import rospy
-from iiwa_msgs.msg import JointPosition
+import quaternion_calculate as qc
 from geometry_msgs.msg import PoseStamped
+import matlab.engine
 
-#
-# def talker():
-#     pub = rospy.Publisher('testtopic', JointPosition, queue_size=10)
-#     rate = rospy.Rate(0.5) # 0.5hz
-#     while not rospy.is_shutdown():
-#         postion = calibrate_point()
-#         rospy.loginfo(postion)
-#         pub.publish(postion)
-#         rate.sleep()
+TCP_position = tuple()
+start_position = tuple()
 
-def calibrate_point(start):
-    print('recevied')
-    rospy.loginfo('start position', start)
 
-def calibrate():
+# 获得标定开始点TCP位置
+def get_TCP_position():
     print('running')
-    rospy.init_node('calibrate', anonymous=True)
-    if calibrate_point!=1:
-        rospy.Subscriber('/iiwa/state/CartesianPose', PoseStamped, calibrate_point)
-        rospy.spin()
+    global start_position
+    while TCP_position == ():
+        print('loading TCP position')
+        rospy.Subscriber('/iiwa/state/CartesianPose', PoseStamped, save_start_position)
+    else:
+        start_position = TCP_position
+        print('TCP position get :', start_position)
+        with open('/home/lizq/win7share/TCP.txt', 'w') as f:  # 记录TCP位置
+            string = ','.join(str(i) for i in start_position)
+            f.write(string)
+
+
+def save_start_position(start):
+    global TCP_position
+    TCP_position = (start.pose.position.x, start.pose.position.y, start.pose.position.z, start.pose.orientation.x,
+                    start.pose.orientation.y, start.pose.orientation.z, start.pose.orientation.w)
+
+
+def biaoding(step=10, lengh=0.02, rad=0.15):
+    pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=10)
+    eng = matlab.engine.start_matlab()
+    rospy.sleep(1)  # 1s
+    # global TCP_position
+    for axs in ('rx', 'ry', 'rz', 'dx', 'dy', 'dz'):  # x,y,z旋转,x,y,z平移
+        for n in range(1, step + 1):
+            calibrate_point = qc.turn_TCP_axs_rad_len(start_position, axs, rad * n, lengh * n)
+            # 为命令赋值
+            command_point = qc.get_command_pose(calibrate_point,n)
+            # print command_point
+            rospy.loginfo(command_point)
+            pub.publish(command_point)
+            rate = rospy.Rate(0.7)  # 0.5hz
+            rate.sleep()
+            with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+                write_to_txt(axs, n, ndi.read())
+        command_point = qc.get_command_pose(start_position)
+        rospy.loginfo(command_point)
+        pub.publish(command_point)
+        rate = rospy.Rate(0.3)  # 0.3hz
+        rate.sleep()
+    print '加载最小二乘法'
+    eng.MinTwoSolveTJM(nargout=0)
+
+
+
+
+
+def write_to_txt(axs, n, str):  #写入txt文件
+    if axs == 'rx':
+        if n == 1:
+            with open('/home/lizq/win7share/Rx.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Rx.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'ry':
+        if n == 1:
+            with open('/home/lizq/win7share/Ry.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Ry.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'rz':
+        if n == 1:
+            with open('/home/lizq/win7share/Rz.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Rz.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'dx':
+        if n == 1:
+            with open('/home/lizq/win7share/Dx.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Dx.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'dy':
+        if n == 1:
+            with open('/home/lizq/win7share/Dy.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Dy.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'dz':
+        if n == 1:
+            with open('/home/lizq/win7share/Dz.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Dz.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
 
 if __name__ == '__main__':
-    calibrate()
+    rospy.init_node('calibrate_commander', anonymous=True)
+    get_TCP_position()
+    biaoding(10, 0.015, 0.15)

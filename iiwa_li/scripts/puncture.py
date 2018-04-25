@@ -51,6 +51,12 @@ class Application(Frame):
         yx = -y[0][0]
         yy = -y[1][0]
         yz = -y[2][0] #TCP y方向为钢针-x方向
+        
+        zx = xy*yz-yy*xz
+        zy = xz*yx-yz*xx
+        zz = xx*yy-yx*xy #x叉乘y得到TCP在视觉空间的z方向
+        
+        
 
 
 

@@ -22,7 +22,7 @@ def follow():
             TMN = qc.quat2matrix(np.loadtxt('/home/lizq/win7share/NDI.txt', delimiter=",", skiprows=1).tolist())
             TMN = TMN.dot(TNN)#更正钢针位姿
             TJN = TJM.dot(TMN)
-            quat = list(qc.matrix2quat(TJN))
+            quat = list(qc.matrix2quat(TJN))#使得TCP姿态不变，被动刚体朝向NDI，只做位移
             quat[3:] = TCP[3:]
             TJN = qc.quat2matrix(quat)
             TJO=TJN.dot(TNO)

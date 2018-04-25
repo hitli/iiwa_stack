@@ -16,7 +16,10 @@ def follow():
     TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
     TNO = inv(TON)
     TCP = np.loadtxt('/home/lizq/win7share/TCP.txt', delimiter=",").tolist()  # m
-    TNN = np.array([[1.0,0.0,0.0,-13.5318],[0.0,1.0,0.0,0.50804],[0.0,0.0,1.0,-153.66507],[0.0,0.0,0.0,1.0]])
+    TNN = np.array([[1.0,0.0,0.0,-13.5318],
+                    [0.0,1.0,0.0,0.50804],
+                    [0.0,0.0,1.0,-153.66507],
+                    [0.0,0.0,0.0,1.0]])
     while not rospy.is_shutdown():
         try:
             TMN = qc.quat2matrix(np.loadtxt('/home/lizq/win7share/NDI.txt', delimiter=",", skiprows=1).tolist())

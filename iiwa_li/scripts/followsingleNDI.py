@@ -8,28 +8,28 @@ from numpy.linalg import inv
 from geometry_msgs.msg import PoseStamped
 
 
-############################覆盖被动刚体，采集一行钢针NDI数据跟随####################################
+############################覆盖被动刚体449，采集一行钢针NDI数据跟随####################################
 def follow():
     rospy.init_node('follow', anonymous=True)
     pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=100)
     rate = rospy.Rate(10)  # smartservo 20ms
-    TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
-    TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
-    TNO = inv(TON)
-    TCP = np.loadtxt('/home/lizq/win7share/TCP.txt', delimiter=",").tolist()  # m
-    TNN = np.array([[1.0,0.0,0.0,-13.5318],[0.0,1.0,0.0,0.50804],[0.0,0.0,1.0,-153.66507],[0.0,0.0,0.0,1.0]])
+    tjm = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
+    ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
+    tno = inv(ton)
+    tcp = np.loadtxt('/home/lizq/win7share/TCP.txt', delimiter=",").tolist()  # m
+    tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")
     while not rospy.is_shutdown():
         try:
-            TMN = qc.quat2matrix(np.loadtxt('/home/lizq/win7share/NDI.txt', delimiter=",").tolist())
-            TMN = TMN.dot(TNN)#更正钢针位姿
-            TJN = TJM.dot(TMN)
-            quat = list(qc.matrix2quat(TJN))
-            quat[3:] = TCP[3:]
-            TJN = qc.quat2matrix(quat)
-            TJO=TJN.dot(TNO)
+            tmg = qc.quat2matrix(np.loadtxt('/home/lizq/win7share/NDI.txt', delimiter=",").tolist())
+            tmg = tmg.dot(tgg)  # 更正钢针位姿
+            tjn = tjm.dot(tmg)  # 将钢针针尖位置变换至基座坐标系下
+            quat = list(qc.matrix2quat(tjn))
+            quat[3:] = tcp[3:]  # 使得TCP姿态不变，被动刚体朝向NDI，只做位移
+            tjn = qc.quat2matrix(quat)
+            tjo=tjn.dot(tno)
             #mm->m
-            TJO[0:3][:, 3] /= 1000
-            command_point = qc.get_command_pose(qc.matrix2quat(TJO))
+            tjo[0:3][:, 3] /= 1000
+            command_point = qc.get_command_pose(qc.matrix2quat(tjo))
             rospy.loginfo(command_point)
             pub.publish(command_point)
             rate.sleep()

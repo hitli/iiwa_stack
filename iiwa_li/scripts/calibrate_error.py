@@ -10,12 +10,14 @@ from geometry_msgs.msg import PoseStamped
 #发送某视觉空间位置点,自动解算TJO,用error.m计算误差
 def follow():
     rospy.init_node('follow', anonymous=True)
-    rospy.sleep(1)
     pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=10)
+    rospy.sleep(1)
     TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
     TBO = np.loadtxt('/home/lizq/win7share/TBO.txt', delimiter=",")  # mm
-    TMB = qc.quat2matrix((-52.2300,64.4000,-1181.0500,-0.4117,-0.1769,-0.8114,0.3749))
+    # TMB = qc.quat2matrix((-52.2300,64.4000,-1181.0500,-0.4117,-0.1769,-0.8114,0.3749))
     #-52.3600, 64.4300, -1181.1899, -0.4115, -0.1773, -0.8114, 0.3749
+    TMB = qc.quat2matrix((-11.2900, -2.5700, -1173.4399, -0.3436, -0.0356, -0.9146, 0.2099))
+    #-11.2400,-2.4900,-1173.4200,-0.3436,-0.0356,-0.9146,0.2098
     TJO=TJM.dot(TMB).dot(TBO)
     #mm->m
     TJO[0][3] /= 1000

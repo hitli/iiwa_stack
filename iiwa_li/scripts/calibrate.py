@@ -66,8 +66,9 @@ def save_start_position(start):
 
 def biaoding(step=10, lengh=0.02, rad=0.15):
     pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=10)
+    print '加载最小二乘法'
     eng = matlab.engine.start_matlab()
-    rospy.sleep(1)  # 1s
+    print 'loaded'
     # global TCP_position
     for axs in ('rx', 'ry', 'rz', 'dx', 'dy', 'dz'):  # x,y,z旋转,x,y,z平移
         for n in range(1, step + 1):
@@ -86,7 +87,6 @@ def biaoding(step=10, lengh=0.02, rad=0.15):
         pub.publish(command_point)
         rate = rospy.Rate(0.3)  # 0.3hz
         rate.sleep()
-    print '加载最小二乘法'
     eng.MinTwoSolveTJM(nargout=0)
 
 

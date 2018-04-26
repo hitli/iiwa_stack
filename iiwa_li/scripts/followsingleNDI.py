@@ -12,7 +12,7 @@ from geometry_msgs.msg import PoseStamped
 def follow():
     rospy.init_node('follow', anonymous=True)
     pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=100)
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(10)  # smartservo 20ms
     TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
     TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
     TNO = inv(TON)
@@ -28,9 +28,7 @@ def follow():
             TJN = qc.quat2matrix(quat)
             TJO=TJN.dot(TNO)
             #mm->m
-            TJO[0][3] /= 1000
-            TJO[1][3] /= 1000
-            TJO[2][3] /= 1000
+            TJO[0:3][:, 3] /= 1000
             command_point = qc.get_command_pose(qc.matrix2quat(TJO))
             rospy.loginfo(command_point)
             pub.publish(command_point)

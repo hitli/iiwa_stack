@@ -30,9 +30,7 @@ def follow():
             TJN = qc.quat2matrix(quat)
             TJO=TJN.dot(TNO)
             #mm->m
-            TJO[0][3] /= 1000
-            TJO[1][3] /= 1000
-            TJO[2][3] /= 1000
+            TJO[0:3][:, 3] /= 1000
             command_point = qc.get_command_pose(qc.matrix2quat(TJO))
             rospy.loginfo(command_point)
             pub.publish(command_point)

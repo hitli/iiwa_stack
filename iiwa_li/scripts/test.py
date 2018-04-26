@@ -1,16 +1,13 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import math
 import time
 TCP_position = (0,1)
 import rospy
+import numpy as np
 
 
-def test():
-    global TCP_position
-    cal=list(TCP_position)
-    cal=(2,2)
-    print TCP_position
 
 
 def read():
@@ -30,6 +27,13 @@ def quat2angle(quat):
     q5=quat[6]**2 - quat[3]**2 - quat[4]**2 + quat[5]**2
     return (quat[0],quat[1],quat[2],math.atan2(q1,q2),math.asin(q3),math.atan2(q4,q5))
 
+def l():
+    TNN = np.array([[1.0, 0.0, 0.0, -13.5318],
+                    [0.0, 1.0, 0.0, 0.50804],
+                    [0.0, 0.0, 1.0, -153.66507],
+                    [0.0, 0.0, 0.0, 1.0]])
+    TNN[0:3][:,3] /= 1000
+    print TNN
+
 if __name__ == '__main__':
-    # test()
-    read()
+    l()

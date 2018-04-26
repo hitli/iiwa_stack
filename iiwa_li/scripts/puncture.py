@@ -8,14 +8,16 @@ import numpy as np
 import quaternion_calculate as qc
 import math
 from geometry_msgs.msg import PoseStamped
-
+from numpy.linalg import inv
 
 class Application(Frame):
 
     def __init__(self, master=None):
+        global pub
         rospy.init_node('puncture', anonymous=True)
+        pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=10)
         Frame.__init__(self, master)
-        self.pack() #把Widget加入到父容器中，并实现布局.pack()是最简单的布局，grid()可以实现更复杂的布局。
+        self.pack()  # 把Widget加入到父容器中，并实现布局.pack()是最简单的布局，grid()可以实现更复杂的布局。
         self.createWidgets()
 
     def createWidgets(self):
@@ -32,36 +34,36 @@ class Application(Frame):
 
     def readjinzhen(self):
         global p1
-        p1 = np.loadtxt('/home/lizq/win7share/NDI.txt', delimiter=",").tolist()
+        p1 = np.loadtxt('/home/lizq/win7share/NDI.txt', delimiter=",").tolist()  # 屏蔽449被动刚体
 
     def readchuanci(self):
         global p2
         p2 = np.loadtxt('/home/lizq/win7share/NDI.txt', delimiter=",").tolist()
 
     def cal(self):
-        global p1#视觉空间下
-        global p2
-        global tmn_jinzhen
-        global tmn_chuanci
+        global TJO_jinzhen
+        global TJO_chuanci
+        TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
+        TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
+        TNO = inv(TON)
         TNN = np.array([[1.0, 0.0, 0.0, -13.5318],
                         [0.0, 1.0, 0.0, 0.50804],
                         [0.0, 0.0, 1.0, -153.66507],
                         [0.0, 0.0, 0.0, 1.0]])
         TMG1 = qc.quat2matrix(p1).dot(TNN) #矫正钢针针尖位置
         TMG2 = qc.quat2matrix(p2).dot(TNN)
-        x = math.sqrt((TMG2[0][3] - TMG1[0][3]) ** 2 + (TMG2[1][3] - TMG1[1][3]) ** 2 + (TMG2[2][3] - TMG1[2][3]) ** 2) #归一化
+        x = math.sqrt((TMG2[0][3] - TMG1[0][3]) ** 2 + (TMG2[1][3] - TMG1[1][3]) ** 2 + (TMG2[2][3] - TMG1[2][3]) ** 2)  # 归一化
         xx = (TMG2[0][3] - TMG1[0][3]) / x
         xy = (TMG2[1][3] - TMG1[1][3]) / x
-        xz = (TMG2[2][3] - TMG1[2][3]) / x #TCP入针，即视觉空间的TCP（同穿刺针）的x方向
+        xz = (TMG2[2][3] - TMG1[2][3]) / x  # TCP入针，即视觉空间的TCP（同穿刺针）的x方向
 
-        y0 = qc.quat2matrix(TMG1)
-        y0x = -y0[0][0]
-        y0y = -y0[1][0]
-        y0z = -y0[2][0] #y`方向为钢针-x方向
+        y0x = -TMG1[0][0]
+        y0y = -TMG1[1][0]
+        y0z = -TMG1[2][0]  # y`方向为钢针-x方向
         
-        zx,zy,zz = self.chacheng(xx,xy,xz,y0x,y0y,y0z) #x叉乘y`得到TCP在视觉空间的z方向，保证x的方向
+        zx,zy,zz = self.chacheng(xx,xy,xz,y0x,y0y,y0z)  # x叉乘y`得到TCP在视觉空间的z方向，保证x的方向
 
-        yx,yy,yz = self.chacheng(zx,zy,zz,xx,xy,xz) #z叉乘x得到y，使得刚体面向变化较小
+        yx,yy,yz = self.chacheng(zx,zy,zz,xx,xy,xz)  # z叉乘x得到y，使得刚体面向变化较小
 
         tmn_jinzhen = np.array([[xx, yx, zx, TMG1[0][3]],
                                 [xy, yy, zy, TMG1[1][3]],
@@ -72,6 +74,10 @@ class Application(Frame):
                                 [xy, yy, zy, TMG2[1][3]],
                                 [xz, yz, zz, TMG2[2][3]],
                                 [0.0, 0.0, 0.0, 1.0]])  # 穿刺点TMN位恣矩阵
+        TJO_jinzhen = TJM.dot(tmn_jinzhen).dot(TNO)
+        TJO_jinzhen[0:3][:, 3] /= 1000
+        TJO_chuanci = TJM.dot(tmn_chuanci).dot(TNO)
+        TJO_chuanci[0:3][:, 3] /= 1000
 
 
     def chacheng(self,x1,y1,z1,x2,y2,z2):
@@ -79,13 +85,11 @@ class Application(Frame):
 
 
     def movejinzhen(self):
-        pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=10)
-        pub.publish(qc.get_command_pose(qc.matrix2quat(tmn_jinzhen)))
+        pub.publish(qc.get_command_pose(qc.matrix2quat(TJO_jinzhen)))
 
 
     def movechuanci(self):
-        pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=10)
-        pub.publish(qc.get_command_pose(qc.matrix2quat(tmn_chuanci)))
+        pub.publish(qc.get_command_pose(qc.matrix2quat(TJO_chuanci)))
 
 
 app = Application()

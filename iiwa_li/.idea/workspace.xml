@@ -14,8 +14,8 @@
       <file leaf-file-name="calibrate.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="75" column="51" lean-forward="true" selection-start-line="75" selection-start-column="51" selection-end-line="75" selection-end-column="51" />
+            <state relative-caret-position="150">
+              <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
               <folding>
                 <element signature="n#!!doc" />
                 <element signature="e#1653#1665#0" expanded="true" />
@@ -25,37 +25,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="quaternion_calculate.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
+      <file leaf-file-name="jointcommend.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="85" column="42" lean-forward="true" selection-start-line="85" selection-start-column="42" selection-end-line="85" selection-end-column="42" />
-              <folding>
-                <element signature="e#48#66#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="240">
+              <caret line="18" column="32" lean-forward="true" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="puncture.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="followsingleNDI.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/followsingleNDI.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="7" column="41" lean-forward="true" selection-start-line="7" selection-start-column="41" selection-end-line="7" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="puncture.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
+            <state relative-caret-position="150">
+              <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
               <folding>
                 <element signature="e#48#69#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="follow.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/follow.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" selection-start-line="18" selection-end-line="21" selection-end-column="39" />
-              <folding>
-                <element signature="e#47#59#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -75,6 +69,7 @@
       <find>zer</find>
       <find>p1</find>
       <find>p2</find>
+      <find>quat2matrix</find>
     </findStrings>
     <replaceStrings>
       <replace>TMG1</replace>
@@ -90,24 +85,26 @@
         <option value="$PROJECT_DIR$/scripts/mintwoTJM.py" />
         <option value="$PROJECT_DIR$/scripts/quaternion_calculate.py" />
         <option value="$PROJECT_DIR$/scripts/talker.py" />
-        <option value="$PROJECT_DIR$/scripts/jointcommend.py" />
         <option value="$PROJECT_DIR$/scripts/followtest.py" />
         <option value="$PROJECT_DIR$/scripts/singleNDIfollow.py" />
-        <option value="$PROJECT_DIR$/scripts/calibrate_error.py" />
         <option value="$PROJECT_DIR$/scripts/Tkintergui.py" />
-        <option value="$PROJECT_DIR$/scripts/calibrate.py" />
-        <option value="$PROJECT_DIR$/scripts/follow.py" />
+        <option value="$PROJECT_DIR$/scripts/test.py" />
         <option value="$PROJECT_DIR$/scripts/puncture.py" />
+        <option value="$PROJECT_DIR$/scripts/follow.py" />
+        <option value="$PROJECT_DIR$/scripts/calibrate.py" />
+        <option value="$PROJECT_DIR$/scripts/calibrate_error.py" />
+        <option value="$PROJECT_DIR$/scripts/jointcommend.py" />
+        <option value="$PROJECT_DIR$/scripts/followsingleNDI.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="4">
     <option name="x" value="65" />
     <option name="y" value="24" />
     <option name="width" value="928" />
     <option name="height" value="1056" />
   </component>
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectView">
@@ -115,6 +112,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -131,12 +129,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -150,8 +147,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.puncture">
-    <configuration name="Tkintergui" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.jointcommend">
+    <configuration name="calibrate" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="iiwa_li" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -163,13 +160,13 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/Tkintergui.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/calibrate.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="follow" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="calibrate_error" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="iiwa_li" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -181,13 +178,13 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/follow.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/calibrate_error.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="followtest" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="followsingleNDI" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="iiwa_li" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -242,19 +239,19 @@
       <option name="MODULE_MODE" value="false" />
     </configuration>
     <list>
-      <item itemvalue="Python.jointcommend" />
-      <item itemvalue="Python.follow" />
-      <item itemvalue="Python.followtest" />
       <item itemvalue="Python.puncture" />
-      <item itemvalue="Python.Tkintergui" />
+      <item itemvalue="Python.calibrate" />
+      <item itemvalue="Python.jointcommend" />
+      <item itemvalue="Python.calibrate_error" />
+      <item itemvalue="Python.followsingleNDI" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.puncture" />
-        <item itemvalue="Python.Tkintergui" />
-        <item itemvalue="Python.followtest" />
         <item itemvalue="Python.jointcommend" />
-        <item itemvalue="Python.follow" />
+        <item itemvalue="Python.followsingleNDI" />
+        <item itemvalue="Python.puncture" />
+        <item itemvalue="Python.calibrate_error" />
+        <item itemvalue="Python.calibrate" />
       </list>
     </recent_temporary>
   </component>
@@ -271,18 +268,48 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="Nosetests_in_test_py - 2018.04.26 at 10h 25m 27s.xml">
+      <configuration name="Nosetests in test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_test_py - 2018.04.26 at 10h 25m 38s.xml">
+      <configuration name="Nosetests in test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_test_py - 2018.04.26 at 10h 25m 44s.xml">
+      <configuration name="Nosetests in test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_test_py - 2018.04.26 at 10h 25m 59s.xml">
+      <configuration name="Nosetests in test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_test_py - 2018.04.26 at 10h 26m 29s.xml">
+      <configuration name="Nosetests in test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_test_py - 2018.04.26 at 10h 26m 40s.xml">
+      <configuration name="Nosetests in test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_test_py - 2018.04.26 at 10h 26m 51s.xml">
+      <configuration name="Nosetests in test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_test_py - 2018.04.26 at 10h 26m 58s.xml">
+      <configuration name="Nosetests in test.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Nosetests_in_test_py - 2018.04.26 at 10h 28m 03s.xml">
+      <configuration name="Nosetests in test.py" configurationId="tests" />
+    </history-entry>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="65" y="24" width="928" height="1056" extended-state="4" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1212938" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24530387" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50054586" side_tool="true" weight="0.31966352" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.33261105" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.3416216" />
+      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39957938" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39891893" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -309,6 +336,48 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="75" column="51" selection-start-line="75" selection-start-column="51" selection-end-line="75" selection-end-column="51" />
+          <folding>
+            <element signature="n#!!doc" />
+            <element signature="e#1653#1665#0" expanded="true" />
+            <element signature="e#3698#5438#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1245">
+          <caret line="85" column="42" lean-forward="true" selection-start-line="85" selection-start-column="42" selection-end-line="85" selection-end-column="42" />
+          <folding>
+            <element signature="e#48#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/follow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="18" selection-start-line="18" selection-end-line="21" selection-end-column="39" />
+          <folding>
+            <element signature="e#47#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="795">
+          <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
+          <folding>
+            <element signature="e#48#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
@@ -529,28 +598,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/calibrate_error.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="59" selection-start-line="12" selection-start-column="59" selection-end-line="12" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/listener.py" />
-    <entry file="file://$PROJECT_DIR$/scripts/followsingleNDI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="40" lean-forward="true" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/Tkintergui.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -558,20 +606,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/test.py">
+    <entry file="file://$PROJECT_DIR$/scripts/follow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        <state relative-caret-position="300">
+          <caret line="32" column="12" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="34" />
           <folding>
-            <element signature="e#23#34#0" expanded="true" />
+            <element signature="e#47#59#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/follow.py">
+    <entry file="file://$PROJECT_DIR$/scripts/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" selection-start-line="18" selection-end-line="21" selection-end-column="39" />
+        <state relative-caret-position="402">
+          <caret line="34" column="4" lean-forward="true" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/calibrate_error.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
           <folding>
             <element signature="e#47#59#0" expanded="true" />
           </folding>
@@ -580,8 +635,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="85" column="42" lean-forward="true" selection-start-line="85" selection-start-column="42" selection-end-line="85" selection-end-column="42" />
+        <state relative-caret-position="150">
+          <caret line="10" column="12" lean-forward="true" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
           <folding>
             <element signature="e#48#66#0" expanded="true" />
           </folding>
@@ -590,8 +645,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="75" column="51" lean-forward="true" selection-start-line="75" selection-start-column="51" selection-end-line="75" selection-end-column="51" />
+        <state relative-caret-position="150">
+          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
           <folding>
             <element signature="n#!!doc" />
             <element signature="e#1653#1665#0" expanded="true" />
@@ -602,11 +657,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
+        <state relative-caret-position="150">
+          <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
           <folding>
             <element signature="e#48#69#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="18" column="32" lean-forward="true" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/followsingleNDI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="7" column="41" lean-forward="true" selection-start-line="7" selection-start-column="41" selection-end-line="7" selection-end-column="41" />
         </state>
       </provider>
     </entry>

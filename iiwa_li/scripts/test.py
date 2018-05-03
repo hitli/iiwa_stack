@@ -35,5 +35,13 @@ def l():
     TNN[0:3][:,3] /= 1000
     print TNN
 
+def cali():
+    print '1'
+    time.sleep(10)
+    print '2'
+    # tf = eng.isprime(37)
+    print tf
+
+
 if __name__ == '__main__':
-    l()
+

@@ -82,7 +82,7 @@ class Application(Frame):
 
 
     def movejinzhen(self):
-        PUB.publish(qc.get_command_pose(qc.matrix2quat(TJO_jinzhen)))
+        PUB.publish(qc.get_command_pose(qc.matrix2quat(TJO_jinzhen))
 
 
     def movechuanci(self):

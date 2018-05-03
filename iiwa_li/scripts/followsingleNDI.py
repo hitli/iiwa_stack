@@ -12,7 +12,7 @@ from geometry_msgs.msg import PoseStamped
 def follow():
     rospy.init_node('follow', anonymous=True)
     pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=100)
-    rate = rospy.Rate(10)  # smartservo 20ms
+    rate = rospy.Rate(10)  # smartservo 可以达到 20ms 50hz
     tjm = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
     ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
     tno = inv(ton)

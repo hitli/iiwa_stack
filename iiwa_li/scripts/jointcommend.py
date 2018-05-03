@@ -9,7 +9,7 @@ from iiwa_msgs.msg import JointPosition
 def talker():
     rospy.init_node('calibrate_commender', anonymous=True)
     pub = rospy.Publisher('/iiwa/command/JointPosition', JointPosition, queue_size=100)
-    rospy.sleep(0.5)
+    rospy.sleep(1)
     # commend_point=getcommand((-120,0,0,-90,-25,-90,0))  # 标定位置
     commend_point = getcommand((-140, 30, 25, -80, -60, -80, -20))  # 扎蛋糕标定位置
     # commend_point = getcommand((0, 0, 0, -20, 0, 0, 0))

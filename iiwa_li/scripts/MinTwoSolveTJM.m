@@ -16,7 +16,7 @@ Rz=load(file6);
 file7='/home/lizq/win7share/TCP.txt';
 TCP=load(file7);
 [m,n]=size(Rx);
-NDI=load('/home/lizq/win7share/NDI.txt');
+NDI=textread('/home/lizq/win7share/NDI.txt','',1,'delimiter',',');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Rxx=Rx(:,1);Ryy=Rx(:,2);Rzz=Rx(:,3);
 for i=2:m

@@ -34,11 +34,11 @@ class Application(Frame):
 
     def readjinzhen(self):
         global P1
-        P1 = np.loadtxt('/home/lizq/win7share/NDI.txt', delimiter=",").tolist()  # 屏蔽449被动刚体
+        P1 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1].tolist()  # 第二行340
 
     def readchuanci(self):
         global P2
-        P2 = np.loadtxt('/home/lizq/win7share/NDI.txt', delimiter=",").tolist()
+        P2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1].tolist()  # 第二行340
 
     def cal(self):
         global TJO_jinzhen
@@ -82,7 +82,7 @@ class Application(Frame):
 
 
     def movejinzhen(self):
-        PUB.publish(qc.get_command_pose(qc.matrix2quat(TJO_jinzhen))
+        PUB.publish(qc.get_command_pose(qc.matrix2quat(TJO_jinzhen)))
 
 
     def movechuanci(self):

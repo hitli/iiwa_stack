@@ -3,30 +3,48 @@
 
 import rospy
 import numpy as np
+from iiwa_msgs.msg import JointPosition
 import quaternion_calculate as qc
 from geometry_msgs.msg import PoseStamped
-
+from numpy.linalg import inv
 
 #发送某视觉空间位置点,自动解算TJO,用error.m计算误差
 def follow():
-    rospy.init_node('follow', anonymous=True)
-    pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=10)
+    rospy.init_node('calibrate_error', anonymous=True)
+    jpub = rospy.Publisher('/iiwa/command/JointPosition', JointPosition, queue_size=100)
+    ppub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=10)
     rospy.sleep(1)
     TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
     TBO = np.loadtxt('/home/lizq/win7share/TBO.txt', delimiter=",")  # mm
-    # TMB = qc.quat2matrix((-52.2300,64.4000,-1181.0500,-0.4117,-0.1769,-0.8114,0.3749))
-    #-52.3600, 64.4300, -1181.1899, -0.4115, -0.1773, -0.8114, 0.3749
-    TMB = qc.quat2matrix((-11.2900, -2.5700, -1173.4399, -0.3436, -0.0356, -0.9146, 0.2099))
-    #-11.2400,-2.4900,-1173.4200,-0.3436,-0.0356,-0.9146,0.2098
+    p1 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+    print "出发点坐标",p1
+    TMB = qc.quat2matrix(p1)
+    # backpoint = qc.get_command_joint((0, 0, 0, -90, 0, -90, 0))
+    backpoint = qc.get_command_joint((110, 0, 0, 90, 0, -90, 0))
+    # backpoint = qc.get_command_joint((0, 0, 0, 0, 0, 0, 0))
+    jpub.publish(backpoint)
+    # rospy.loginfo(backpoint)
+    rospy.sleep(3)
     TJO=TJM.dot(TMB).dot(TBO)
-    #mm->m
-    TJO[0][3] /= 1000
-    TJO[1][3] /= 1000
-    TJO[2][3] /= 1000
+    TJO[0:3][:, 3] /= 1000  # mm->m
     quat = list(qc.matrix2quat(TJO))
     command_point = qc.get_command_pose(quat)
-    rospy.loginfo(command_point)
-    pub.publish(command_point)
+    # rospy.loginfo(command_point)
+    ppub.publish(command_point)
+    rospy.sleep(3)
+    p2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+    print "回归点坐标",p2
+    d1 = np.mat(p1[0:3])
+    d2 = np.mat(p2[0:3])
+    print "位置偏差", np.sqrt((d1 - d2) * (d1 - d2).T) , "mm"
+    try:
+        q = np.arccos(qc.matrix2quat(qc.quat2matrix(p2).dot(inv(qc.quat2matrix(p1))))[6]) * 2.0 * 180.0 / np.pi
+    except RuntimeWarning:
+        q = np.arccos(qc.matrix2quat(qc.quat2matrix(p1).dot(inv(qc.quat2matrix(p2))))[6]) * 2.0 * 180.0 / np.pi
+    finally:
+        pass
+    print "角度偏差", q ,"°"
+
 
 
 if __name__ == '__main__':

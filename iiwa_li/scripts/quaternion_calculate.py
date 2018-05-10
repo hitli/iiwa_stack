@@ -5,6 +5,7 @@
 import numpy as np
 import math
 from geometry_msgs.msg import PoseStamped
+from iiwa_msgs.msg import JointPosition
 
 
 def quat2matrix((dx, dy, dz, x, y, z, w)):
@@ -26,19 +27,27 @@ def matrix2quat(matrix):
     mx=1+matrix[0][0]-matrix[1][1]-matrix[2][2]
     my=1-matrix[0][0]+matrix[1][1]-matrix[2][2]
     mz=1-matrix[0][0]-matrix[1][1]+matrix[2][2]
-    if abs(mw)<1e-8:
-        mw=0
-    if abs(mx)<1e-8:
-        mx=0
-    if abs(my)<1e-8:
-        my=0
-    if abs(mz)<1e-8:
-        mz=0
-
-    w = 0.5*math.sqrt(mw)
-    x = 0.5*math.sqrt(mx)
-    y = 0.5*math.sqrt(my)
-    z = 0.5*math.sqrt(mz)
+    # if abs(mw)<1e-7:
+    #     mw=0
+    # if abs(mx)<1e-7:
+    #     mx=0
+    # if abs(my)<1e-7:
+    #     my=0
+    # if abs(mz)<1e-7:
+    #     mz=0
+    # try:
+    #     w = 0.5*math.sqrt(mw)
+    #     x = 0.5*math.sqrt(mx)
+    #     y = 0.5*math.sqrt(my)
+    #     z = 0.5*math.sqrt(mz)
+    # except BaseException,e:
+    #     print e
+    # finally:
+    #     print mw,mx,my,mz
+    w = 0.5 * math.sqrt(abs(mw))
+    x = 0.5 * math.sqrt(abs(mx))
+    y = 0.5 * math.sqrt(abs(my))
+    z = 0.5 * math.sqrt(abs(mz))
 
     #规范化处理，保证模为1
     for n in [w, x, y, z]:
@@ -93,6 +102,18 @@ def get_command_pose(calibrate_point,n=0):
     command_point.pose.orientation.y = calibrate_point[4]
     command_point.pose.orientation.z = calibrate_point[5]
     command_point.pose.orientation.w = calibrate_point[6]
+    return command_point
+
+
+def get_command_joint(calibrate_point):
+    command_point=JointPosition()
+    command_point.position.a1 = calibrate_point[0]/180.0*math.pi
+    command_point.position.a2 = calibrate_point[1]/180.0*math.pi
+    command_point.position.a3 = calibrate_point[2]/180.0*math.pi
+    command_point.position.a4 = calibrate_point[3]/180.0*math.pi
+    command_point.position.a5 = calibrate_point[4]/180.0*math.pi
+    command_point.position.a6 = calibrate_point[5]/180.0*math.pi
+    command_point.position.a7 = calibrate_point[6]/180.0*math.pi
     return command_point
 
 

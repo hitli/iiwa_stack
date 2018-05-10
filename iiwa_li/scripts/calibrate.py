@@ -78,10 +78,10 @@ def biaoding(step=10, lengh=0.02, rad=0.15):
             # print command_point
             rospy.loginfo(command_point)
             pub.publish(command_point)
-            rate = rospy.Rate(0.7)  # 0.5hz
+            rate = rospy.Rate(0.7)  # 0.7hz
             rate.sleep()
             with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
-                write_to_txt(axs, n, ndi.read())
+                write_to_txt(axs, n, ndi.read().splitlines()[0])
         command_point = qc.get_command_pose(start_position)
         rospy.loginfo(command_point)
         pub.publish(command_point)

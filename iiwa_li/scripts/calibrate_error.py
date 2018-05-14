@@ -7,6 +7,7 @@ from iiwa_msgs.msg import JointPosition
 import quaternion_calculate as qc
 from geometry_msgs.msg import PoseStamped
 from numpy.linalg import inv
+import math
 
 #发送某视觉空间位置点,自动解算TJO,用error.m计算误差
 def follow():
@@ -38,13 +39,10 @@ def follow():
     d2 = np.mat(p2[0:3])
     print "位置偏差", np.sqrt((d1 - d2) * (d1 - d2).T) , "mm"
     try:
-        q = np.arccos(qc.matrix2quat(qc.quat2matrix(p2).dot(inv(qc.quat2matrix(p1))))[6]) * 2.0 * 180.0 / np.pi
+        q = math.acos(qc.matrix2quat(qc.quat2matrix(p2).dot(inv(qc.quat2matrix(p1))))[6]) * 2.0 * 180.0 / np.pi
     except RuntimeWarning:
-        q = np.arccos(qc.matrix2quat(qc.quat2matrix(p1).dot(inv(qc.quat2matrix(p2))))[6]) * 2.0 * 180.0 / np.pi
-    finally:
-        pass
+        q = math.acos(qc.matrix2quat(qc.quat2matrix(p1).dot(inv(qc.quat2matrix(p2))))[6]) * 2.0 * 180.0 / np.pi
     print "角度偏差", q ,"°"
-
 
 
 if __name__ == '__main__':

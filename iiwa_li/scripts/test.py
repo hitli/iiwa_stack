@@ -44,5 +44,5 @@ def cali():
 
 
 if __name__ == '__main__':
-
-    pass
+    import sip
+    print(sip.SIP_VERSION_STR)

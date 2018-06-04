@@ -1,0 +1,22 @@
+<RCC>
+  <qresource prefix="/img">
+    <file>img/Arrow_Down_normal.png</file>
+    <file>img/Arrow_left_normal.png</file>
+    <file>img/Arrow_left_normal1.png</file>
+    <file>img/Arrow_right_normal.png</file>
+    <file>img/Arrow_right_normal1.png</file>
+    <file>img/Arrow_Up_normal.png</file>
+    <file>img/Arrow_Up_normal1.png</file>
+    <file>img/ArrowXYZBack_normal.png</file>
+    <file>img/ArrowXYZDown_normal.png</file>
+    <file>img/ArrowXYZForward_normal.png</file>
+    <file>img/ArrowXYZLeft_normal.png</file>
+    <file>img/ArrowXYZRight_normal.png</file>
+    <file>img/ArrowXYZUp_normal.png</file>
+    <file>img/Pose Arrow Left_normal.png</file>
+    <file>img/Pose Arrow Left.png</file>
+    <file>img/Pose Arrow Right_normal.png</file>
+    <file>img/Pose Arrow Right.png</file>
+    <file>./img/BtnPowerOff.png</file>
+  </qresource>
+</RCC>

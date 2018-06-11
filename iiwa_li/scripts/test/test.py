@@ -44,5 +44,4 @@ def cali():
 
 
 if __name__ == '__main__':
-    import sip
-    print(sip.SIP_VERSION_STR)
+    print type(pow(2,0.5))

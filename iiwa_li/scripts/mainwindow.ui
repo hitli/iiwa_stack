@@ -576,7 +576,7 @@
         <item>
          <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>各轴角度(a1,a2,a3,a4,a5,a6,a7)</string>
+           <string>各轴角度(a1,...,a7)</string>
           </property>
          </widget>
         </item>
@@ -645,7 +645,7 @@
         <item>
          <widget class="QLabel" name="label_16">
           <property name="text">
-           <string>TCP空间位姿(x,y,z,rx,ry,rz,rw)四元数</string>
+           <string>TCP位姿(x,y,z,rx,ry,rz,rw) mm</string>
           </property>
          </widget>
         </item>
@@ -887,6 +887,9 @@ p, li { white-space: pre-wrap; }
      <property name="text">
       <string>针尖跟随</string>
      </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
     </widget>
     <widget class="QPushButton" name="puncture_test_button">
      <property name="geometry">
@@ -899,6 +902,19 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="text">
       <string>钢针穿刺</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="refresh_button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>99</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>刷新</string>
      </property>
     </widget>
    </widget>
@@ -1419,22 +1435,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>follow_button</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>follow_button_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1123</x>
-     <y>72</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1073</x>
-     <y>213</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>puncture_test_button</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
@@ -1546,6 +1546,38 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>follow_button</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>follow_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1108</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1065</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refresh_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>refresh_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1129</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1063</x>
+     <y>190</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>joint_add_button_clicked()</slot>
@@ -1565,5 +1597,6 @@ p, li { white-space: pre-wrap; }
   <slot>orientation_z_add_button_clicked()</slot>
   <slot>lineEdit_joint_out_copy_button_clicked()</slot>
   <slot>lineEdit_pose_out_copy_button_clicked()</slot>
+  <slot>refresh_button_clicked()</slot>
  </slots>
 </ui>

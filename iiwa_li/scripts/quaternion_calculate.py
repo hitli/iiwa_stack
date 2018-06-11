@@ -62,9 +62,9 @@ def matrix2quat(matrix):
     return matrix[0][3], matrix[1][3], matrix[2][3], x, y, z, w
 
 
-def turn_TCP_axs_rad_len(position,axs,rad,len):
+def turn_TCP_axs_rad_len(position,axs,rad,len):  # 自动标定用
     if axs=='rx':
-        Tmat=quat2matrix((0,0,0,math.sin(rad/2.0),0,0,math.cos(rad/2.0)))
+        Tmat=quat2matrix((0,0,0,math.sin(rad/2.0),0,0,math.cos(rad/2.0)))  # 对x轴正转
     elif axs=='ry':
         Tmat=quat2matrix((0,0,0,0,math.sin(rad/2.0),0,math.cos(rad/2.0)))
     elif axs=='rz':
@@ -80,7 +80,7 @@ def turn_TCP_axs_rad_len(position,axs,rad,len):
     # print 'Tmat',Tmat
     # print 'quat2matrix(position)',quat2matrix(position)
     # print 'quat2matrix(position)*Tmat',np.dot(quat2matrix(position),Tmat)
-    return matrix2quat(np.dot(quat2matrix(position),Tmat))
+    return matrix2quat(np.dot(quat2matrix(position),Tmat))  # 右乘,相对末端运动
 
 
 def quat2angle(quat):#没用
@@ -116,6 +116,61 @@ def get_command_joint(calibrate_point):
     command_point.position.a7 = calibrate_point[6]/180.0*math.pi
     return command_point
 
+
+def write_to_txt(axs, n, str):  # 写入txt文件
+    if axs == 'rx':
+        if n == 1:
+            with open('/home/lizq/win7share/Rx.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Rx.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'ry':
+        if n == 1:
+            with open('/home/lizq/win7share/Ry.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Ry.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'rz':
+        if n == 1:
+            with open('/home/lizq/win7share/Rz.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Rz.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'dx':
+        if n == 1:
+            with open('/home/lizq/win7share/Dx.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Dx.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'dy':
+        if n == 1:
+            with open('/home/lizq/win7share/Dy.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Dy.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
+
+    if axs == 'dz':
+        if n == 1:
+            with open('/home/lizq/win7share/Dz.txt', 'w') as f:  # 覆盖从头写入
+                f.write(str)
+        else:
+            with open('/home/lizq/win7share/Dz.txt', 'a') as f:  # 从末尾写入
+                f.write('\r\n')
+                f.write(str)
 
 if __name__ == '__main__':
     print (quat2matrix((1,2,3,1,0,0,0)))

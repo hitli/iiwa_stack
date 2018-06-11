@@ -64,7 +64,7 @@ def save_start_position(start):
                     start.pose.orientation.y, start.pose.orientation.z, start.pose.orientation.w)
 
 
-def biaoding(step=10, lengh=0.02, rad=0.15):
+def biaoding(step=10, lengh=0.015, rad=0.11):
     pub = rospy.Publisher('/iiwa/command/CartesianPose', PoseStamped, queue_size=10)
     print '加载最小二乘法'
     eng = matlab.engine.start_matlab()
@@ -152,4 +152,4 @@ def write_to_txt(axs, n, str):  #写入txt文件
 if __name__ == '__main__':
     rospy.init_node('calibrate_commander', anonymous=True)
     get_TCP_position()
-    biaoding(10, 0.015, 0.13)
+    biaoding(10, 0.013, 0.1)

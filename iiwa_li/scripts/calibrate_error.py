@@ -21,7 +21,7 @@ def follow():
     print "出发点坐标",p1
     TMB = qc.quat2matrix(p1)
     # backpoint = qc.get_command_joint((0, 0, 0, -90, 0, -90, 0))
-    backpoint = qc.get_command_joint((110, 0, 0, 90, 0, -90, 0))
+    backpoint = qc.get_command_joint((-50, 30, 0, -90, 0, -90, 0))
     # backpoint = qc.get_command_joint((0, 0, 0, 0, 0, 0, 0))
     jpub.publish(backpoint)
     # rospy.loginfo(backpoint)

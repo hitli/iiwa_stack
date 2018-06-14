@@ -6,6 +6,7 @@ import time
 TCP_position = (0,1)
 import rospy
 import numpy as np
+import quaternion_calculate as qc
 
 
 
@@ -44,4 +45,14 @@ def cali():
 
 
 if __name__ == '__main__':
-    print type(pow(2,0.5))
+    # x = (-32.5000,-20.9000,-1128.1801,-0.6784,0.1082,-0.7137,0.1362)
+    # y = (-23.3100,-6.0000,-1151.3300,0.8913,0.1172,0.4375,0.0165)
+    # print qc.matrix2quat(qc.quat2matrix(x).dot(qc.quat2matrix(y)))
+    # print qc.quat_pose_multipy(x,y)
+    # print 0.18456656039890573*0.18456656039890573+-0.032630922568744995*-0.032630922568744995+0.19420782694834174*0.19420782694834174+0.9628882217717862*0.9628882217717862
+    # print 0.18452686999999995*0.18452686999999995+0.029733259999999984*0.029733259999999984+0.19421673*0.19421673+0.96279567*0.96279567
+    TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")
+    print str(TJM)
+    with open('/home/lizq/win7share/TJM.txt', 'r') as ndi:
+        print TJM
+

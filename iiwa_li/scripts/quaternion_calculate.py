@@ -12,8 +12,10 @@ def quat2matrix((dx, dy, dz, x, y, z, w)):
     #输入tuple
     matrix = np.zeros((4,4))
     # 规范化处理，保证模为1
-    for n in [w, x, y, z]:
-        n = n/math.sqrt(x*x+y*y+z*z+w*w)
+    x = x / math.sqrt(x * x + y * y + z * z + w * w)
+    y = y / math.sqrt(x * x + y * y + z * z + w * w)
+    z = z / math.sqrt(x * x + y * y + z * z + w * w)
+
     matrix[0] = [2*(w*w+x*x)-1 , 2*(x*y-w*z) , 2*(x*z+w*y) , dx]
     matrix[1] = [2*(x*y+w*z) , 2*(w*w+y*y)-1 , 2*(y*z-w*x) , dy]
     matrix[2] = [2*(x*z-w*y) , 2*(y*z+w*x) , 2*(w*w+z*z)-1 , dz]
@@ -42,16 +44,16 @@ def matrix2quat(matrix):
     #     z = 0.5*math.sqrt(mz)
     # except BaseException,e:
     #     print e
-    # finally:
-    #     print mw,mx,my,mz
     w = 0.5 * math.sqrt(abs(mw))
     x = 0.5 * math.sqrt(abs(mx))
     y = 0.5 * math.sqrt(abs(my))
     z = 0.5 * math.sqrt(abs(mz))
 
     #规范化处理，保证模为1
-    for n in [w, x, y, z]:
-        n /= math.sqrt(x*x+y*y+z*z+w*w)
+    x = x / math.sqrt(x * x + y * y + z * z + w * w)
+    y = y / math.sqrt(x * x + y * y + z * z + w * w)
+    z = z / math.sqrt(x * x + y * y + z * z + w * w)
+
     if matrix[2][1]-matrix[1][2] < 0:
         x = -x
     if matrix[0][2]-matrix[2][0] < 0:
@@ -61,6 +63,29 @@ def matrix2quat(matrix):
     #返回tuple
     return matrix[0][3], matrix[1][3], matrix[2][3], x, y, z, w
 
+# def quatmultipy((x1,y1,z1,w1),(x2,y2,z2,w2)):
+#     w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
+#     x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
+#     y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
+#     z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
+#     return x,y,z,w
+#
+# # 不对!!
+# def quat_pose_multipy((dx1,dy1,dz1,x1,y1,z1,w1),(dx2,dy2,dz2,x2,y2,z2,w2)):
+#     q = (x1,y1,z1,w1)
+#     qt = (-x1,-y1,-z1,w1)
+#     qw = (dx2,dy2,dz2,0)
+#     qw2 = quatmultipy(quatmultipy(qt,qw),q)
+#     dx = dx1 + qw2[0]
+#     dy = dy1 + qw2[1]
+#     dz = dz1 + qw2[2]
+#     x,y,z,w = quatmultipy((x1,y1,z1,w1),(x2,y2,z2,w2))
+#     return dx,dy,dz,x,y,z,w
+
+
+def quat_matrix_multipy(q1,q2):
+    quat = matrix2quat(quat2matrix(q1).dot(quat2matrix(q2)))
+    return quat
 
 def turn_TCP_axs_rad_len(position,axs,rad,len):  # 自动标定用
     if axs=='rx':
@@ -92,7 +117,7 @@ def quat2angle(quat):#没用
     return (quat[0],quat[1],quat[2],math.atan2(q1,q2),math.asin(q3),math.atan2(q4,q5))
 
 
-def get_command_pose(calibrate_point,n=0):
+def get_command_pose(calibrate_point,n=0):  # 输入米
     command_point = PoseStamped()
     command_point.header.seq = n
     command_point.pose.position.x = calibrate_point[0]
@@ -105,15 +130,15 @@ def get_command_pose(calibrate_point,n=0):
     return command_point
 
 
-def get_command_joint(calibrate_point):
+def get_command_joint(calibrate_point):  # 输入弧度
     command_point=JointPosition()
-    command_point.position.a1 = calibrate_point[0]/180.0*math.pi
-    command_point.position.a2 = calibrate_point[1]/180.0*math.pi
-    command_point.position.a3 = calibrate_point[2]/180.0*math.pi
-    command_point.position.a4 = calibrate_point[3]/180.0*math.pi
-    command_point.position.a5 = calibrate_point[4]/180.0*math.pi
-    command_point.position.a6 = calibrate_point[5]/180.0*math.pi
-    command_point.position.a7 = calibrate_point[6]/180.0*math.pi
+    command_point.position.a1 = calibrate_point[0]
+    command_point.position.a2 = calibrate_point[1]
+    command_point.position.a3 = calibrate_point[2]
+    command_point.position.a4 = calibrate_point[3]
+    command_point.position.a5 = calibrate_point[4]
+    command_point.position.a6 = calibrate_point[5]
+    command_point.position.a7 = calibrate_point[6]
     return command_point
 
 

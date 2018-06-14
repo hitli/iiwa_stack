@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mainwindow import Ui_MainWindow
-from PyQt5 import QtWidgets,QtCore,QtGui
+from PyQt5 import QtWidgets, QtCore, QtGui
 import sys
 import copy
 import rospy
@@ -18,8 +18,8 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
 
         # 全局变量
-        self.joint_position = (0.0,0.0,0.0,0.0,0.0,0.0,0.0)  # a1,a2,a3,a4,a5,a6,a7 tuple 角度
-        self.tcp_pose = (0.0,0.0,0.0,0.0,0.0,0.0,0.0)  # x,y,z,rx,ry,rz,rw tuple 米
+        self.joint_position = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)  # a1,a2,a3,a4,a5,a6,a7 tuple 弧度
+        self.tcp_pose = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)  # x,y,z,rx,ry,rz,rw tuple 米
         self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
 
         super(Mywindow, self).__init__()
@@ -42,22 +42,26 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # 线程,信号槽连接
         self.follow_thread = Follow_Thread()
-        self.follow_thread.waiting_signal.connect(self.follow_waiting_slot)  # 线程.信号.connect(槽)
-        self.follow_thread.distance_signal[float].connect(self.follow_distance_slot)
+        self.follow_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)  # 线程.信号.connect(槽)
+
+        self.calibrate_thread = Calibrate_Thread()
+        self.calibrate_thread.append_signal[str].connect(self.textEdit_calibrate_append_slot)
+        self.calibrate_thread.clear_signal.connect(self.textEdit_calibrate_clear_slot)
+        self.calibrate_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
 
     def read_state(self):
 
         # ','.join(str(i) for i in self.tcp_pose)将数组每一位以,间隔转为字符串
         tcp_pose_output = list(self.tcp_pose)
         for i in range(3):
-            tcp_pose_output[i] = round(tcp_pose_output[i]*1000,3)
-        for i in range(3,7):
+            tcp_pose_output[i] = round(tcp_pose_output[i] * 1000, 3)  # 显示毫米
+        for i in range(3, 7):
             tcp_pose_output[i] = round(tcp_pose_output[i], 3)
         self.lineEdit_pose_out.setText(','.join(str(i) for i in tcp_pose_output))
 
-        joint_position_output= list(self.joint_position)  # 数组化方便操作,tuple不让运算
+        joint_position_output = list(self.joint_position)  # 数组化方便操作,tuple不让运算
         for i in range(7):
-            joint_position_output[i] = round(joint_position_output[i]*180.0/math.pi,2)
+            joint_position_output[i] = round(joint_position_output[i] * 180.0 / math.pi, 2)  # round(x,2)保留两位小数,显示角度
         self.lineEdit_joint_out.setText(','.join(str(i) for i in joint_position_output))
         self.progressBar_1.setProperty("value", joint_position_output[0])
         self.progressBar_2.setProperty("value", joint_position_output[1])
@@ -74,51 +78,20 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.lineEdit_ndi339.setText(ndi[2])
 
     def get_tcp_pose(self, tcp):
-        self.tcp_pose = (tcp.pose.position.x, tcp.pose.position.y, tcp.pose.position.z, tcp.pose.orientation.x,tcp.pose.orientation.y, tcp.pose.orientation.z, tcp.pose.orientation.w)
+        self.tcp_pose = (
+            tcp.pose.position.x, tcp.pose.position.y, tcp.pose.position.z, tcp.pose.orientation.x,
+            tcp.pose.orientation.y,
+            tcp.pose.orientation.z, tcp.pose.orientation.w)
 
     def get_joint_position(self, joint):
-        self.joint_position = (joint.position.a1, joint.position.a2, joint.position.a3, joint.position.a4, joint.position.a5, joint.position.a6, joint.position.a7)
-
-    def joint_add_button_clicked(self):
-        pass
-
-    def joint_absolute_button_clicked(self):
-        command_joint = eval(self.lineEdit_joint_in.text())
-        command_line = qc.get_command_joint(command_joint)
-        self.joint_pub.publish(command_line)
-        rospy.loginfo(command_line)
-
-    def pose_add_button_clicked(self):
-        pass
-
-    def pose_absolute_button_clicked(self):
-        pass
+        self.joint_position = (
+            joint.position.a1, joint.position.a2, joint.position.a3, joint.position.a4, joint.position.a5,
+            joint.position.a6, joint.position.a7)
 
     def auto_calibrate_button_clicked(self):
-
-        calibrate_start_pose = copy.deepcopy(self.tcp_pose)  # 深拷贝tuple,不受影响
-        step = self.lineEdit_calibrate_step.text()
-        lengh = self.lineEdit_calibrate_lengh.text()
-        rad = self.lineEdit_calibrate_rad.text()
-
-        for axs in ('rx', 'ry', 'rz', 'dx', 'dy', 'dz'):  # x,y,z旋转,x,y,z平移
-            for n in range(1, step + 1):
-                calibrate_point = qc.turn_TCP_axs_rad_len(calibrate_start_pose, axs, rad * n, lengh * n)
-                # 为命令赋值
-                command_point = qc.get_command_pose(calibrate_point, n)
-                rospy.loginfo(command_point)
-                self.pose_pub.publish(command_point)
-                rate = rospy.Rate(0.7)  # 0.7hz
-                rate.sleep()
-                with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
-                    qc.write_to_txt(axs, n, ndi.read().splitlines()[0])
-            command_point = qc.get_command_pose(calibrate_start_pose)
-            rospy.loginfo(command_point)
-            self.pose_pub.publish(command_point)
-            rate = rospy.Rate(0.3)  # 0.3hz
-            rate.sleep()
-        self.matlab_eng.MinTwoSolveTJM(nargout=0)
-        self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm 更新TJM
+        self.calibrate_thread.start()
+        print "end"
+        self.textEdit_calibrate.setText(str(self.TJM))
 
     def manual_calibrate_button_clicked(self):
         pass
@@ -138,17 +111,272 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def puncture_test_button_clicked(self):
         pass
 
+    # region 输入姿态控制
+    def joint_add_button_clicked(self):
+        joint_now = list(self.joint_position)
+        try:
+            command_joint = list(eval(self.lineEdit_joint_in.text()))
+            # print type(command_joint),type(joint_now),type(command_joint_add)
+            if not len(command_joint) == 7:
+                QtWidgets.QMessageBox.warning(self, "Warning", "输入位数错误")
+                exit()  # sys.exit()会引发一个异常：SystemExit 被except捕捉
+            for i in range(7):
+                command_joint[i] = command_joint[i] / 180.0 * math.pi
+                command_joint[i] = joint_now[i] + command_joint[i]
+            command_line = qc.get_command_joint(command_joint)
+        except:
+            QtWidgets.QMessageBox.warning(self, "Warning", "输入错误")
+            self.lineEdit_joint_in.clear()
+        else:
+            self.joint_pub.publish(command_line)
+            rospy.loginfo(command_line)
+
+    def joint_absolute_button_clicked(self):
+        try:
+            command_joint = list(eval(self.lineEdit_joint_in.text()))
+            if not len(command_joint) == 7:
+                QtWidgets.QMessageBox.warning(self, "Warning", "输入位数错误")
+                exit()  # sys.exit()会引发一个异常：SystemExit 被except捕捉
+            for i in range(7):
+                command_joint[i] = command_joint[i] / 180.0 * math.pi
+            command_line = qc.get_command_joint(command_joint)
+        except:
+            QtWidgets.QMessageBox.warning(self, "Warning", "输入错误")
+            self.lineEdit_joint_in.clear()
+        else:
+            # print type(self.lineEdit_joint_in.text()),self.lineEdit_joint_in.text(),type(eval(self.lineEdit_joint_in.text())),eval(self.lineEdit_joint_in.text()),eval(self.lineEdit_joint_in.text())[0]
+            self.joint_pub.publish(command_line)
+            rospy.loginfo(command_line)
+
+    def pose_add_button_clicked(self):
+        tcp = list(self.tcp_pose)
+        try:
+            command_pose = list(eval(self.lineEdit_pose_in.text()))
+            for i in range(0, 3):
+                command_pose[i] /= 1000
+            command_quat = qc.quat_matrix_multipy(tcp, command_pose)
+            command_line = qc.get_command_pose(command_quat)
+        except:
+            QtWidgets.QMessageBox.warning(self, "Warning", "输入错误")
+            self.lineEdit_pose_in.clear()
+        else:
+            self.pose_pub.publish(command_line)
+            rospy.loginfo(command_line)
+
+    def pose_absolute_button_clicked(self):
+        try:
+            command_pose = list(eval(self.lineEdit_pose_in.text()))
+            for i in range(0, 3):
+                command_pose[i] /= 1000
+            command_line = qc.get_command_pose(command_pose)
+        except:
+            QtWidgets.QMessageBox.warning(self, "Warning", "输入错误")
+            self.lineEdit_pose_in.clear()
+        else:
+            self.pose_pub.publish(command_line)
+            rospy.loginfo(command_line)
+
+    # endregion
+
+    # region 角度条按钮
     def joint_right_button_7_clicked(self):
-        pass
+        joint = list(self.joint_position)
+        joint[6] += 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_right_button_6_clicked(self):
+        joint = list(self.joint_position)
+        joint[5] += 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_right_button_5_clicked(self):
+        joint = list(self.joint_position)
+        joint[4] += 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_right_button_4_clicked(self):
+        joint = list(self.joint_position)
+        joint[3] += 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_right_button_3_clicked(self):
+        joint = list(self.joint_position)
+        joint[2] += 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_right_button_2_clicked(self):
+        joint = list(self.joint_position)
+        joint[1] += 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_right_button_1_clicked(self):
+        joint = list(self.joint_position)
+        joint[0] += 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
 
     def joint_left_button_7_clicked(self):
-        pass
+        joint = list(self.joint_position)
+        joint[6] -= 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
 
+    def joint_left_button_6_clicked(self):
+        joint = list(self.joint_position)
+        joint[5] -= 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_left_button_5_clicked(self):
+        joint = list(self.joint_position)
+        joint[4] -= 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_left_button_4_clicked(self):
+        joint = list(self.joint_position)
+        joint[3] -= 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_left_button_3_clicked(self):
+        joint = list(self.joint_position)
+        joint[2] -= 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_left_button_2_clicked(self):
+        joint = list(self.joint_position)
+        joint[1] -= 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def joint_left_button_1_clicked(self):
+        joint = list(self.joint_position)
+        joint[0] -= 0.01745329252  # 1度
+        command_line = qc.get_command_joint(joint)
+        self.joint_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    # endregion
+
+    # region 位姿控制按钮
     def position_z_add_button_clicked(self):
-        pass
+        tcp = list(self.tcp_pose)
+        tcp[2] += 0.001  # 1毫米
+        command_line = qc.get_command_pose(tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def position_z_min_button_clicked(self):
+        tcp = list(self.tcp_pose)
+        tcp[2] -= 0.001  # 1毫米
+        command_line = qc.get_command_pose(tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def position_y_add_button_clicked(self):
+        tcp = list(self.tcp_pose)
+        tcp[1] += 0.001  # 1毫米
+        command_line = qc.get_command_pose(tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def position_y_min_button_clicked(self):
+        tcp = list(self.tcp_pose)
+        tcp[1] -= 0.001  # 1毫米
+        command_line = qc.get_command_pose(tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def position_x_add_button_clicked(self):
+        tcp = list(self.tcp_pose)
+        tcp[0] += 0.001  # 1毫米
+        command_line = qc.get_command_pose(tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def position_x_min_button_clicked(self):
+        tcp = list(self.tcp_pose)
+        tcp[0] -= 0.001  # 1毫米
+        command_line = qc.get_command_pose(tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
 
     def orientation_z_add_button_clicked(self):
-        pass
+        tcp = tuple(self.tcp_pose)
+        add_tcp = (
+            0.0, 0.0, 0.0, 0.0, 0.0, 0.008726535, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_line = qc.get_command_pose(command_tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def orientation_z_min_button_clicked(self):
+        tcp = tuple(self.tcp_pose)
+        add_tcp = (
+            0.0, 0.0, 0.0, 0.0, 0.0, -0.008726535, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_line = qc.get_command_pose(command_tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def orientation_y_add_button_clicked(self):
+        tcp = tuple(self.tcp_pose)
+        add_tcp = (
+            0.0, 0.0, 0.0, 0.0, 0.008726535, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_line = qc.get_command_pose(command_tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def orientation_y_min_button_clicked(self):
+        tcp = tuple(self.tcp_pose)
+        add_tcp = (
+            0.0, 0.0, 0.0, 0.0, -0.008726535, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_line = qc.get_command_pose(command_tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def orientation_x_add_button_clicked(self):
+        tcp = tuple(self.tcp_pose)
+        add_tcp = (
+            0.0, 0.0, 0.0, 0.008726535, 0.0, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_line = qc.get_command_pose(command_tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    def orientation_x_min_button_clicked(self):
+        tcp = tuple(self.tcp_pose)
+        add_tcp = (
+            0.0, 0.0, 0.0, -0.008726535, 0.0, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_line = qc.get_command_pose(command_tcp)
+        self.pose_pub.publish(command_line)
+        rospy.loginfo(command_line)
+
+    # endregion
 
     def lineEdit_joint_out_copy_button_clicked(self):
         clipboard = QtWidgets.QApplication.clipboard()
@@ -162,15 +390,56 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textEdit_calibrate.setText("waiting")
 
     # 多线程槽函数们
-    def follow_waiting_slot(self):
-        self.textEdit_calibrate.setText("waiting")
+    def textEdit_calibrate_append_slot(self,str):
+        self.textEdit_calibrate.append(str)
 
-    def follow_distance_slot(self,distance):
-        self.textEdit_calibrate.setText(str(distance))
+    def textEdit_calibrate_clear_slot(self):
+        self.textEdit_calibrate.clear()
+
+    def textEdit_calibrate_settext_slot(self,str):
+        self.textEdit_calibrate.setText(str)
+
+class Calibrate_Thread(QtCore.QThread):
+    append_signal = QtCore.pyqtSignal(str)
+    clear_signal = QtCore.pyqtSignal()
+    settext_signal = QtCore.pyqtSignal(str)
+
+    def __int__(self):
+        super(Calibrate_Thread, self).__init__()
+
+    def run(self):
+        calibrate_start_pose = copy.deepcopy(window.tcp_pose)  # 深拷贝tuple,不受影响
+        step = int(window.lineEdit_calibrate_step.text())
+        lengh = float(window.lineEdit_calibrate_lengh.text())
+        rad = float(window.lineEdit_calibrate_rad.text())
+        # print step, type(step), lengh, type(lengh)
+
+        for axs in ('rx', 'ry', 'rz', 'dx', 'dy', 'dz'):  # x,y,z旋转,x,y,z平移
+            for n in range(1, step + 1):
+                calibrate_point = qc.turn_TCP_axs_rad_len(calibrate_start_pose, axs, rad * n, lengh * n)
+                # 为命令赋值
+                command_point = qc.get_command_pose(calibrate_point, n)
+                rospy.loginfo(command_point)
+                window.pose_pub.publish(command_point)
+                rate = rospy.Rate(0.7)  # 0.7hz
+                rate.sleep()
+                with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+                    ndi449 = ndi.read().splitlines()[0]
+                    qc.write_to_txt(axs, n, ndi449)
+                    self.append_signal[str].emit(ndi449)
+            command_point = qc.get_command_pose(calibrate_start_pose)
+            rospy.loginfo(command_point)
+            window.pose_pub.publish(command_point)
+            self.clear_signal.emit()
+            rate = rospy.Rate(0.3)  # 0.3hz
+            rate.sleep()
+        window.matlab_eng.MinTwoSolveTJM(nargout=0)
+        window.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm 更新TJM
+        self.settext_signal[str].emit(str(window.TJM))
+
 
 class Follow_Thread(QtCore.QThread):
-    waiting_signal = QtCore.pyqtSignal()
-    distance_signal = QtCore.pyqtSignal(float)
+    settext_signal = QtCore.pyqtSignal(str)
 
     def __int__(self):
         super(Follow_Thread, self).__init__()
@@ -185,7 +454,7 @@ class Follow_Thread(QtCore.QThread):
             try:
                 ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
                 if math.isnan(ndi[1][0]):
-                    self.waiting_signal.emit()  # 发射信号使主界面waiting
+                    self.settext_signal[str].emit("等待钢针")
                 else:
                     tmg = qc.quat2matrix(ndi[1].tolist())  # 被动刚体位姿
                     tmg = tmg.dot(tgg)  # 更正钢针位姿
@@ -197,8 +466,10 @@ class Follow_Thread(QtCore.QThread):
                     tjn = tjo.dot(ton)
                     print tjn
                     print tjg
-                    distance = pow(pow(tjg[0][3]-tjn[0][3],2)+pow(tjg[1][3]-tjn[1][3],2)+pow(tjg[2][3]-tjn[2][3],2),0.5)
-                    self.distance_signal[float].emit(distance)
+                    distance = pow(
+                        pow(tjg[0][3] - tjn[0][3], 2) + pow(tjg[1][3] - tjn[1][3], 2) + pow(tjg[2][3] - tjn[2][3], 2),
+                        0.5)
+                    self.settext_signal[str].emit(str(distance))
 
                     gangzhen = list(qc.matrix2quat(tjg))
                     gangzhen[3:] = tcp[3:]  # 使得TCP姿态不变，被动刚体朝向NDI，只做位移

@@ -684,10 +684,18 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="4" column="1">
-       <widget class="QLineEdit" name="lineEdit_pose_in"/>
+       <widget class="QLineEdit" name="lineEdit_pose_in">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_joint_in"/>
+       <widget class="QLineEdit" name="lineEdit_joint_in">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </item>
       <item row="2" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -710,14 +718,14 @@
       <item row="3" column="1">
        <widget class="QLabel" name="label_18">
         <property name="text">
-         <string>笛卡尔空间位姿(x,y,z,rx,ry,rz,rw)四元数</string>
+         <string>TCP位姿(x,y,z,rx,ry,rz,rw) mm</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLabel" name="label_17">
         <property name="text">
-         <string>各轴角度(a1,a2,a3,a4,a5,a6,a7)</string>
+         <string>各轴角度(a1,...,a7)</string>
         </property>
        </widget>
       </item>
@@ -868,7 +876,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>1070</x>
       <y>0</y>
-      <width>121</width>
+      <width>111</width>
       <height>771</height>
      </rect>
     </property>
@@ -917,6 +925,19 @@ p, li { white-space: pre-wrap; }
       <string>刷新</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="finish_auto_calibrate_button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>99</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>强退自动标定</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_ct_services">
     <property name="geometry">
@@ -930,29 +951,36 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>CT通讯</string>
     </property>
-    <widget class="QWidget" name="horizontalLayoutWidget">
+    <widget class="QWidget" name="verticalLayoutWidget_3">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>150</y>
+       <y>30</y>
        <width>531</width>
-       <height>41</height>
+       <height>171</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QPushButton" name="pushButton_7">
-        <property name="text">
-         <string>连接客户端</string>
-        </property>
-       </widget>
+       <widget class="QTextEdit" name="textEdit_ct"/>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_6">
-        <property name="text">
-         <string>接收CT点</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QPushButton" name="pushButton_7">
+          <property name="text">
+           <string>连接客户端</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_6">
+          <property name="text">
+           <string>接收CT点</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -1578,6 +1606,374 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>joint_left_button_6</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_left_button_6_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>101</x>
+     <y>641</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>121</x>
+     <y>822</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_left_button_5</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_left_button_5_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>93</x>
+     <y>670</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>83</x>
+     <y>824</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_left_button_4</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_left_button_4_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>109</x>
+     <y>703</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>737</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_left_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_left_button_3_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>736</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>2</x>
+     <y>708</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_left_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_left_button_2_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>765</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>774</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_left_button_1</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_left_button_1_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>109</x>
+     <y>799</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>657</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_right_button_6</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_right_button_6_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>441</x>
+     <y>634</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>509</x>
+     <y>627</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_right_button_5</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_right_button_5_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>427</x>
+     <y>671</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>514</x>
+     <y>674</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_right_button_4</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_right_button_4_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>435</x>
+     <y>706</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>517</x>
+     <y>708</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_right_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_right_button_3_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>439</x>
+     <y>736</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>739</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_right_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_right_button_2_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>765</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>511</x>
+     <y>767</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joint_right_button_1</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>joint_right_button_1_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>456</x>
+     <y>793</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>510</x>
+     <y>804</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>position_z_min_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>position_z_min_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>724</x>
+     <y>604</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>545</x>
+     <y>544</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>position_y_add_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>position_y_add_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>650</x>
+     <y>648</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>716</x>
+     <y>820</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>position_y_min_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>position_y_min_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>615</x>
+     <y>787</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>612</x>
+     <y>823</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>position_x_add_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>position_x_add_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>738</x>
+     <y>723</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>693</x>
+     <y>824</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>position_x_min_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>position_x_min_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>553</x>
+     <y>692</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>514</x>
+     <y>593</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>orientation_z_min_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>orientation_z_min_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1034</x>
+     <y>613</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>972</x>
+     <y>545</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>orientation_y_add_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>orientation_y_add_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>919</x>
+     <y>632</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1064</x>
+     <y>586</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>orientation_y_min_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>orientation_y_min_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>918</x>
+     <y>765</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1063</x>
+     <y>755</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>orientation_x_add_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>orientation_x_add_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1017</x>
+     <y>705</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1063</x>
+     <y>646</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>orientation_x_min_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>orientation_x_min_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>870</x>
+     <y>700</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1064</x>
+     <y>693</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>finish_auto_calibrate_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>finish_auto_calibrate_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1174</x>
+     <y>170</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1192</x>
+     <y>170</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>joint_add_button_clicked()</slot>
@@ -1598,5 +1994,28 @@ p, li { white-space: pre-wrap; }
   <slot>lineEdit_joint_out_copy_button_clicked()</slot>
   <slot>lineEdit_pose_out_copy_button_clicked()</slot>
   <slot>refresh_button_clicked()</slot>
+  <slot>joint_left_button_6_clicked()</slot>
+  <slot>joint_left_button_5_clicked()</slot>
+  <slot>joint_left_button_4_clicked()</slot>
+  <slot>joint_left_button_3_clicked()</slot>
+  <slot>joint_left_button_2_clicked()</slot>
+  <slot>joint_left_button_1_clicked()</slot>
+  <slot>joint_right_button_6_clicked()</slot>
+  <slot>joint_right_button_5_clicked()</slot>
+  <slot>joint_right_button_4_clicked()</slot>
+  <slot>joint_right_button_3_clicked()</slot>
+  <slot>joint_right_button_2_clicked()</slot>
+  <slot>joint_right_button_1_clicked()</slot>
+  <slot>position_z_min_button_clicked()</slot>
+  <slot>position_x_add_button_clicked()</slot>
+  <slot>position_x_min_button_clicked()</slot>
+  <slot>position_y_add_button_clicked()</slot>
+  <slot>position_y_min_button_clicked()</slot>
+  <slot>orientation_x_add_button_clicked()</slot>
+  <slot>orientation_y_add_button_clicked()</slot>
+  <slot>orientation_z_min_button_clicked()</slot>
+  <slot>orientation_x_min_button_clicked()</slot>
+  <slot>orientation_y_min_button_clicked()</slot>
+  <slot>finish_auto_calibrate_button_clicked()</slot>
  </slots>
 </ui>

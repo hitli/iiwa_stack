@@ -756,7 +756,7 @@
       <x>530</x>
       <y>0</y>
       <width>531</width>
-      <height>301</height>
+      <height>311</height>
      </rect>
     </property>
     <property name="title">
@@ -768,7 +768,7 @@
        <x>0</x>
        <y>30</y>
        <width>531</width>
-       <height>271</height>
+       <height>281</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -832,6 +832,9 @@ p, li { white-space: pre-wrap; }
           <property name="text">
            <string>自动标定</string>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -893,7 +896,7 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="text">
-      <string>针尖跟随</string>
+      <string>针尖位置跟随</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -925,7 +928,7 @@ p, li { white-space: pre-wrap; }
       <string>刷新</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="finish_auto_calibrate_button">
+    <widget class="QPushButton" name="follow_pose_button">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -935,7 +938,20 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="text">
-      <string>强退自动标定</string>
+      <string>针尖位姿跟随</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ndi_error_button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>99</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ndi误差比对</string>
      </property>
     </widget>
    </widget>
@@ -1959,18 +1975,34 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>finish_auto_calibrate_button</sender>
+   <sender>follow_pose_button</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>finish_auto_calibrate_button_clicked()</slot>
+   <slot>follow_pose_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1174</x>
-     <y>170</y>
+     <x>1171</x>
+     <y>168</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1192</x>
-     <y>170</y>
+     <x>1188</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ndi_error_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ndi_error_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1139</x>
+     <y>197</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1187</x>
+     <y>208</y>
     </hint>
    </hints>
   </connection>
@@ -2017,5 +2049,7 @@ p, li { white-space: pre-wrap; }
   <slot>orientation_x_min_button_clicked()</slot>
   <slot>orientation_y_min_button_clicked()</slot>
   <slot>finish_auto_calibrate_button_clicked()</slot>
+  <slot>follow_pose_button_clicked()</slot>
+  <slot>ndi_error_button_clicked()</slot>
  </slots>
 </ui>

@@ -38,10 +38,18 @@ def follow():
     d1 = np.mat(p1[0:3])
     d2 = np.mat(p2[0:3])
     print "位置偏差", np.sqrt((d1 - d2) * (d1 - d2).T) , "mm"
+
+    # try不起作用?
     try:
         q = math.acos(qc.matrix2quat(qc.quat2matrix(p2).dot(inv(qc.quat2matrix(p1))))[6]) * 2.0 * 180.0 / np.pi
     except RuntimeWarning:
         q = math.acos(qc.matrix2quat(qc.quat2matrix(p1).dot(inv(qc.quat2matrix(p2))))[6]) * 2.0 * 180.0 / np.pi
+    print "角度偏差", q ,"°"
+
+    try:
+        q = math.acos(qc.matrix2quat(qc.quat2matrix(p1).dot(inv(qc.quat2matrix(p2))))[6]) * 2.0 * 180.0 / np.pi
+    except RuntimeWarning:
+        q = math.acos(qc.matrix2quat(qc.quat2matrix(p2).dot(inv(qc.quat2matrix(p1))))[6]) * 2.0 * 180.0 / np.pi
     print "角度偏差", q ,"°"
 
 

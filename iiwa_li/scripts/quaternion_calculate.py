@@ -63,12 +63,13 @@ def matrix2quat(matrix):
     #返回tuple
     return matrix[0][3], matrix[1][3], matrix[2][3], x, y, z, w
 
-# def quatmultipy((x1,y1,z1,w1),(x2,y2,z2,w2)):
-#     w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
-#     x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
-#     y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
-#     z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
-#     return x,y,z,w
+
+def quatmultipy((x1,y1,z1,w1),(x2,y2,z2,w2)):
+    w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
+    x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
+    y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
+    z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
+    return x,y,z,w
 #
 # # 不对!!
 # def quat_pose_multipy((dx1,dy1,dz1,x1,y1,z1,w1),(dx2,dy2,dz2,x2,y2,z2,w2)):
@@ -86,6 +87,7 @@ def matrix2quat(matrix):
 def quat_matrix_multipy(q1,q2):
     quat = matrix2quat(quat2matrix(q1).dot(quat2matrix(q2)))
     return quat
+
 
 def turn_TCP_axs_rad_len(position,axs,rad,len):  # 自动标定用
     if axs=='rx':
@@ -106,6 +108,25 @@ def turn_TCP_axs_rad_len(position,axs,rad,len):  # 自动标定用
     # print 'quat2matrix(position)',quat2matrix(position)
     # print 'quat2matrix(position)*Tmat',np.dot(quat2matrix(position),Tmat)
     return matrix2quat(np.dot(quat2matrix(position),Tmat))  # 右乘,相对末端运动
+
+
+def point_distance(p1,p2):  # 计算两点位姿差
+    d1 = np.mat(p1[0:3])
+    d2 = np.mat(p2[0:3])
+    distance = np.sqrt((d1 - d2) * (d1 - d2).T)  # mm
+
+    # 计算四元数的除法
+    q1 = p1[3:7]
+    q2 = p2[3:7]
+    try:
+        q1[0:3] = -q1[0:3]  # 求逆
+        q = quatmultipy(q1,q2)
+        degree = math.acos(q[3])*2.0*180.0/np.pi
+    except:
+        q2[0:3] = -q2[0:3]
+        q = quatmultipy(q2,q1)
+        degree = math.acos(q[3]) * 2.0 * 180.0 / np.pi
+    return distance,degree
 
 
 def quat2angle(quat):#没用
@@ -196,6 +217,7 @@ def write_to_txt(axs, n, str):  # 写入txt文件
             with open('/home/lizq/win7share/Dz.txt', 'a') as f:  # 从末尾写入
                 f.write('\r\n')
                 f.write(str)
+
 
 if __name__ == '__main__':
     print (quat2matrix((1,2,3,1,0,0,0)))

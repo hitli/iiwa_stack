@@ -11,36 +11,51 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="iiwa_toolbox.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="iiwa_toolbox.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="119" lean-forward="true" selection-start-line="119" selection-end-line="119" />
+            <state relative-caret-position="196">
+              <caret line="392" column="25" selection-start-line="392" selection-start-column="25" selection-end-line="392" selection-end-column="25" />
               <folding>
                 <element signature="e#25#61#0" expanded="true" />
-                <element signature="e#4489#4504#0" />
-                <element signature="e#7399#7413#0" />
-                <element signature="e#11054#11069#0" />
-                <element signature="e#15407#15422#0" />
+                <element signature="e#8283#8298#0" />
+                <element signature="e#11193#11207#0" />
+                <element signature="e#18830#18846#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="calibrate.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
+      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="101" column="67" lean-forward="true" selection-start-line="101" selection-start-column="67" selection-end-line="101" selection-end-column="72" />
+            <state relative-caret-position="424">
+              <caret line="69" column="78" selection-start-line="69" selection-start-column="78" selection-end-line="69" selection-end-column="78" />
+              <folding>
+                <element signature="e#47#58#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hand_eye_calibration.m" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/hand_eye_calibration.m">
+      <file leaf-file-name="quaternion_calculate.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="647">
-              <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
+            <state relative-caret-position="409">
+              <caret line="104" column="39" lean-forward="true" selection-start-line="104" selection-start-column="39" selection-end-line="104" selection-end-column="39" />
+              <folding>
+                <element signature="e#48#66#0" expanded="true" />
+                <element signature="e#5227#6967#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="calibrate_error.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/calibrate_error.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
             </state>
           </provider>
         </entry>
@@ -48,8 +63,8 @@
       <file leaf-file-name="pubtest.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/test/pubtest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
+            <state relative-caret-position="154">
+              <caret line="17" column="37" lean-forward="true" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -65,7 +80,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>zer</find>
       <find>p1</find>
       <find>p2</find>
       <find>quat2matrix</find>
@@ -78,7 +92,6 @@
       <find>progressBar_7</find>
       <find>copy</find>
       <find>TCP_position</find>
-      <find>inv</find>
       <find>TCP</find>
       <find>window</find>
       <find>*180/math.pi</find>
@@ -88,6 +101,15 @@
       <find>0,</find>
       <find>&quot;end</find>
       <find>TOB</find>
+      <find>TBN</find>
+      <find>inv</find>
+      <find>tmn[</find>
+      <find>tmg</find>
+      <find>ndi</find>
+      <find>tolist()</find>
+      <find>tcp_pose</find>
+      <find>1</find>
+      <find>z2</find>
     </findStrings>
     <replaceStrings>
       <replace>TMG1</replace>
@@ -97,6 +119,13 @@
       <replace>tcp</replace>
       <replace>joint_position_output</replace>
       <replace>0.0,</replace>
+      <replace>tmb</replace>
+      <replace>ton</replace>
+      <replace>p1</replace>
+      <replace>2</replace>
+      <replace>dx2</replace>
+      <replace>dy2</replace>
+      <replace>dz2</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -129,19 +158,19 @@
         <option value="$PROJECT_DIR$/scripts/calibrate.py" />
         <option value="$PROJECT_DIR$/scripts/jointcommend.py" />
         <option value="$PROJECT_DIR$/scripts/test/test.py" />
-        <option value="$PROJECT_DIR$/scripts/test.py" />
         <option value="$PROJECT_DIR$/scripts/calibrate_error.py" />
-        <option value="$PROJECT_DIR$/scripts/quaternion_calculate.py" />
         <option value="$PROJECT_DIR$/scripts/hand_eye_calibration.m" />
         <option value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
+        <option value="$PROJECT_DIR$/scripts/test.py" />
+        <option value="$PROJECT_DIR$/scripts/quaternion_calculate.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
-    <option name="x" value="65" />
-    <option name="y" value="24" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="331" />
+    <option name="y" value="-3" />
     <option name="width" value="1178" />
-    <option name="height" value="1056" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -151,6 +180,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -166,18 +196,23 @@
             <path>
               <item name="iiwa_li" type="b2602c69:ProjectViewProjectNode" />
               <item name="iiwa_li" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="iiwa_li" type="b2602c69:ProjectViewProjectNode" />
+              <item name="iiwa_li" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
-    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
   </component>
   <component name="RecentsManager">
@@ -198,7 +233,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.iiwa_toolbox">
+  <component name="RunManager" selected="Python.test">
     <configuration name="calibrate_error" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="iiwa_li" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -298,9 +333,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.iiwa_toolbox" />
         <item itemvalue="Python.pubtest" />
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.jointcommend" />
         <item itemvalue="Python.calibrate_error" />
       </list>
@@ -358,18 +393,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="24" width="1178" height="1056" extended-state="4" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21038961" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13315363" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32948583" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50054586" side_tool="true" weight="0.39874083" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.3481081" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32948583" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.33811477" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49945414" weight="0.39559287" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49945414" weight="0.3954918" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -559,16 +595,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
-          <folding>
-            <element signature="e#47#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/pointerror.m">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -583,48 +609,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/MinTwoSolveTJM.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="172" lean-forward="true" selection-start-line="172" selection-end-line="172" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/follow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="34" column="38" selection-start-line="34" selection-start-column="16" selection-end-line="34" selection-end-column="38" />
-          <folding>
-            <element signature="e#47#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="112" column="37" lean-forward="true" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
-          <folding>
-            <element signature="e#48#66#0" expanded="true" />
-            <element signature="e#4769#6509#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/test/pubtest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/calibrate_error.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/431379774/__builtin__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
@@ -634,28 +618,76 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/hand_eye_calibration.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="647">
-          <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
+        <state relative-caret-position="960">
+          <caret line="64" selection-start-line="64" selection-end-line="64" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="101" column="67" lean-forward="true" selection-start-line="101" selection-start-column="67" selection-end-line="101" selection-end-column="72" />
+        <state relative-caret-position="1470">
+          <caret line="101" column="67" selection-start-line="101" selection-start-column="67" selection-end-line="101" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/MinTwoSolveTJM.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="9" lean-forward="true" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/follow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="20" column="67" lean-forward="true" selection-start-line="20" selection-start-column="67" selection-end-line="20" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/test/pubtest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="17" column="37" lean-forward="true" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/calibrate_error.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="69" column="78" selection-start-line="69" selection-start-column="78" selection-end-line="69" selection-end-column="78" />
+          <folding>
+            <element signature="e#47#58#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="119" lean-forward="true" selection-start-line="119" selection-end-line="119" />
+        <state relative-caret-position="196">
+          <caret line="392" column="25" selection-start-line="392" selection-start-column="25" selection-end-line="392" selection-end-column="25" />
           <folding>
             <element signature="e#25#61#0" expanded="true" />
-            <element signature="e#4489#4504#0" />
-            <element signature="e#7399#7413#0" />
-            <element signature="e#11054#11069#0" />
-            <element signature="e#15407#15422#0" />
+            <element signature="e#8283#8298#0" />
+            <element signature="e#11193#11207#0" />
+            <element signature="e#18830#18846#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="104" column="39" lean-forward="true" selection-start-line="104" selection-start-column="39" selection-end-line="104" selection-end-column="39" />
+          <folding>
+            <element signature="e#48#66#0" expanded="true" />
+            <element signature="e#5227#6967#0" />
           </folding>
         </state>
       </provider>

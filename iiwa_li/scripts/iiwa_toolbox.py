@@ -20,7 +20,6 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 全局变量
         self.joint_position = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)  # a1,a2,a3,a4,a5,a6,a7 tuple 弧度
         self.tcp_pose = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)  # x,y,z,rx,ry,rz,rw tuple 米
-        self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         self.manual_calibrate_count = 1
 
         super(Mywindow, self).__init__()
@@ -28,6 +27,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ndi_error_button.setToolTip("通过角关节位置与TOB计算TJB(基本无误差),与TJM*TMB=TJB比较,查看TJM误差")
         self.calibrate_error_button.setToolTip("记录449位置,命令末端运动到附近再返回记录位置,比较ndi数据距离,确定重定位精度")
         self.manual_calibrate_button.setToolTip("初始化ndi,robot_data文件,需要可以看到449")
+        try:
+            self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
+        except IOError:
+            QtWidgets.QMessageBox.information(self, "提示", "未找到TJM标定矩阵，穿刺及跟随前请先执行标定程序")
         #  启动matlab核心
         # self.matlab_eng = matlab.engine.start_matlab()
 
@@ -51,6 +54,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.calibrate_thread.append_signal[str].connect(self.textEdit_calibrate_append_slot)
         # self.calibrate_thread.clear_signal.connect(self.textEdit_calibrate_clear_slot)
         self.calibrate_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
+
+        self.calibrate_error_thread = Calibrate_Error_Thread()
+        self.calibrate_error_thread.append_signal[str].connect(self.textEdit_calibrate_append_slot)
+        self.calibrate_error_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
 
     def read_state(self):
 
@@ -123,48 +130,27 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         self.textEdit_calibrate.setText(self.TJM)
 
-
     def calibrate_error_button_clicked(self):
-        tbo = np.loadtxt('/home/lizq/win7share/TBO.txt', delimiter=",")  # mm
-        p1 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
-        tmb = qc.quat2matrix(p1)
-        backpoint = qc.get_command_joint((-50, 30, 0, -90, 0, -90, 0))
-        self.joint_pub.publish(backpoint)
-        rospy.sleep(3)
-
-        tjo = self.TJM.dot(tmb).dot(tbo)  # 可能误差出现在tjm,tbo
-        tjo[0:3][:, 3] /= 1000  # mm->m
-        command_point = qc.matrix2quat(tjo)
-        command_line = qc.get_command_pose(command_point)
-        self.pose_pub.publish(command_line)
-        rospy.sleep(3)
-
-        p2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
-        distance, degree = qc.point_distance(p1, p2)
-        self.textEdit_calibrate.setText(str(p1) + '\n' + str(p2))
-        sentence = "位置偏差:" + str(distance) + "mm"
-        self.textEdit_calibrate.append(sentence)
-        sentence = "角度偏差:" + str(degree) + "°"
-        self.textEdit_calibrate.append(sentence)
+        self.calibrate_error_thread.start()
 
     def ndi_error_button_clicked(self):
         tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")  # mm
+        ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")  # 可以识别miss
         tjo = qc.quat2matrix(self.tcp_pose)  # m
         tjo[0:3][:, 3] *= 1000  # mm
         tjb1 = tjo.dot(tob)
         p1 = qc.matrix2quat(tjb1)
         tjm = self.TJM
-        with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
-            tmb = ndi.read().splitlines()[0]
+        tmb = qc.quat2matrix(ndi[0].tolist())
+        # print type(tjm),type(tmb)
         tjb2 = tjm.dot(tmb)
         p2 = qc.matrix2quat(tjb2)
         distance,degree = qc.point_distance(p1,p2)
         self.textEdit_calibrate.setText(str(p1) + '\n' + str(p2))
-        sentence = "位置偏差:" + str(distance) + "mm"
+        sentence = "位置偏差: %s mm" %distance
         self.textEdit_calibrate.append(sentence)
-        sentence = "角度偏差:" + str(degree) + "°"
+        sentence = "角度偏差: %s °" %degree
         self.textEdit_calibrate.append(sentence)
-
 
     def follow_button_clicked(self):
         self.follow_thread.start()
@@ -184,7 +170,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         clipboard.setText(self.lineEdit_pose_out.text())
 
     def refresh_button_clicked(self):
-        self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
+        try:
+            self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
+        except IOError:
+            QtWidgets.QMessageBox.information(self, "提示", "未找到TJM标定矩阵，穿刺及跟随前请先执行标定程序")
 
     # region 输入姿态控制
     def joint_add_button_clicked(self):
@@ -514,6 +503,41 @@ class Calibrate_Thread(QtCore.QThread):
             window.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm 更新TJM
             self.settext_signal[str].emit(str(window.TJM))
 
+class Calibrate_Error_Thread(QtCore.QThread):
+    append_signal = QtCore.pyqtSignal(str)
+    settext_signal = QtCore.pyqtSignal(str)
+
+    def __int__(self):
+        super(Calibrate_Error_Thread, self).__init__()
+
+    def run(self):
+        tbo = np.loadtxt('/home/lizq/win7share/TBO.txt', delimiter=",")  # mm
+        p1 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+
+        with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+            p1_output = ndi.read().splitlines()[0]
+        self.settext_signal[str].emit("出发点位姿："+ p1_output)
+        tmb = qc.quat2matrix(p1)
+        backpoint = qc.get_command_joint((-50, 30, 0, -90, 0, -90, 0))
+        window.joint_pub.publish(backpoint)
+        rospy.sleep(3)
+
+        tjo = window.TJM.dot(tmb).dot(tbo)  # 可能误差出现在tjm,tbo
+        tjo[0:3][:, 3] /= 1000  # mm->m
+        command_point = qc.matrix2quat(tjo)
+        command_line = qc.get_command_pose(command_point)
+        window.pose_pub.publish(command_line)
+        rospy.sleep(3)
+
+        p2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+        with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+            p2_output = ndi.read().splitlines()[0]
+        self.append_signal[str].emit("返回点位姿：" + p2_output)
+        distance, degree = qc.point_distance(p1, p2)
+        sentence = "位置偏差: %s mm\n角度偏差: %s °" %(distance,degree)
+        self.append_signal[str].emit(sentence)
+
+
 class Follow_Thread(QtCore.QThread):
     settext_signal = QtCore.pyqtSignal(str)
 
@@ -526,6 +550,7 @@ class Follow_Thread(QtCore.QThread):
         tno = np.linalg.inv(ton)
         tcp = list(window.tcp_pose)  # 米 只取姿态
         tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
+        tbn = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")
         while window.follow_button.isChecked():  # 等待NDI数据
             try:
                 ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
@@ -536,17 +561,19 @@ class Follow_Thread(QtCore.QThread):
                     tmg = tmg.dot(tgg)  # 更正钢针位姿
                     tjg = window.TJM.dot(tmg)  # 将钢针针尖位置变换至基座坐标系下
 
-                    # 发射针尖目标距离,针尖位姿通过关节角度传感器与ton取得
-                    # 还可以通过ndi看449与tbn获得,跳过了tjm误差,但是tbn没算
-                    tjo = qc.quat2matrix(tcp)
-                    tjo[0:3][:, 3] *= 1000
-                    tjn = tjo.dot(ton)
-                    # print tjn
-                    # print tjg
-                    distance = pow(
-                        pow(tjg[0][3] - tjn[0][3], 2) + pow(tjg[1][3] - tjn[1][3], 2) + pow(tjg[2][3] - tjn[2][3], 2),
-                        0.5)
-                    self.settext_signal[str].emit(str(distance))
+                    # 发射针尖与钢针间距离
+                    if not math.isnan(ndi[0][0]):  # 可以看到449时，比较ndi下tgg矫正的tmg和tbn矫正的tmn，误差在两个矫正矩阵
+                        tmb = qc.quat2matrix(ndi[0].tolist())
+                        tmn = tmb.dot(tbn)
+                        distance = pow(pow(tmn[0][3] - tmg[0][3], 2) + pow(tmg[1][3] - tmn[1][3], 2) + pow(tmg[2][3] - tmn[2][3],2),0.5)
+                        sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：%fmm" % (tmg, tmn, distance)
+                    else:  # 看不到449时，针尖位姿通过关节角度传感器与ton取得，误差来源多了TJM,还算得慢
+                        tjo = qc.quat2matrix(tcp)
+                        tjo[0:3][:, 3] *= 1000
+                        tjn = tjo.dot(ton)
+                        distance = pow(pow(tjg[0][3] - tjn[0][3], 2) + pow(tjg[1][3] - tjn[1][3], 2) + pow(tjg[2][3] - tjn[2][3], 2),0.5)
+                        sentence = "基座下下钢针位置：\n%s\n基座下穿刺针位置\n%s\n针尖距离：%fmm" % (tjg,tjn,distance)
+                    self.settext_signal[str].emit(sentence)
 
                     gangzhen = list(qc.matrix2quat(tjg))
                     gangzhen[3:] = tcp[3:]  # 使得TCP姿态不变，被动刚体朝向NDI，只做位移

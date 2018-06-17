@@ -15,6 +15,7 @@ file6='/home/lizq/win7share/Dz.txt';
 Rz=load(file6);
 file7='/home/lizq/win7share/TCP.txt';
 TCP=load(file7);
+TON=load('/home/lizq/win7share/TON.txt')
 [m,n]=size(Rx);
 NDI=textread('/home/lizq/win7share/NDI.txt','',1,'delimiter',',');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,18 +123,18 @@ TJO(1,:)=[2*(w*w+x*x)-1 , 2*(x*y-w*z) , 2*(x*z+w*y) , TCP(1,1)*1000];
 TJO(2,:)=[2*(x*y+w*z) , 2*(w*w+y*y)-1 , 2*(y*z-w*x) , TCP(1,2)*1000];
 TJO(3,:)=[2*(x*z-w*y) , 2*(y*z+w*x) , 2*(w*w+z*z)-1 , TCP(1,3)*1000];
 
-fid=fopen('/home/lizq/win7share/TJO.txt','wt');%改为你自己文件的位置
-[m,n]=size(TJO);
-for i=1:m
-   for j=1:n
-     if j==n
-        fprintf(fid,'%f\n',double(TJO(i,j)));
-     else
-        fprintf(fid,'%f,',double(TJO(i,j))); 
-     end
-   end
-end
-fclose(fid);
+% fid=fopen('/home/lizq/win7share/TJO.txt','wt');%改为你自己文件的位置
+% [m,n]=size(TJO);
+% for i=1:m
+%    for j=1:n
+%      if j==n
+%         fprintf(fid,'%f\n',double(TJO(i,j)));
+%      else
+%         fprintf(fid,'%f,',double(TJO(i,j))); 
+%      end
+%    end
+% end
+% fclose(fid);
 
 TJM=TJO/TMO;%TJO*inv(TMO)
 fid=fopen('/home/lizq/win7share/TJM.txt','wt');%改为你自己文件的位置
@@ -180,6 +181,20 @@ for i=1:m
         fprintf(fid,'%f\n',double(TBO(i,j)));
      else
         fprintf(fid,'%f,',double(TBO(i,j))); 
+     end
+   end
+end
+fclose(fid);
+
+TBN=TOB\TON;  % TBO*TON 通过自己调整的TON获得此次标定时相对的TBN 或者通过标定的TBN计算TON，但是针太软，没法用NDI标定
+fid=fopen('/home/lizq/win7share/TBN.txt','wt');%改为你自己文件的位置
+[m,n]=size(TBN);
+for i=1:m
+   for j=1:n
+     if j==n
+        fprintf(fid,'%f\n',double(TBN(i,j)));
+     else
+        fprintf(fid,'%f,',double(TBN(i,j))); 
      end
    end
 end

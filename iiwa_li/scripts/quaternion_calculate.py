@@ -12,10 +12,8 @@ def quat2matrix((dx, dy, dz, x, y, z, w)):
     #输入tuple
     matrix = np.zeros((4,4))
     # 规范化处理，保证模为1
-    x = x / math.sqrt(x * x + y * y + z * z + w * w)
-    y = y / math.sqrt(x * x + y * y + z * z + w * w)
-    z = z / math.sqrt(x * x + y * y + z * z + w * w)
-
+    fenmu = math.sqrt(x * x + y * y + z * z + w * w)
+    x, y, z, w = [i / fenmu for i in [x, y, z, w]]
     matrix[0] = [2*(w*w+x*x)-1 , 2*(x*y-w*z) , 2*(x*z+w*y) , dx]
     matrix[1] = [2*(x*y+w*z) , 2*(w*w+y*y)-1 , 2*(y*z-w*x) , dy]
     matrix[2] = [2*(x*z-w*y) , 2*(y*z+w*x) , 2*(w*w+z*z)-1 , dz]
@@ -24,7 +22,7 @@ def quat2matrix((dx, dy, dz, x, y, z, w)):
 
 
 def matrix2quat(matrix):
-    #输入numpy矩阵
+    # 输入numpy矩阵
     mw=1+matrix[0][0]+matrix[1][1]+matrix[2][2]
     mx=1+matrix[0][0]-matrix[1][1]-matrix[2][2]
     my=1-matrix[0][0]+matrix[1][1]-matrix[2][2]
@@ -49,10 +47,9 @@ def matrix2quat(matrix):
     y = 0.5 * math.sqrt(abs(my))
     z = 0.5 * math.sqrt(abs(mz))
 
-    #规范化处理，保证模为1
-    x = x / math.sqrt(x * x + y * y + z * z + w * w)
-    y = y / math.sqrt(x * x + y * y + z * z + w * w)
-    z = z / math.sqrt(x * x + y * y + z * z + w * w)
+    # 规范化处理，保证模为1
+    fenmu = math.sqrt(x * x + y * y + z * z + w * w)
+    x, y, z, w = [i / fenmu for i in [x, y, z, w]]
 
     if matrix[2][1]-matrix[1][2] < 0:
         x = -x
@@ -60,7 +57,7 @@ def matrix2quat(matrix):
         y = -y
     if matrix[1][0]-matrix[0][1] < 0:
         z = -z
-    #返回tuple
+    # 返回tuple
     return matrix[0][3], matrix[1][3], matrix[2][3], x, y, z, w
 
 
@@ -70,18 +67,55 @@ def quatmultipy((x1,y1,z1,w1),(x2,y2,z2,w2)):
     y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
     z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
     return x,y,z,w
-#
-# # 不对!!
-# def quat_pose_multipy((dx1,dy1,dz1,x1,y1,z1,w1),(dx2,dy2,dz2,x2,y2,z2,w2)):
-#     q = (x1,y1,z1,w1)
-#     qt = (-x1,-y1,-z1,w1)
-#     qw = (dx2,dy2,dz2,0)
-#     qw2 = quatmultipy(quatmultipy(qt,qw),q)
-#     dx = dx1 + qw2[0]
-#     dy = dy1 + qw2[1]
-#     dz = dz1 + qw2[2]
-#     x,y,z,w = quatmultipy((x1,y1,z1,w1),(x2,y2,z2,w2))
-#     return dx,dy,dz,x,y,z,w
+
+
+def point_distance(p1,p2):  # 计算两点位姿差
+    fenmu = math.sqrt(p1[3] * p1[3] + p1[4] * p1[4] + p1[5] * p1[5] + p1[6] * p1[6])
+    x1 = p1[3]/fenmu
+    y1 = p1[4]/fenmu
+    z1 = p1[5]/fenmu
+    w1 = p1[6]/fenmu
+    fenmu = math.sqrt(p2[3] * p2[3] + p2[4] * p2[4] + p2[5] * p2[5] + p2[6] * p2[6])
+    x2 = p2[3] / fenmu
+    y2 = p2[4] / fenmu
+    z2 = p2[5] / fenmu
+    w2 = p2[6] / fenmu
+    distance = np.sqrt(np.square(p1[0]-p2[0])+np.square(p1[1]-p2[1])+np.square(p1[2]-p2[2]))
+    # 计算四元数的除法,即乘逆
+    # w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
+    # x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
+    # y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
+    # z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
+    w = w1 * w2 + x1 * x2 + y1 * y2 + z1 * z2
+    degree = math.acos(w)*2.0*180.0/np.pi
+    return distance,degree
+
+def quat_pose_multipy((dx1,dy1,dz1,x1,y1,z1,w1),(dx2,dy2,dz2,x2,y2,z2,w2)):
+    fenmu = math.sqrt(x1 * x1 + y1 * y1 + z1 * z1 + w1 * w1)
+    x1, y1, z1, w1 = [i / fenmu for i in [x1, y1, z1, w1]]
+    fenmu = math.sqrt(x2 * x2 + y2 * y2 + z2 * z2 + w2 * w2)
+    x2, y2, z2, w2 = [i / fenmu for i in [x2, y2, z2, w2]]
+    q = (x1,y1,z1,w1)
+    qt = (-x1,-y1,-z1,w1)
+    qw = (dx2,dy2,dz2,0)
+
+    ww = - x1 * dx2 - y1 * dy2 - z1 * dz2
+    wx = w1 * dx2 + y1 * dz2 - z1 * dy2
+    wy = w1 * dy2 - x1 * dz2 + z1 * x2
+    wz = w1 * dz2 + x1 * dy2 - y1 * dx2
+
+    qw2 = quatmultipy(quatmultipy(q,qw),qt)
+    dx = dx1 + qw2[0]
+    dy = dy1 + qw2[1]
+    dz = dz1 + qw2[2]
+    # print qw2
+    w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
+    x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
+    y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
+    z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
+    fenmu = math.sqrt(x * x + y * y + z * z + w * w)
+    x, y, z, w = [i / fenmu for i in [x, y, z, w]]
+    return dx,dy,dz,x,y,z,w
 
 
 def quat_matrix_multipy(q1,q2):
@@ -109,24 +143,6 @@ def turn_TCP_axs_rad_len(position,axs,rad,len):  # 自动标定用
     # print 'quat2matrix(position)*Tmat',np.dot(quat2matrix(position),Tmat)
     return matrix2quat(np.dot(quat2matrix(position),Tmat))  # 右乘,相对末端运动
 
-
-def point_distance(p1,p2):  # 计算两点位姿差
-    d1 = np.mat(p1[0:3])
-    d2 = np.mat(p2[0:3])
-    distance = np.sqrt((d1 - d2) * (d1 - d2).T)  # mm
-
-    # 计算四元数的除法
-    q1 = p1[3:7]
-    q2 = p2[3:7]
-    try:
-        q1[0:3] = -q1[0:3]  # 求逆
-        q = quatmultipy(q1,q2)
-        degree = math.acos(q[3])*2.0*180.0/np.pi
-    except:
-        q2[0:3] = -q2[0:3]
-        q = quatmultipy(q2,q1)
-        degree = math.acos(q[3]) * 2.0 * 180.0 / np.pi
-    return distance,degree
 
 
 def quat2angle(quat):#没用

@@ -10,6 +10,7 @@ import numpy as np
 import math
 from geometry_msgs.msg import PoseStamped
 from iiwa_msgs.msg import JointPosition
+import subprocess
 import matlab.engine
 import img_rcc_rc
 
@@ -24,6 +25,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         super(Mywindow, self).__init__()
         self.setupUi(self)
+
         self.ndi_error_button.setToolTip("通过角关节位置与TOB计算TJB(基本无误差),与TJM*TMB=TJB比较,查看TJM误差")
         self.calibrate_error_button.setToolTip("记录449位置,命令末端运动到附近再返回记录位置,比较ndi数据距离,确定重定位精度")
         self.manual_calibrate_button.setToolTip("初始化ndi,robot_data文件,需要可以看到449")
@@ -31,8 +33,12 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         except IOError:
             QtWidgets.QMessageBox.information(self, "提示", "未找到TJM标定矩阵，穿刺及跟随前请先执行标定程序")
-        #  启动matlab核心
-        # self.matlab_eng = matlab.engine.start_matlab()
+
+        # 启动roscore
+        subprocess.Popen('roscore')
+        # 启动matlab核心
+        self.matlab_eng = matlab.engine.start_matlab()
+        print "加载matlab核心"
 
         #  启动节点
         rospy.init_node('iiwa_toolbox', anonymous=True)
@@ -49,18 +55,26 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 线程,信号槽连接
         self.follow_thread = Follow_Thread()
         self.follow_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)  # 线程.信号.connect(槽)
-
         self.calibrate_thread = Calibrate_Thread()
         self.calibrate_thread.append_signal[str].connect(self.textEdit_calibrate_append_slot)
-        # self.calibrate_thread.clear_signal.connect(self.textEdit_calibrate_clear_slot)
         self.calibrate_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
-
         self.calibrate_error_thread = Calibrate_Error_Thread()
         self.calibrate_error_thread.append_signal[str].connect(self.textEdit_calibrate_append_slot)
         self.calibrate_error_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
+        self.follow_pose_thread = Follow_Pose_Thread()
+
+    def closeEvent(self, event):  # 改写关闭事件，添加对话框及关闭roscore
+        reply = QtWidgets.QMessageBox.question(self, 'Message',"Are you sure to quit?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.Yes)
+        if reply == QtWidgets.QMessageBox.Yes:
+            coscoreid = subprocess.Popen('pgrep roscore', shell=True, stdout=subprocess.PIPE)
+            out, err = coscoreid.communicate()
+            line = 'kill ' + out
+            subprocess.call(line, shell=True)
+            event.accept()
+        else:
+            event.ignore()
 
     def read_state(self):
-
         # ','.join(str(i) for i in self.tcp_pose)将数组每一位以,间隔转为字符串
         tcp_pose_output = list(self.tcp_pose)
         for i in range(3):
@@ -102,11 +116,12 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.calibrate_thread.start()
 
     def manual_calibrate_button_clicked(self):
+        tcp_pose = self.tcp_pose
         self.manual_calibrate_count = 1
-        self.textEdit_calibrate.setText("开始手动标定,请尽量选取blabla位姿"+'\n'+"point 1:")
+        self.textEdit_calibrate.setText("开始手动标定,请尽量选取blabla位姿\npoint 1:")
         with open('/home/lizq/win7share/robot_data.txt', 'w') as f:  # 覆盖从头写入
-            f.write(str(self.tcp_pose))
-        self.textEdit_calibrate.append("TCP:"+str(self.tcp_pose))
+            f.write(','.join(str(i) for i in tcp_pose))
+        self.textEdit_calibrate.append("TCP:"+','.join(str(i) for i in tcp_pose))
         with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
             ndi449 = ndi.read().splitlines()[0]
         with open('/home/lizq/win7share/ndi_data.txt', 'w') as f:  # 覆盖从头写入
@@ -114,21 +129,25 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textEdit_calibrate.append("ndi:"+ndi449)
 
     def add_calibrate_point_button_clicked(self):
+        tcp_pose = self.tcp_pose
         self.manual_calibrate_count += 1
         self.textEdit_calibrate.append("point "+str(self.manual_calibrate_count)+":")
         with open('/home/lizq/win7share/robot_data.txt', 'a') as f:  # 从末尾写入
-            f.write(str(self.tcp_pose))
-        self.textEdit_calibrate.append("TCP:" + str(self.tcp_pose))
+            f.write("\n"+','.join(str(i) for i in tcp_pose))
+        self.textEdit_calibrate.append("TCP:" + ','.join(str(i) for i in tcp_pose))
         with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
             ndi449 = ndi.read().splitlines()[0]
         with open('/home/lizq/win7share/ndi_data.txt', 'a') as f:  # 从末尾写入
-            f.write(ndi449)
+            f.write("\n"+ndi449)
         self.textEdit_calibrate.append("ndi:" + ndi449)
 
     def finish_manual_calibrate_button_clicked(self):
-        self.matlab_eng.hand_eye_calibration(nargout=0)
-        self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
-        self.textEdit_calibrate.setText(self.TJM)
+        try:
+            self.matlab_eng.hand_eye_calibration(nargout=0)
+            self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
+            self.textEdit_calibrate.setText(self.TJM)
+        except:
+            self.textEdit_calibrate.setText("解算失败，请查看控制台说明")
 
     def calibrate_error_button_clicked(self):
         self.calibrate_error_thread.start()
@@ -156,7 +175,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.follow_thread.start()
 
     def follow_pose_button_clicked(self):
-        pass
+        self.follow_pose_thread.start()
 
     def puncture_test_button_clicked(self):
         pass
@@ -170,6 +189,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         clipboard.setText(self.lineEdit_pose_out.text())
 
     def refresh_button_clicked(self):
+        self.textEdit_calibrate.clear()
         try:
             self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         except IOError:
@@ -218,7 +238,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             command_pose = list(eval(self.lineEdit_pose_in.text()))
             for i in range(0, 3):
                 command_pose[i] /= 1000
-            command_quat = qc.quat_matrix_multipy(tcp, command_pose)
+            command_quat = qc.quat_pose_multipy(tcp, command_pose)
             command_line = qc.get_command_pose(command_quat)
         except:
             QtWidgets.QMessageBox.warning(self, "Warning", "输入错误")
@@ -390,7 +410,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.0, 0.0, 0.008726535, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -399,7 +419,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.0, 0.0, -0.008726535, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -408,7 +428,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.0, 0.008726535, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -417,7 +437,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.0, -0.008726535, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -426,7 +446,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.008726535, 0.0, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -435,7 +455,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, -0.008726535, 0.0, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_matrix_multipy(tcp, add_tcp)
+        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -466,6 +486,9 @@ class Calibrate_Thread(QtCore.QThread):
 
     def run(self):
         calibrate_start_pose = copy.deepcopy(window.tcp_pose)  # 深拷贝tuple,不受影响
+        with open('/home/lizq/win7share/TCP.txt', 'w') as f:  # 记录TCP位置
+            string = ','.join(str(i) for i in calibrate_start_pose)
+            f.write(string)
         step = int(window.lineEdit_calibrate_step.text())
         lengh = float(window.lineEdit_calibrate_lengh.text())
         rad = float(window.lineEdit_calibrate_rad.text())
@@ -587,6 +610,39 @@ class Follow_Thread(QtCore.QThread):
             except:
                 pass
 
+
+class Follow_Pose_Thread(QtCore.QThread):
+    def __int__(self):
+        super(Follow_Pose_Thread, self).__init__()
+
+    def run(self):
+        tjm = window.TJM
+        rate = rospy.Rate(50)  # smart servo 可以达到 20ms 50hz
+        ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
+        tno = np.linalg.inv(ton)
+        tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
+        while window.follow_pose_button.isChecked():  # 等待NDI数据
+            try:
+                ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+                if math.isnan(ndi[1][0]):
+                    print "waiting"
+                else:
+                    tmg = qc.quat2matrix(ndi[1].tolist())  # 被动刚体位姿
+                    tmg = tmg.dot(tgg)  # 更正钢针针尖位姿
+                    tjg = tjm.dot(tmg)  # 将钢针针尖位置变换至基座坐标系下
+                    # 穿刺针x为钢针z方向，穿刺针y方向为钢针-x,因此穿刺针z方向为钢针-y
+                    tjn = np.array([[tjg[0][2], -tjg[0][0], -tjg[0][1], tjg[0][3]],
+                                    [tjg[1][2], -tjg[1][0], -tjg[1][1], tjg[1][3]],
+                                    [tjg[2][2], -tjg[2][0], -tjg[2][1], tjg[2][3]],
+                                    [0.0, 0.0, 0.0, 1.0]])
+                    tjo = tjn.dot(tno)
+                    tjo[0:3][:, 3] /= 1000  # mm->m
+                    command_point = qc.get_command_pose(qc.matrix2quat(tjo))
+                    rospy.loginfo(command_point)
+                    window.pub.publish(command_point)
+                    rate.sleep()
+            except:
+                pass
 
 app = QtWidgets.QApplication(sys.argv)
 window = Mywindow()

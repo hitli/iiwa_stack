@@ -39,18 +39,32 @@ for i = 1:size(A,3)
     end
     end
 end
-disp(['total count:=',num2str(count)]);
+disp(['total count:=',num2str(count-1)]);
 disp(['valid count:=', num2str(valid_count)]);
-R_est = (M'*M)^(-1/2)*M'
+R_est = (M'*M)^(-1/2)*M';
 A = A(:,:,ind);
 B = B(:,:,ind);
 for i =1:size(A,3)
     C = [C; eye(3)-A(1:3,1:3,i)];
     d = [d;A(1:3,4,i)-R_est*B(1:3,4,i)];
 end
-b_est = (C'*C)^(-1)*C'*d
-norm(b_est)
-X_est = [R_est,b_est;0 0 0 1]
+b_est = (C'*C)^(-1)*C'*d;
+%norm(b_est)
+X_est = [R_est,b_est;0 0 0 1];
+
+fid=fopen('/home/lizq/win7share/TJM.txt','wt');%改为你自己文件的位置
+[m,n]=size(X_est);
+for i=1:m
+   for j=1:n
+     if j==n
+        fprintf(fid,'%f\n',double(X_est(i,j)));
+     else
+        fprintf(fid,'%f,',double(X_est(i,j))); 
+     end
+   end
+end
+fclose(fid);
+
 end
 
 function vect = extract_vect(mat)

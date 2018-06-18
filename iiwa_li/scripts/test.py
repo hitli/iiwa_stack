@@ -3,6 +3,7 @@
 
 import math
 import time
+import subprocess
 
 from numpy.core.multiarray import ndarray
 
@@ -64,13 +65,19 @@ if __name__ == '__main__':
     # sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：%fmm" %(tmb,ton,distance)
     # print sentence
 
-    p1 = (-41.8100,299.8500,-1634.7100,0.1681,-0.5150,0.2577,0.8000)
-    p2 = (17.5000,192.4200,-1686.9700,0.0,0.0,0.0,1.0)
-    # print qc.point_distance(p1,p2)
-    # print math.acos(qc.matrix2quat(qc.quat2matrix(p2).dot(np.linalg.inv(qc.quat2matrix(p1))))[6]) * 2.0 * 180.0 / np.pi
-    print qc.quat_matrix_multipy(p1,p2)
-    print qc.quat_pose_multipy(p1,p2)
+    # p1 = (-41.8100,299.8500,-1634.7100,0.1681,-0.5150,0.2577,0.8000)
+    # p2 = (17.5000,192.4200,-1686.9700,0.0,0.0,0.0,1.0)
+    # # print qc.point_distance(p1,p2)
+    # # print math.acos(qc.matrix2quat(qc.quat2matrix(p2).dot(np.linalg.inv(qc.quat2matrix(p1))))[6]) * 2.0 * 180.0 / np.pi
+    # print qc.quat_matrix_multipy(p1,p2)
+    # print qc.quat_pose_multipy(p1,p2)
+    # print qc.point_distance(qc.quat_matrix_multipy(p1,p2),qc.quat_pose_multipy(p1,p2))
 
 #  四元数算法快的多 0.000236 9.00000000001e-06 0.000227
 #                 0.000264 2e-05 0.000244
 #0.08944087284948032,1.9035529046321358
+
+    coscoreid = subprocess.Popen('pgrep roscore', shell=True, stdout=subprocess.PIPE)
+    out, err = coscoreid.communicate()
+    line = 'kill '+out
+    subprocess.call(line, shell=True)

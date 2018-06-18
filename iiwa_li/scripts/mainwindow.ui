@@ -940,6 +940,9 @@ p, li { white-space: pre-wrap; }
      <property name="text">
       <string>针尖位姿跟随</string>
      </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
     </widget>
     <widget class="QPushButton" name="ndi_error_button">
      <property name="geometry">

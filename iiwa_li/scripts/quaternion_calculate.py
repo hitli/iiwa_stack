@@ -61,12 +61,12 @@ def matrix2quat(matrix):
     return matrix[0][3], matrix[1][3], matrix[2][3], x, y, z, w
 
 
-def quatmultipy((x1,y1,z1,w1),(x2,y2,z2,w2)):
-    w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
-    x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
-    y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
-    z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
-    return x,y,z,w
+# def quatmultipy((x1,y1,z1,w1),(x2,y2,z2,w2)):
+#     w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
+#     x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
+#     y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
+#     z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
+#     return x,y,z,w
 
 
 def point_distance(p1,p2):  # 计算两点位姿差
@@ -90,37 +90,28 @@ def point_distance(p1,p2):  # 计算两点位姿差
     degree = math.acos(w)*2.0*180.0/np.pi
     return distance,degree
 
+
 def quat_pose_multipy((dx1,dy1,dz1,x1,y1,z1,w1),(dx2,dy2,dz2,x2,y2,z2,w2)):
     fenmu = math.sqrt(x1 * x1 + y1 * y1 + z1 * z1 + w1 * w1)
     x1, y1, z1, w1 = [i / fenmu for i in [x1, y1, z1, w1]]
     fenmu = math.sqrt(x2 * x2 + y2 * y2 + z2 * z2 + w2 * w2)
     x2, y2, z2, w2 = [i / fenmu for i in [x2, y2, z2, w2]]
-    q = (x1,y1,z1,w1)
-    qt = (-x1,-y1,-z1,w1)
-    qw = (dx2,dy2,dz2,0)
-
-    ww = - x1 * dx2 - y1 * dy2 - z1 * dz2
-    wx = w1 * dx2 + y1 * dz2 - z1 * dy2
-    wy = w1 * dy2 - x1 * dz2 + z1 * x2
-    wz = w1 * dz2 + x1 * dy2 - y1 * dx2
-
-    qw2 = quatmultipy(quatmultipy(q,qw),qt)
-    dx = dx1 + qw2[0]
-    dy = dy1 + qw2[1]
-    dz = dz1 + qw2[2]
-    # print qw2
+    # q = (x1,y1,z1,w1)
+    # qt = (-x1,-y1,-z1,w1)
+    # qw = (dx2,dy2,dz2,0)
+    # qw2 = quatmultipy(quatmultipy(q,qw),qt)
+    # 坐标旋转公式展开
+    qx2 = (1-2*y1*y1-2*z1*z1)*dx2+(2*x1*y1-2*z1*w1)*dy2+(2*x1*z1+2*y1*w1)*dz2
+    qy2 = (2*x1*y1+2*w1*z1)*dx2+(1-2*x1*x1-2*z1*z1)*dy2+(2*y1*z1-2*x1*w1)*dz2
+    qz2 = (2*x1*z1-2*y1*w1)*dx2+(2*y1*z1+2*x1*w1)*dy2+(1-2*x1*x1-2*y1*y1)*dz2
+    qw2 = 0
     w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
     x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
     y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
     z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
     fenmu = math.sqrt(x * x + y * y + z * z + w * w)
     x, y, z, w = [i / fenmu for i in [x, y, z, w]]
-    return dx,dy,dz,x,y,z,w
-
-
-def quat_matrix_multipy(q1,q2):
-    quat = matrix2quat(quat2matrix(q1).dot(quat2matrix(q2)))
-    return quat
+    return dx1 + qx2,dy1 + qy2,dz1 + qz2,x,y,z,w
 
 
 def turn_TCP_axs_rad_len(position,axs,rad,len):  # 自动标定用

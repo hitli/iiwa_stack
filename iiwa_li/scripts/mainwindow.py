@@ -399,6 +399,7 @@ class Ui_MainWindow(object):
         self.refresh_button.setObjectName("refresh_button")
         self.follow_pose_button = QtWidgets.QPushButton(self.groupBox_test_function)
         self.follow_pose_button.setGeometry(QtCore.QRect(10, 120, 99, 27))
+        self.follow_pose_button.setCheckable(True)
         self.follow_pose_button.setObjectName("follow_pose_button")
         self.ndi_error_button = QtWidgets.QPushButton(self.groupBox_test_function)
         self.ndi_error_button.setGeometry(QtCore.QRect(10, 150, 99, 27))

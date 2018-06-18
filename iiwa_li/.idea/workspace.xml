@@ -11,17 +11,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="iiwa_toolbox.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="iiwa_toolbox.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="392" column="25" selection-start-line="392" selection-start-column="25" selection-end-line="392" selection-end-column="25" />
+            <state relative-caret-position="315">
+              <caret line="129" lean-forward="true" selection-start-line="129" selection-end-line="129" />
               <folding>
                 <element signature="e#25#61#0" expanded="true" />
-                <element signature="e#8283#8298#0" />
-                <element signature="e#11193#11207#0" />
-                <element signature="e#18830#18846#0" />
+                <element signature="e#7909#7924#0" />
+                <element signature="e#10819#10833#0" />
+                <element signature="e#14474#14489#0" />
+                <element signature="e#18577#18593#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="calibrate.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="471">
+              <caret line="53" column="37" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="puncture.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
             </state>
           </provider>
         </entry>
@@ -29,8 +48,8 @@
       <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="69" column="78" selection-start-line="69" selection-start-column="78" selection-end-line="69" selection-end-column="78" />
+            <state relative-caret-position="412">
+              <caret line="79" selection-start-line="79" selection-end-line="82" selection-end-column="37" />
               <folding>
                 <element signature="e#47#58#0" expanded="true" />
               </folding>
@@ -38,33 +57,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="quaternion_calculate.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="quaternion_calculate.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="104" column="39" lean-forward="true" selection-start-line="104" selection-start-column="39" selection-end-line="104" selection-end-column="39" />
+            <state relative-caret-position="-315">
+              <caret line="114" selection-start-line="114" selection-end-line="114" />
               <folding>
                 <element signature="e#48#66#0" expanded="true" />
-                <element signature="e#5227#6967#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="calibrate_error.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/calibrate_error.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pubtest.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/test/pubtest.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="17" column="37" lean-forward="true" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -80,10 +80,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>p1</find>
-      <find>p2</find>
-      <find>quat2matrix</find>
-      <find>TMG2</find>
       <find>button_click</find>
       <find>pushButton</find>
       <find>449</find>
@@ -110,6 +106,10 @@
       <find>tcp_pose</find>
       <find>1</find>
       <find>z2</find>
+      <find>wz</find>
+      <find>quat_matrix_multipy</find>
+      <find>zeros</find>
+      <find>TCP.txt</find>
     </findStrings>
     <replaceStrings>
       <replace>TMG1</replace>
@@ -126,6 +126,11 @@
       <replace>dx2</replace>
       <replace>dy2</replace>
       <replace>dz2</replace>
+      <replace>(- x1 * dx2 - y1 * dy2 - z1 * dz2)</replace>
+      <replace>(w1 * dx2 + y1 * dz2 - z1 * dy2)</replace>
+      <replace>(w1 * dy2 - x1 * dz2 + z1 * x2)</replace>
+      <replace>(w1 * dz2 + x1 * dy2 - y1 * dx2)</replace>
+      <replace>quat_pose_multipy</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -149,7 +154,6 @@
         <option value="$PROJECT_DIR$/scripts/iiwa-toolbox.py" />
         <option value="$PROJECT_DIR$/scripts/subtest.py" />
         <option value="$PROJECT_DIR$/scripts/pubtest.py" />
-        <option value="$PROJECT_DIR$/scripts/mainwindow.py" />
         <option value="$PROJECT_DIR$/scripts/puncture.py" />
         <option value="$PROJECT_DIR$/scripts/pyqttest.py" />
         <option value="$PROJECT_DIR$/scripts/qttestmain.py" />
@@ -160,17 +164,18 @@
         <option value="$PROJECT_DIR$/scripts/test/test.py" />
         <option value="$PROJECT_DIR$/scripts/calibrate_error.py" />
         <option value="$PROJECT_DIR$/scripts/hand_eye_calibration.m" />
-        <option value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
-        <option value="$PROJECT_DIR$/scripts/test.py" />
         <option value="$PROJECT_DIR$/scripts/quaternion_calculate.py" />
+        <option value="$PROJECT_DIR$/scripts/test.py" />
+        <option value="$PROJECT_DIR$/scripts/mainwindow.py" />
+        <option value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="331" />
-    <option name="y" value="-3" />
-    <option name="width" value="1178" />
-    <option name="height" value="1048" />
+    <option name="x" value="282" />
+    <option name="y" value="-28" />
+    <option name="width" value="1176" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -180,7 +185,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -208,11 +212,12 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
   </component>
   <component name="RecentsManager">
@@ -233,7 +238,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.iiwa_toolbox">
     <configuration name="calibrate_error" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="iiwa_li" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -333,9 +338,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test" />
-        <item itemvalue="Python.iiwa_toolbox" />
         <item itemvalue="Python.pubtest" />
+        <item itemvalue="Python.iiwa_toolbox" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.jointcommend" />
         <item itemvalue="Python.calibrate_error" />
       </list>
@@ -394,9 +399,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13315363" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13261455" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32948583" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50054586" side_tool="true" weight="0.39874083" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
@@ -436,27 +440,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1290">
-          <caret line="86" column="43" selection-start-line="86" selection-start-column="43" selection-end-line="86" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
@@ -560,13 +543,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="26" column="75" lean-forward="true" selection-start-line="26" selection-start-column="75" selection-end-line="26" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../devel/lib/python2.7/dist-packages/iiwa_msgs/msg/_JointPosition.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="406">
@@ -602,31 +578,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/mainwindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-300">
-          <caret line="570" lean-forward="true" selection-start-line="570" selection-end-line="570" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/431379774/__builtin__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="2072" column="8" lean-forward="true" selection-start-line="2072" selection-start-column="8" selection-end-line="2072" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/hand_eye_calibration.m">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="960">
           <caret line="64" selection-start-line="64" selection-end-line="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1470">
-          <caret line="101" column="67" selection-start-line="101" selection-start-column="67" selection-end-line="101" selection-end-column="72" />
         </state>
       </provider>
     </entry>
@@ -646,48 +601,100 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/test/pubtest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="17" column="37" lean-forward="true" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
+        <state relative-caret-position="60">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+          <folding>
+            <element signature="e#22#34#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/calibrate_error.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+        <state relative-caret-position="510">
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-315">
+          <caret line="114" selection-start-line="114" selection-end-line="114" />
+          <folding>
+            <element signature="e#48#66#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="69" column="78" selection-start-line="69" selection-start-column="78" selection-end-line="69" selection-end-column="78" />
+        <state relative-caret-position="412">
+          <caret line="79" selection-start-line="79" selection-end-line="82" selection-end-column="37" />
           <folding>
             <element signature="e#47#58#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/431379774/__builtin__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="392" column="25" selection-start-line="392" selection-start-column="25" selection-end-line="392" selection-end-column="25" />
-          <folding>
-            <element signature="e#25#61#0" expanded="true" />
-            <element signature="e#8283#8298#0" />
-            <element signature="e#11193#11207#0" />
-            <element signature="e#18830#18846#0" />
-          </folding>
+        <state relative-caret-position="235">
+          <caret line="4337" column="8" selection-start-line="4337" selection-start-column="8" selection-end-line="4337" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/431379774/PyQt5/QtWidgets/QMainWindow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="104" column="39" lean-forward="true" selection-start-line="104" selection-start-column="39" selection-end-line="104" selection-end-column="39" />
+        <state relative-caret-position="374">
+          <caret line="226" column="8" selection-start-line="226" selection-start-column="8" selection-end-line="226" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/431379774/PyQt5/QtWidgets/QApplication.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="69" column="8" selection-start-line="69" selection-start-column="8" selection-end-line="69" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/431379774/sys.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="207" lean-forward="true" selection-start-line="207" selection-end-line="207" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/mainwindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-15">
+          <caret line="17" column="44" lean-forward="true" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/calibrate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="471">
+          <caret line="53" column="37" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="129" lean-forward="true" selection-start-line="129" selection-end-line="129" />
           <folding>
-            <element signature="e#48#66#0" expanded="true" />
-            <element signature="e#5227#6967#0" />
+            <element signature="e#25#61#0" expanded="true" />
+            <element signature="e#7909#7924#0" />
+            <element signature="e#10819#10833#0" />
+            <element signature="e#14474#14489#0" />
+            <element signature="e#18577#18593#0" />
           </folding>
         </state>
       </provider>

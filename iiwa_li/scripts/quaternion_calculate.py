@@ -8,6 +8,10 @@ from geometry_msgs.msg import PoseStamped
 from iiwa_msgs.msg import JointPosition
 
 
+def chacheng(x1, y1, z1, x2, y2, z2):
+    return y1 * z2 - y2 * z1, z1 * x2 - z2 * x1, x1 * y2 - x2 * y1
+
+
 def quat2matrix((dx, dy, dz, x, y, z, w)):
     #输入tuple
     matrix = np.zeros((4,4))
@@ -133,7 +137,6 @@ def turn_TCP_axs_rad_len(position,axs,rad,len):  # 自动标定用
     # print 'quat2matrix(position)',quat2matrix(position)
     # print 'quat2matrix(position)*Tmat',np.dot(quat2matrix(position),Tmat)
     return matrix2quat(np.dot(quat2matrix(position),Tmat))  # 右乘,相对末端运动
-
 
 
 def quat2angle(quat):#没用

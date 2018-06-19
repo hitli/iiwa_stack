@@ -11,7 +11,6 @@ for i = 1:size(robot_data,1)%获得所有旋转矩阵
     tjo(:,:,i) = [jo,robot_data(i,1:3)';0 0 0 1];
     tbm(:,:,i) = [bm,ndi_data(i,1:3)';0 0 0 1];
 end
-
 for i = 1:size(robot_data,1)  %tjo1逆*tjo*tob=tob*tbm1*tbm逆
     for j = 1:size(robot_data,1) %即AX=XB
     count = count + 1;
@@ -19,7 +18,6 @@ for i = 1:size(robot_data,1)  %tjo1逆*tjo*tob=tob*tbm1*tbm逆
     A(:,:,count) = tjo(:,:,i)\tjo(:,:,j);%A=tjo1逆*tjo
     end
 end
-
 M = zeros(3,3);
 C = [];
 d = [];
@@ -31,7 +29,7 @@ for i = 1:size(A,3)
     alpha_vet(:,:,i) = extract_vect(alpha(:,:,i));
     beta_vet(:,:,i) = extract_vect(beta(:,:,i));
     if (abs(norm(alpha_vet(:,:,i))-norm(beta_vet(:,:,i)))<0.0001)  % 0.0001 is a scalar to control the quality of the two vector.
-        t_ = beta(:,:,i)*alpha(:,:,i)';
+    t_ = beta(:,:,i)*alpha(:,:,i)';
     if (~isnan(t_(1)))
         ind = [ind,i];
         M = M + beta_vet(:,:,i)*alpha_vet(:,:,i)';
@@ -39,16 +37,16 @@ for i = 1:size(A,3)
     end
     end
 end
-disp(['total count:=',num2str(count-1)]);
+disp(['total count:=',num2str(count)]);
 disp(['valid count:=', num2str(valid_count)]);
-R_est = (M'*M)^(-1/2)*M';
+R_est = (M'*M)^(-1/2)*M'
 A = A(:,:,ind);
 B = B(:,:,ind);
 for i =1:size(A,3)
     C = [C; eye(3)-A(1:3,1:3,i)];
     d = [d;A(1:3,4,i)-R_est*B(1:3,4,i)];
 end
-b_est = (C'*C)^(-1)*C'*d;
+b_est = (C'*C)^(-1)*C'*d
 %norm(b_est)
 TOB = [R_est,b_est;0 0 0 1]
 
@@ -67,6 +65,7 @@ TOB = [R_est,b_est;0 0 0 1]
 
 tjm = zeros(4,4);
 for i = 1:size(robot_data,1)
+    tjo(:,:,i) * TOB *tbm(:,:,i)
     tjm =tjm + tjo(:,:,i) * TOB *tbm(:,:,i);
 end
 TJM = tjm/size(robot_data,1)

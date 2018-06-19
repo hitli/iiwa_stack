@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>530</y>
-      <width>491</width>
+      <width>511</width>
       <height>261</height>
      </rect>
     </property>
@@ -38,7 +38,7 @@
       <rect>
        <x>0</x>
        <y>30</y>
-       <width>491</width>
+       <width>511</width>
        <height>227</height>
       </rect>
      </property>
@@ -255,6 +255,12 @@
         <property name="autoRepeat">
          <bool>true</bool>
         </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
+        </property>
        </widget>
       </item>
       <item row="3" column="2">
@@ -270,6 +276,12 @@
         </property>
         <property name="autoRepeat">
          <bool>true</bool>
+        </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
         </property>
        </widget>
       </item>
@@ -337,6 +349,12 @@
         <property name="autoRepeat">
          <bool>true</bool>
         </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
+        </property>
        </widget>
       </item>
       <item row="2" column="3">
@@ -378,6 +396,12 @@
         <property name="autoRepeat">
          <bool>true</bool>
         </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
+        </property>
        </widget>
       </item>
       <item row="0" column="2">
@@ -397,6 +421,12 @@
         <property name="autoExclusive">
          <bool>false</bool>
         </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
+        </property>
        </widget>
       </item>
       <item row="5" column="2">
@@ -412,6 +442,12 @@
         </property>
         <property name="autoRepeat">
          <bool>true</bool>
+        </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
         </property>
        </widget>
       </item>
@@ -429,6 +465,12 @@
         <property name="autoRepeat">
          <bool>true</bool>
         </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
+        </property>
        </widget>
       </item>
       <item row="6" column="4">
@@ -444,6 +486,12 @@
         </property>
         <property name="autoRepeat">
          <bool>true</bool>
+        </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
         </property>
        </widget>
       </item>
@@ -461,6 +509,12 @@
         <property name="autoRepeat">
          <bool>true</bool>
         </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
+        </property>
        </widget>
       </item>
       <item row="4" column="4">
@@ -477,6 +531,12 @@
         <property name="autoRepeat">
          <bool>true</bool>
         </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
+        </property>
        </widget>
       </item>
       <item row="3" column="4">
@@ -492,6 +552,12 @@
         </property>
         <property name="autoRepeat">
          <bool>true</bool>
+        </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
         </property>
        </widget>
       </item>
@@ -512,6 +578,12 @@
         <property name="autoRepeat">
          <bool>true</bool>
         </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
+        </property>
        </widget>
       </item>
       <item row="1" column="4">
@@ -527,6 +599,12 @@
         </property>
         <property name="autoRepeat">
          <bool>true</bool>
+        </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
         </property>
        </widget>
       </item>
@@ -544,6 +622,12 @@
         <property name="autoRepeat">
          <bool>true</bool>
         </property>
+        <property name="autoRepeatDelay">
+         <number>200</number>
+        </property>
+        <property name="autoRepeatInterval">
+         <number>100</number>
+        </property>
        </widget>
       </item>
      </layout>
@@ -554,7 +638,7 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>491</width>
+      <width>511</width>
       <height>301</height>
      </rect>
     </property>
@@ -566,7 +650,7 @@
       <rect>
        <x>0</x>
        <y>25</y>
-       <width>491</width>
+       <width>511</width>
        <height>274</height>
       </rect>
      </property>
@@ -666,7 +750,7 @@
      <rect>
       <x>10</x>
       <y>300</y>
-      <width>491</width>
+      <width>511</width>
       <height>231</height>
      </rect>
     </property>
@@ -678,7 +762,7 @@
       <rect>
        <x>0</x>
        <y>30</y>
-       <width>491</width>
+       <width>511</width>
        <height>202</height>
       </rect>
      </property>
@@ -693,7 +777,7 @@
       <item row="1" column="1">
        <widget class="QLineEdit" name="lineEdit_joint_in">
         <property name="text">
-         <string/>
+         <string>-50, 30, 0, -100, -30, -90, 0</string>
         </property>
        </widget>
       </item>
@@ -755,7 +839,7 @@
      <rect>
       <x>530</x>
       <y>0</y>
-      <width>531</width>
+      <width>551</width>
       <height>311</height>
      </rect>
     </property>
@@ -766,9 +850,9 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>30</y>
-       <width>531</width>
-       <height>281</height>
+       <y>20</y>
+       <width>551</width>
+       <height>291</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -795,7 +879,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLineEdit" name="lineEdit_calibrate_step">
           <property name="text">
-           <string>10</string>
+           <string>9</string>
           </property>
          </widget>
         </item>
@@ -809,7 +893,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLineEdit" name="lineEdit_calibrate_lengh">
           <property name="text">
-           <string>0.02</string>
+           <string>0.015</string>
           </property>
          </widget>
         </item>
@@ -823,7 +907,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLineEdit" name="lineEdit_calibrate_rad">
           <property name="text">
-           <string>0.15</string>
+           <string>0.11</string>
           </property>
          </widget>
         </item>
@@ -877,7 +961,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QGroupBox" name="groupBox_test_function">
     <property name="geometry">
      <rect>
-      <x>1070</x>
+      <x>1090</x>
       <y>0</y>
       <width>111</width>
       <height>771</height>
@@ -892,7 +976,7 @@ p, li { white-space: pre-wrap; }
        <x>0</x>
        <y>30</y>
        <width>110</width>
-       <height>230</height>
+       <height>411</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -938,9 +1022,44 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="puncture_test_button">
+       <widget class="QLabel" name="label_28">
         <property name="text">
-         <string>钢针穿刺</string>
+         <string>穿刺测试</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_jinzhendian_button">
+        <property name="text">
+         <string>进针点</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_chuancidian_button">
+        <property name="text">
+         <string>穿刺点</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_cal_button">
+        <property name="text">
+         <string>解算</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_move_jinzhendian_button">
+        <property name="text">
+         <string>运动到进针点</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_move_chuancidian_button">
+        <property name="text">
+         <string>运动到穿刺点</string>
         </property>
        </widget>
       </item>
@@ -1026,6 +1145,12 @@ p, li { white-space: pre-wrap; }
      <property name="autoRepeat">
       <bool>true</bool>
      </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
+     </property>
     </widget>
     <widget class="QPushButton" name="position_y_min_button">
      <property name="geometry">
@@ -1047,6 +1172,12 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="autoRepeat">
       <bool>true</bool>
+     </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
      </property>
     </widget>
     <widget class="QPushButton" name="position_x_min_button">
@@ -1070,6 +1201,12 @@ p, li { white-space: pre-wrap; }
      <property name="autoRepeat">
       <bool>true</bool>
      </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
+     </property>
     </widget>
     <widget class="QPushButton" name="position_x_add_button">
      <property name="geometry">
@@ -1091,6 +1228,12 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="autoRepeat">
       <bool>true</bool>
+     </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
      </property>
     </widget>
     <widget class="QPushButton" name="orientation_x_min_button">
@@ -1114,6 +1257,12 @@ p, li { white-space: pre-wrap; }
      <property name="autoRepeat">
       <bool>true</bool>
      </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
+     </property>
     </widget>
     <widget class="QPushButton" name="orientation_y_add_button">
      <property name="geometry">
@@ -1135,6 +1284,12 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="autoRepeat">
       <bool>true</bool>
+     </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
      </property>
     </widget>
     <widget class="QPushButton" name="orientation_x_add_button">
@@ -1158,6 +1313,12 @@ p, li { white-space: pre-wrap; }
      <property name="autoRepeat">
       <bool>true</bool>
      </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
+     </property>
     </widget>
     <widget class="QPushButton" name="orientation_y_min_button">
      <property name="geometry">
@@ -1179,6 +1340,12 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="autoRepeat">
       <bool>true</bool>
+     </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
      </property>
     </widget>
     <widget class="QPushButton" name="position_z_add_button">
@@ -1202,6 +1369,12 @@ p, li { white-space: pre-wrap; }
      <property name="autoRepeat">
       <bool>true</bool>
      </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
+     </property>
     </widget>
     <widget class="QPushButton" name="position_z_min_button">
      <property name="geometry">
@@ -1223,6 +1396,12 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="autoRepeat">
       <bool>true</bool>
+     </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
      </property>
     </widget>
     <widget class="QPushButton" name="orientation_z_add_button">
@@ -1246,6 +1425,12 @@ p, li { white-space: pre-wrap; }
      <property name="autoRepeat">
       <bool>true</bool>
      </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
+     </property>
     </widget>
     <widget class="QPushButton" name="orientation_z_min_button">
      <property name="geometry">
@@ -1267,6 +1452,12 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="autoRepeat">
       <bool>true</bool>
+     </property>
+     <property name="autoRepeatDelay">
+      <number>200</number>
+     </property>
+     <property name="autoRepeatInterval">
+      <number>100</number>
      </property>
     </widget>
     <widget class="QLabel" name="label_26">
@@ -1333,7 +1524,7 @@ p, li { white-space: pre-wrap; }
    <slot>finish_manual_calibrate_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>929</x>
+     <x>1058</x>
      <y>339</y>
     </hint>
     <hint type="destinationlabel">
@@ -1461,28 +1652,12 @@ p, li { white-space: pre-wrap; }
    <slot>calibrate_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>985</x>
-     <y>316</y>
+     <x>1091</x>
+     <y>250</y>
     </hint>
     <hint type="destinationlabel">
      <x>1111</x>
      <y>331</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>puncture_test_button</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>puncture_test_button_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1153</x>
-     <y>114</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1134</x>
-     <y>223</y>
     </hint>
    </hints>
   </connection>
@@ -1605,8 +1780,8 @@ p, li { white-space: pre-wrap; }
    <slot>refresh_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1129</x>
-     <y>134</y>
+     <x>1130</x>
+     <y>172</y>
     </hint>
     <hint type="destinationlabel">
      <x>1063</x>
@@ -1717,8 +1892,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_right_button_6_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>441</x>
-     <y>634</y>
+     <x>482</x>
+     <y>645</y>
     </hint>
     <hint type="destinationlabel">
      <x>509</x>
@@ -1733,8 +1908,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_right_button_5_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>427</x>
-     <y>671</y>
+     <x>482</x>
+     <y>677</y>
     </hint>
     <hint type="destinationlabel">
      <x>514</x>
@@ -1749,8 +1924,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_right_button_4_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>435</x>
-     <y>706</y>
+     <x>482</x>
+     <y>709</y>
     </hint>
     <hint type="destinationlabel">
      <x>517</x>
@@ -1765,8 +1940,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_right_button_3_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>439</x>
-     <y>736</y>
+     <x>482</x>
+     <y>741</y>
     </hint>
     <hint type="destinationlabel">
      <x>506</x>
@@ -1973,8 +2148,8 @@ p, li { white-space: pre-wrap; }
    <slot>follow_pose_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1171</x>
-     <y>168</y>
+     <x>1172</x>
+     <y>133</y>
     </hint>
     <hint type="destinationlabel">
      <x>1188</x>
@@ -2005,12 +2180,92 @@ p, li { white-space: pre-wrap; }
    <slot>delete_calibrate_point_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>775</x>
-     <y>329</y>
+     <x>925</x>
+     <y>339</y>
     </hint>
     <hint type="destinationlabel">
      <x>1062</x>
      <y>348</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>puncture_jinzhendian_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>puncture_jinzhendian_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1106</x>
+     <y>357</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1189</x>
+     <y>313</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>puncture_chuancidian_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>puncture_chuancidian_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1095</x>
+     <y>396</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1196</x>
+     <y>365</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>puncture_move_jinzhendian_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>puncture_move_jinzhendian_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1161</x>
+     <y>474</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1192</x>
+     <y>409</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>puncture_move_chuancidian_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>puncture_move_chuancidian_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1140</x>
+     <y>513</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1188</x>
+     <y>447</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>puncture_cal_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>puncture_cal_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1092</x>
+     <y>435</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1063</x>
+     <y>389</y>
     </hint>
    </hints>
   </connection>
@@ -2060,5 +2315,11 @@ p, li { white-space: pre-wrap; }
   <slot>follow_pose_button_clicked()</slot>
   <slot>ndi_error_button_clicked()</slot>
   <slot>delete_calibrate_point_button_clicked()</slot>
+  <slot>puncture_jinzhendian_button_clicked()</slot>
+  <slot>puncture_move_jinzhendian_button_clicked()</slot>
+  <slot>puncture_chuancidian_button_clicked()</slot>
+  <slot>puncture_move_chuancidian_button_clicked()</slot>
+  <slot>puncture_cal_button_clicked()</slot>
+  <slot>tgg_button_clicked()</slot>
  </slots>
 </ui>

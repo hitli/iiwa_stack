@@ -76,8 +76,12 @@ if __name__ == '__main__':
 #  四元数算法快的多 0.000236 9.00000000001e-06 0.000227
 #                 0.000264 2e-05 0.000244
 #0.08944087284948032,1.9035529046321358
-
-    coscoreid = subprocess.Popen('pgrep roscore', shell=True, stdout=subprocess.PIPE)
-    out, err = coscoreid.communicate()
-    line = 'kill '+out
-    subprocess.call(line, shell=True)
+    #
+    # coscoreid = subprocess.Popen('pgrep roscore', shell=True, stdout=subprocess.PIPE)
+    # out, err = coscoreid.communicate()
+    # line = 'kill '+out
+    # subprocess.call(line, shell=True)
+    j = [-50, 30, 0, -100, -30, -90, 0]
+    for i in range(7):
+        j[i] *= math.pi/180.0
+    print j

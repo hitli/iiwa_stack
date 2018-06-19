@@ -856,16 +856,16 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="finish_manual_calibrate_button">
+         <widget class="QPushButton" name="delete_calibrate_point_button">
           <property name="text">
-           <string>结束</string>
+           <string>删除点</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="calibrate_error_button">
+         <widget class="QPushButton" name="finish_manual_calibrate_button">
           <property name="text">
-           <string>误差勘定</string>
+           <string>结束</string>
           </property>
          </widget>
         </item>
@@ -886,76 +886,65 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>测试功能</string>
     </property>
-    <widget class="QPushButton" name="follow_button">
+    <widget class="QWidget" name="verticalLayoutWidget_4">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>0</x>
        <y>30</y>
-       <width>99</width>
-       <height>27</height>
+       <width>110</width>
+       <height>230</height>
       </rect>
      </property>
-     <property name="text">
-      <string>针尖位置跟随</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="puncture_test_button">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>99</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>钢针穿刺</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="refresh_button">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>90</y>
-       <width>99</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>刷新</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="follow_pose_button">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>120</y>
-       <width>99</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>针尖位姿跟随</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="ndi_error_button">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>150</y>
-       <width>99</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>ndi误差比对</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QPushButton" name="follow_button">
+        <property name="text">
+         <string>针尖位置跟随</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="follow_pose_button">
+        <property name="text">
+         <string>针尖位姿跟随</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="refresh_button">
+        <property name="text">
+         <string>刷新</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ndi_error_button">
+        <property name="text">
+         <string>ndi误差比对</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="calibrate_error_button">
+        <property name="text">
+         <string>重定位误差</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_test_button">
+        <property name="text">
+         <string>钢针穿刺</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_ct_services">
@@ -1344,8 +1333,8 @@ p, li { white-space: pre-wrap; }
    <slot>finish_manual_calibrate_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>823</x>
-     <y>307</y>
+     <x>929</x>
+     <y>339</y>
     </hint>
     <hint type="destinationlabel">
      <x>1082</x>
@@ -2009,6 +1998,22 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>delete_calibrate_point_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delete_calibrate_point_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>775</x>
+     <y>329</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1062</x>
+     <y>348</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>joint_add_button_clicked()</slot>
@@ -2054,5 +2059,6 @@ p, li { white-space: pre-wrap; }
   <slot>finish_auto_calibrate_button_clicked()</slot>
   <slot>follow_pose_button_clicked()</slot>
   <slot>ndi_error_button_clicked()</slot>
+  <slot>delete_calibrate_point_button_clicked()</slot>
  </slots>
 </ui>

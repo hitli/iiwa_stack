@@ -141,11 +141,22 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             f.write("\n"+ndi449)
         self.textEdit_calibrate.append("ndi:" + ndi449)
 
+    def delete_calibrate_point_button_clicked(self):
+        self.manual_calibrate_count -= 1
+        with open('/home/lizq/win7share/robot_data.txt', 'r') as f:
+            lines = f.read().splitlines()
+        with open('/home/lizq/win7share/robot_data.txt', 'w') as f:
+            f.write('\n'.join(str(i) for i in lines[0:len(lines)-1]))
+        with open('/home/lizq/win7share/ndi_data.txt', 'r') as f:
+            lines = f.read().splitlines()
+        with open('/home/lizq/win7share/ndi_data.txt', 'w') as f:
+            f.write('\n'.join(str(i) for i in lines[0:len(lines)-1]))
+
     def finish_manual_calibrate_button_clicked(self):
         try:
             self.matlab_eng.hand_eye_calibration(nargout=0)
             self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
-            self.textEdit_calibrate.setText(self.TJM)
+            self.textEdit_calibrate.setText(str(self.TJM))
         except:
             self.textEdit_calibrate.setText("解算失败，请查看控制台说明")
 
@@ -192,6 +203,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textEdit_calibrate.clear()
         try:
             self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
+            self.textEdit_calibrate.setText(str(self.TJM))
         except IOError:
             QtWidgets.QMessageBox.information(self, "提示", "未找到TJM标定矩阵，穿刺及跟随前请先执行标定程序")
 
@@ -486,7 +498,7 @@ class Calibrate_Thread(QtCore.QThread):
 
     def run(self):
         calibrate_start_pose = copy.deepcopy(window.tcp_pose)  # 深拷贝tuple,不受影响
-        with open('/home/lizq/win7share/TCP.txt', 'w') as f:  # 记录TCP位置
+        with open('/home/lizq/win7share/auto_calibrate_TCP.txt', 'w') as f:  # 记录TCP位置
             string = ','.join(str(i) for i in calibrate_start_pose)
             f.write(string)
         step = int(window.lineEdit_calibrate_step.text())
@@ -534,7 +546,7 @@ class Calibrate_Error_Thread(QtCore.QThread):
         super(Calibrate_Error_Thread, self).__init__()
 
     def run(self):
-        tbo = np.loadtxt('/home/lizq/win7share/TBO.txt', delimiter=",")  # mm
+        tbo = np.linalg.inv(np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=","))  # mm
         p1 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
 
         with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:

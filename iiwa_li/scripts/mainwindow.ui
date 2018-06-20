@@ -949,7 +949,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QPushButton" name="finish_manual_calibrate_button">
           <property name="text">
-           <string>结束</string>
+           <string>手动标定解算</string>
           </property>
          </widget>
         </item>
@@ -976,7 +976,7 @@ p, li { white-space: pre-wrap; }
        <x>0</x>
        <y>30</y>
        <width>110</width>
-       <height>411</height>
+       <height>522</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1060,6 +1060,27 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="puncture_move_chuancidian_button">
         <property name="text">
          <string>运动到穿刺点</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_29">
+        <property name="text">
+         <string>切换标定矩阵</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="switch_auto_matrix_button">
+        <property name="text">
+         <string>自动标定矩阵</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="switch_manual_matrix_button">
+        <property name="text">
+         <string>手动标定矩阵</string>
         </property>
        </widget>
       </item>
@@ -2196,8 +2217,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_jinzhendian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1106</x>
-     <y>357</y>
+     <x>1107</x>
+     <y>318</y>
     </hint>
     <hint type="destinationlabel">
      <x>1189</x>
@@ -2212,8 +2233,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_chuancidian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1095</x>
-     <y>396</y>
+     <x>1096</x>
+     <y>357</y>
     </hint>
     <hint type="destinationlabel">
      <x>1196</x>
@@ -2228,8 +2249,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_move_jinzhendian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1161</x>
-     <y>474</y>
+     <x>1162</x>
+     <y>435</y>
     </hint>
     <hint type="destinationlabel">
      <x>1192</x>
@@ -2244,8 +2265,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_move_chuancidian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1140</x>
-     <y>513</y>
+     <x>1141</x>
+     <y>474</y>
     </hint>
     <hint type="destinationlabel">
      <x>1188</x>
@@ -2260,12 +2281,44 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_cal_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1092</x>
-     <y>435</y>
+     <x>1093</x>
+     <y>396</y>
     </hint>
     <hint type="destinationlabel">
      <x>1063</x>
      <y>389</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>switch_auto_matrix_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>switch_auto_matrix_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1121</x>
+     <y>525</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1084</x>
+     <y>524</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>switch_manual_matrix_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>switch_manual_matrix_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1156</x>
+     <y>562</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1072</x>
+     <y>553</y>
     </hint>
    </hints>
   </connection>
@@ -2321,5 +2374,7 @@ p, li { white-space: pre-wrap; }
   <slot>puncture_move_chuancidian_button_clicked()</slot>
   <slot>puncture_cal_button_clicked()</slot>
   <slot>tgg_button_clicked()</slot>
+  <slot>switch_auto_matrix_button_clicked()</slot>
+  <slot>switch_manual_matrix_button_clicked()</slot>
  </slots>
 </ui>

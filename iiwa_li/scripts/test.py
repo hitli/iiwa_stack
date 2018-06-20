@@ -81,12 +81,38 @@ if __name__ == '__main__':
     # out, err = coscoreid.communicate()
     # line = 'kill '+out
     # subprocess.call(line, shell=True)
-    tjo = [121.322486525,-410.3412936,776.154925127,0.795024514198,-0.57501980961,0.0924391349392,0.169538422535]
-    ndi = [137.5000,192.4200,-186.9700,0.1686,-0.5152,0.2581,0.7996]
-    rz = [0.0, 0.0, 0.0, 0.0, 0.0, 0.7071, 0.7071]
-    print "tjo"
-    print qc.quat2matrix(tjo)
-    print "tbm"
-    print np.linalg.inv(qc.quat2matrix(ndi))
-    print "rz"
-    print qc.quat2matrix(rz)
+    #
+    # tjo = [121.322486525,-410.3412936,776.154925127,0.795024514198,-0.57501980961,0.0924391349392,0.169538422535]
+    # ndi = [137.5000,192.4200,-186.9700,0.1686,-0.5152,0.2581,0.7996]
+    # rz = [0.0, 0.0, 0.0, 0.0, 0.0, 0.7071, 0.7071]
+    # print "tjo"
+    # print qc.quat2matrix(tjo)
+    # print "tbm"
+    # print np.linalg.inv(qc.quat2matrix(ndi))
+    # print "rz"
+    # print qc.quat2matrix(rz)
+
+    # rz = [0.0, 0.0, 0.0, 0.0, 0.0, 0.7071, 0.7071]
+    # with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+    #     ndi449 = ndi.read().splitlines()[0]
+    # print "1"+ndi449
+
+    # with open('/home/lizq/win7share/ndi_data.txt', 'r') as f:
+    #     lines = f.read().splitlines()
+    # with open('/home/lizq/win7share/ndi_data.txt', 'r') as f:
+    #     lines = f.readlines()
+    # with open('/home/lizq/win7share/ndi_data.txt', 'w') as f:
+    #     n=[]
+    #     i=0
+    #     for line in lines:
+    #         if not "miss" in line:
+    #             f.write(line)
+    #             n.append(i)
+    #         i += 1
+    # with open('/home/lizq/win7share/robot_data.txt', 'r') as f:
+    #     lines = f.readlines()
+    # with open('/home/lizq/win7share/robot_data.txt', 'w') as f:
+    #     for i in n:
+    #         f.write(lines[i])
+    subprocess.call("cp /home/lizq/win7share/Rx.txt /home/lizq/win7share/自动标定矩阵保存 ", shell=True)
+

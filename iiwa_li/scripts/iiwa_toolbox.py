@@ -26,7 +26,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super(Mywindow, self).__init__()
         self.setupUi(self)
 
-        self.ndi_error_button.setToolTip("通过角关节位置与TOB计算TJB(基本无误差),与TJM*TMB=TJB比较,查看TJM误差")
+        self.ndi_error_button.setToolTip("通过角关节位置得到末端位姿TJO,与TJM*TMB*TBO=TJO比较,查看标定误差")
         self.calibrate_error_button.setToolTip("记录449位置,命令末端运动到附近再返回记录位置,比较ndi数据距离,确定重定位精度")
         self.manual_calibrate_button.setToolTip("初始化ndi,robot_data文件,需要可以看到449")
         try:
@@ -119,29 +119,36 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def manual_calibrate_button_clicked(self):
         tcp_pose = self.tcp_pose
-        self.manual_calibrate_count = 1
-        self.textEdit_calibrate.setText("开始手动标定,请尽量选取blabla位姿\npoint 1:")
-        with open('/home/lizq/win7share/robot_data.txt', 'w') as f:  # 覆盖从头写入
-            f.write(','.join(str(i) for i in tcp_pose))
-        self.textEdit_calibrate.append("TCP:"+','.join(str(i) for i in tcp_pose))
+        self.textEdit_calibrate.setText("开始手动标定,请尽量选取blabla位姿,以下显示ndi读数")
         with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
             ndi449 = ndi.read().splitlines()[0]
-        with open('/home/lizq/win7share/ndi_data.txt', 'w') as f:  # 覆盖从头写入
-            f.write(ndi449)
-        self.textEdit_calibrate.append("ndi:"+ndi449)
+        if not "miss" in ndi449:
+            self.manual_calibrate_count = 1
+            with open('/home/lizq/win7share/ndi_data.txt', 'w') as f:  # 覆盖从头写入
+                f.write(ndi449)
+            self.textEdit_calibrate.append("point1:" + ndi449)
+            with open('/home/lizq/win7share/robot_data.txt', 'w') as f:  # 覆盖从头写入
+                f.write(','.join(str(i) for i in tcp_pose))
+            # self.textEdit_calibrate.append("TCP:"+','.join(str(i) for i in tcp_pose))
+        else:
+            self.manual_calibrate_count = 0
+            self.textEdit_calibrate.append("ndi数据包含miss,已自动移除")
 
     def add_calibrate_point_button_clicked(self):
         tcp_pose = self.tcp_pose
-        self.manual_calibrate_count += 1
-        self.textEdit_calibrate.append("point "+str(self.manual_calibrate_count)+":")
-        with open('/home/lizq/win7share/robot_data.txt', 'a') as f:  # 从末尾写入
-            f.write("\n"+','.join(str(i) for i in tcp_pose))
-        self.textEdit_calibrate.append("TCP:" + ','.join(str(i) for i in tcp_pose))
         with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
             ndi449 = ndi.read().splitlines()[0]
-        with open('/home/lizq/win7share/ndi_data.txt', 'a') as f:  # 从末尾写入
-            f.write("\n"+ndi449)
-        self.textEdit_calibrate.append("ndi:" + ndi449)
+        if not "miss" in ndi449:
+            self.manual_calibrate_count += 1
+            # self.textEdit_calibrate.append("point "+str(self.manual_calibrate_count)+":")
+            with open('/home/lizq/win7share/robot_data.txt', 'a') as f:  # 从末尾写入
+                f.write("\n"+','.join(str(i) for i in tcp_pose))
+            # self.textEdit_calibrate.append("TCP:" + ','.join(str(i) for i in tcp_pose))
+            with open('/home/lizq/win7share/ndi_data.txt', 'a') as f:  # 从末尾写入
+                f.write("\n"+ndi449)
+            self.textEdit_calibrate.append("point "+str(self.manual_calibrate_count)+":" + ndi449)
+        else:
+            self.textEdit_calibrate.append("ndi数据包含miss,已自动移除")
 
     def delete_calibrate_point_button_clicked(self):
         self.manual_calibrate_count -= 1
@@ -156,9 +163,26 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def finish_manual_calibrate_button_clicked(self):
         try:
+            # 删除miss行
+            # with open('/home/lizq/win7share/ndi_data.txt', 'r') as f:
+            #     lines = f.readlines()
+            # with open('/home/lizq/win7share/ndi_data.txt', 'w') as f:
+            #     n = []
+            #     i = 0
+            #     for line in lines:
+            #         if not "miss" in line:
+            #             f.write(line)
+            #             n.append(i)
+            #         i += 1
+            # with open('/home/lizq/win7share/robot_data.txt', 'r') as f:
+            #     lines = f.readlines()
+            # with open('/home/lizq/win7share/robot_data.txt', 'w') as f:
+            #     for i in n:
+            #         f.write(lines[i])
             self.matlab_eng.hand_eye_calibration(nargout=0)
             self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
             self.textEdit_calibrate.setText(str(self.TJM))
+            subprocess.call("cp /home/lizq/win7share/{TJM.txt,TOB.txt,TBN.txt} /home/lizq/win7share/手动标定矩阵保存", shell=True)
         except:
             self.textEdit_calibrate.setText("解算失败，请查看控制台说明")
 
@@ -167,16 +191,20 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def ndi_error_button_clicked(self):
         tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")  # mm
+        tbo = np.linalg.inv(tob)
         ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")  # 可以识别miss
-        tjo = qc.quat2matrix(self.tcp_pose)  # m
-        tjo[0:3][:, 3] *= 1000  # mm
-        tjb1 = tjo.dot(tob)
-        p1 = qc.matrix2quat(tjb1)
+        try:
+            tjo1 = qc.quat2matrix(self.tcp_pose)  # m
+            tjo1[0:3][:, 3] *= 1000  # mm
+            p1 = qc.matrix2quat(tjo1)
+        except:
+            self.textEdit_calibrate.append("计算出错")
+
         tjm = self.TJM
         tmb = qc.quat2matrix(ndi[0].tolist())
         # print type(tjm),type(tmb)
-        tjb2 = tjm.dot(tmb)
-        p2 = qc.matrix2quat(tjb2)
+        tjo2 = tjm.dot(tmb).dot(tbo)
+        p2 = qc.matrix2quat(tjo2)
         distance,degree = qc.point_distance(p1,p2)
         self.textEdit_calibrate.setText(str(p1) + '\n' + str(p2))
         sentence = "位置偏差: %s mm" %distance
@@ -254,6 +282,16 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # self.textEdit_calibrate.setText(str(self.TJM))
         except IOError:
             QtWidgets.QMessageBox.information(self, "提示", "未找到TJM标定矩阵，穿刺及跟随前请先执行标定程序")
+
+    def switch_auto_matrix_button_clicked(self):
+        subprocess.call("cp /home/lizq/win7share/自动标定矩阵保存/{TJM.txt,TOB.txt,TBN.txt} /home/lizq/win7share", shell=True)
+        self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
+        self.textEdit_calibrate.append("已切换至自动标定所获得TJM,TOB,TBN矩阵")
+
+    def switch_manual_matrix_button_clicked(self):
+        subprocess.call("cp /home/lizq/win7share/手动标定矩阵保存/{TJM.txt,TOB.txt,TBN.txt} /home/lizq/win7share", shell=True)
+        self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
+        self.textEdit_calibrate.append("已切换至手动标定所获得TJM,TOB,TBN矩阵")
 
     # region 输入姿态控制
     def joint_add_button_clicked(self):
@@ -594,7 +632,9 @@ class Calibrate_Thread(QtCore.QThread):
         else:
             window.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm 更新TJM
             self.settext_signal[str].emit(str(window.TJM))
+            subprocess.call("cp /home/lizq/win7share/{TJM.txt,TOB.txt,TBN.txt} /home/lizq/win7share/自动标定矩阵保存", shell=True)
         window.auto_calibrate_button.setChecked(False)
+
 
 class Calibrate_Error_Thread(QtCore.QThread):
     append_signal = QtCore.pyqtSignal(str)
@@ -616,7 +656,7 @@ class Calibrate_Error_Thread(QtCore.QThread):
                 joint[i] *= math.pi/180.0
             backpoint = qc.get_command_joint(joint)
         except:
-            self.append_signal[str].emit("请在标定对话框中输入附近的角关节空间坐标")
+            self.append_signal[str].emit("请在标定对话框中输入附近的角关节空间坐标,如\n-50, 30, 0, -90, 0, -90, 0")
         else:
             window.joint_pub.publish(backpoint)
             rospy.sleep(3)

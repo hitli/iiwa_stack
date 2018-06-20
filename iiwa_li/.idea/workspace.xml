@@ -14,13 +14,10 @@
       <file leaf-file-name="iiwa_toolbox.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="576" column="32" lean-forward="true" selection-start-line="576" selection-start-column="32" selection-end-line="576" selection-end-column="32" />
+            <state relative-caret-position="934">
+              <caret line="699" lean-forward="true" selection-start-line="699" selection-end-line="699" />
               <folding>
                 <element signature="e#25#61#0" expanded="true" />
-                <element signature="e#12398#12412#0" />
-                <element signature="e#16053#16068#0" />
-                <element signature="e#20023#20039#0" />
               </folding>
             </state>
           </provider>
@@ -29,8 +26,8 @@
       <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
+            <state relative-caret-position="634">
+              <caret line="74" selection-start-line="74" selection-end-line="74" />
             </state>
           </provider>
         </entry>
@@ -38,8 +35,8 @@
       <file leaf-file-name="mainwindow.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/mainwindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="638" selection-start-line="638" selection-end-line="638" />
+            <state relative-caret-position="9540">
+              <caret line="636" selection-start-line="636" selection-end-line="636" />
             </state>
           </provider>
         </entry>
@@ -47,7 +44,7 @@
       <file leaf-file-name="puncture.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
+            <state relative-caret-position="1170">
               <caret line="84" column="68" selection-start-line="84" selection-start-column="20" selection-end-line="84" selection-end-column="68" />
             </state>
           </provider>
@@ -65,8 +62,8 @@
       <file leaf-file-name="quaternion_calculate.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
-              <caret line="163" column="15" lean-forward="true" selection-start-line="163" selection-start-column="15" selection-end-line="163" selection-end-column="15" />
+            <state relative-caret-position="2400">
+              <caret line="163" column="15" selection-start-line="163" selection-start-column="15" selection-end-line="163" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -188,7 +185,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -216,6 +212,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -401,18 +398,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13209607" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13207547" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32948583" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50054586" side_tool="true" weight="0.39874083" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.33788037" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32948583" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.33788037" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49945414" weight="0.39454356" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -644,8 +641,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/mainwindow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="638" selection-start-line="638" selection-end-line="638" />
+        <state relative-caret-position="9540">
+          <caret line="636" selection-start-line="636" selection-end-line="636" />
         </state>
       </provider>
     </entry>
@@ -658,15 +655,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
+        <state relative-caret-position="1170">
           <caret line="84" column="68" selection-start-line="84" selection-start-column="20" selection-end-line="84" selection-end-column="68" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="163" column="15" lean-forward="true" selection-start-line="163" selection-start-column="15" selection-end-line="163" selection-end-column="15" />
+        <state relative-caret-position="2400">
+          <caret line="163" column="15" selection-start-line="163" selection-start-column="15" selection-end-line="163" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -677,13 +674,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/lib/python2.7/dist-packages/numpy/lib/npyio.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
@@ -691,15 +681,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="634">
+          <caret line="74" selection-start-line="74" selection-end-line="74" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="576" column="32" lean-forward="true" selection-start-line="576" selection-start-column="32" selection-end-line="576" selection-end-column="32" />
+        <state relative-caret-position="934">
+          <caret line="699" lean-forward="true" selection-start-line="699" selection-end-line="699" />
           <folding>
             <element signature="e#25#61#0" expanded="true" />
-            <element signature="e#12398#12412#0" />
-            <element signature="e#16053#16068#0" />
-            <element signature="e#20023#20039#0" />
           </folding>
         </state>
       </provider>

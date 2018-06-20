@@ -535,17 +535,6 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # endregion
 
-    def add_calibrate_point_button_clicked(self):
-        tcp_pose = self.tcp_pose
-
-        with open('/home/lizq/win7share/robot_data.txt', 'a') as f:  # 从末尾写入
-            f.write("\n"+','.join(str(i) for i in tcp_pose))
-        with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
-            ndi449 = ndi.read().splitlines()[0]
-        with open('/home/lizq/win7share/ndi_data.txt', 'a') as f:  # 从末尾写入
-            f.write("\n"+ndi449)
-        self.textEdit_calibrate.append("ndi:" + ndi449)
-
 
 class Calibrate_Thread(QtCore.QThread):
     append_signal = QtCore.pyqtSignal(str)

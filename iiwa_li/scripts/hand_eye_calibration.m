@@ -5,19 +5,36 @@ robot_data(:,1:3) = robot_data(:,1:3)*1000;%单位换算为mm
 ndi_data = load('/home/lizq/win7share/ndi_data.txt');
 count = 0;
 
+%quat2dcm结果是逆矩阵？？
+%quat2dcm自带四元数规整
 for i = 1:size(robot_data,1)%获得所有旋转矩阵
-    jo = quat2dcm(quatnormalize(circshift(robot_data(i,4:7),[0,1])));  % circshift(robot_data(i,4:7),[0,1])变换四元数位置，把实部放在第一位
-    bm = inv(quat2dcm(quatnormalize(circshift(ndi_data(i,4:7),[0,1]))));  % tjo*tob*tbm=tjm=tjo1*tob*tbm1 所以要将tmb求逆
+    jo = inv(quat2dcm(circshift(robot_data(i,4:7),[0,1])));  % circshift(robot_data(i,4:7),[0,1])变换四元数位置，把实部放在第一位
+    bm = quat2dcm(circshift(ndi_data(i,4:7),[0,1]));  % tjo*tob*tbm=tjm=tjo1*tob*tbm1 所以要将tmb求逆
     tjo(:,:,i) = [jo,robot_data(i,1:3)';0 0 0 1];
     tbm(:,:,i) = [bm,ndi_data(i,1:3)';0 0 0 1];
 end
 for i = 1:size(robot_data,1)  %tjo1逆*tjo*tob=tob*tbm1*tbm逆
     for j = 1:size(robot_data,1) %即AX=XB
     count = count + 1;
-    B(:,:,count) = tbm(:,:,i)/tbm(:,:,j);%B=tbm1*tbm逆??
-    A(:,:,count) = tjo(:,:,i)\tjo(:,:,j);%A=tjo1逆*tjo
+    B(:,:,count) = tbm(:,:,i)/tbm(:,:,j);  % B=tbm1*tbm逆??
+    A(:,:,count) = tjo(:,:,i)\tjo(:,:,j);  % A=tjo1逆*tjo
     end
 end
+
+% for i = 1:size(robot_data,1)%获得所有旋转矩阵
+%     oj = quat2dcm(quatnormalize(circshift(robot_data(i,4:7),[0,1])));  % circshift(robot_data(i,4:7),[0,1])变换四元数位置，把实部放在第一位
+%     bm = quat2dcm(quatnormalize(circshift(ndi_data(i,4:7),[0,1])));  % tjo*tob*tbm=tjm=tjo1*tob*tbm1 所以要将tmb求逆
+%     toj(:,:,i) = [oj,robot_data(i,1:3)';0 0 0 1];
+%     tbm(:,:,i) = [bm,ndi_data(i,1:3)';0 0 0 1];
+% end
+% for i = 1:size(robot_data,1)  %tjo1逆*tjo*tob=tob*tbm1*tbm逆
+%     for j = 1:size(robot_data,1) %即AX=XB
+%     count = count + 1;
+%     B(:,:,count) = tbm(:,:,i)/tbm(:,:,j);  % B=tbm1*tbm逆??
+%     A(:,:,count) = toj(:,:,i)/toj(:,:,j);  % A=tjo1逆*tjo
+%     end
+% end
+
 M = zeros(3,3);
 C = [];
 d = [];

@@ -81,7 +81,12 @@ if __name__ == '__main__':
     # out, err = coscoreid.communicate()
     # line = 'kill '+out
     # subprocess.call(line, shell=True)
-    j = [-50, 30, 0, -100, -30, -90, 0]
-    for i in range(7):
-        j[i] *= math.pi/180.0
-    print j
+    tjo = [121.322486525,-410.3412936,776.154925127,0.795024514198,-0.57501980961,0.0924391349392,0.169538422535]
+    ndi = [137.5000,192.4200,-186.9700,0.1686,-0.5152,0.2581,0.7996]
+    rz = [0.0, 0.0, 0.0, 0.0, 0.0, 0.7071, 0.7071]
+    print "tjo"
+    print qc.quat2matrix(tjo)
+    print "tbm"
+    print np.linalg.inv(qc.quat2matrix(ndi))
+    print "rz"
+    print qc.quat2matrix(rz)

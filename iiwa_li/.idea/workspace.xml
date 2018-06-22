@@ -14,8 +14,8 @@
       <file leaf-file-name="iiwa_toolbox.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="680" column="43" selection-start-line="680" selection-start-column="43" selection-end-line="680" selection-end-column="43" />
+            <state relative-caret-position="637">
+              <caret line="795" column="28" lean-forward="true" selection-start-line="795" selection-start-column="28" selection-end-line="795" selection-end-column="28" />
               <folding>
                 <element signature="e#25#61#0" expanded="true" />
               </folding>
@@ -23,20 +23,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mainwindow.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/mainwindow.py">
+      <file leaf-file-name="client.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9735">
-              <caret line="649" selection-start-line="649" selection-end-line="650" selection-end-column="104" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="quaternion_calculate.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="19" selection-start-line="19" selection-end-line="19" />
+            <state relative-caret-position="315">
+              <caret line="22" column="10" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
+              <folding>
+                <element signature="e#14#27#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -44,8 +38,8 @@
       <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1710">
-              <caret line="118" selection-start-line="118" selection-end-line="118" />
+            <state relative-caret-position="1680">
+              <caret line="116" column="26" selection-start-line="116" selection-start-column="26" selection-end-line="116" selection-end-column="26" />
               <folding>
                 <element signature="e#47#58#0" expanded="true" />
               </folding>
@@ -64,9 +58,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>TCP_position</find>
-      <find>TCP</find>
-      <find>window</find>
       <find>*180/math.pi</find>
       <find>self.joint_position</find>
       <find>trigger</find>
@@ -94,6 +85,9 @@
       <find>puncture_</find>
       <find>get_command_joint</find>
       <find>ndi_erro</find>
+      <find>TJM.txt,TOB.txt,TBN.txt</find>
+      <find>rospy</find>
+      <find>textEdit_calibrate_clear_slot</find>
     </findStrings>
     <replaceStrings>
       <replace>TMG1</replace>
@@ -142,7 +136,6 @@
         <option value="$PROJECT_DIR$/scripts/puncture.py" />
         <option value="$PROJECT_DIR$/scripts/pyqttest.py" />
         <option value="$PROJECT_DIR$/scripts/qttestmain.py" />
-        <option value="$PROJECT_DIR$/scripts/iiwa_toolbox_test.py" />
         <option value="$PROJECT_DIR$/scripts/test/pubtest.py" />
         <option value="$PROJECT_DIR$/scripts/calibrate.py" />
         <option value="$PROJECT_DIR$/scripts/jointcommend.py" />
@@ -151,16 +144,18 @@
         <option value="$PROJECT_DIR$/scripts/hand_eye_calibration.m" />
         <option value="$PROJECT_DIR$/scripts/mainwindow.py" />
         <option value="$PROJECT_DIR$/scripts/quaternion_calculate.py" />
+        <option value="$PROJECT_DIR$/scripts/iiwa_toolbox_test.py" />
         <option value="$PROJECT_DIR$/scripts/test.py" />
+        <option value="$PROJECT_DIR$/scripts/client.py" />
         <option value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="290" />
-    <option name="y" value="12" />
-    <option name="width" value="1170" />
-    <option name="height" value="988" />
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="x" value="75" />
+    <option name="y" value="24" />
+    <option name="width" value="928" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -170,6 +165,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -197,7 +193,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -223,8 +218,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.iiwa_toolbox">
-    <configuration name="calibrate_error" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.client">
+    <configuration name="client" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="iiwa_li" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -236,7 +231,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/calibrate_error.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/client.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -260,7 +255,7 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="jointcommend" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="iiwa_toolbox_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="iiwa_li" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -272,7 +267,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/jointcommend.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/iiwa_toolbox_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -316,18 +311,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.iiwa_toolbox" />
-      <item itemvalue="Python.jointcommend" />
-      <item itemvalue="Python.calibrate_error" />
       <item itemvalue="Python.test" />
       <item itemvalue="Python.pubtest" />
+      <item itemvalue="Python.iiwa_toolbox_test" />
+      <item itemvalue="Python.client" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.client" />
         <item itemvalue="Python.iiwa_toolbox" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.iiwa_toolbox_test" />
         <item itemvalue="Python.pubtest" />
-        <item itemvalue="Python.jointcommend" />
-        <item itemvalue="Python.calibrate_error" />
       </list>
     </recent_temporary>
   </component>
@@ -383,18 +378,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
-    <editor active="true" />
+    <frame x="75" y="24" width="928" height="1056" extended-state="4" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16484717" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26939654" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32948583" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50054586" side_tool="true" weight="0.39874083" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.33683106" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.34599155" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32948583" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49945414" weight="0.39454356" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49945414" weight="0.39451477" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -426,24 +420,10 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/scripts/listener.py" />
-    <entry file="file://$PROJECT_DIR$/scripts/Tkintergui.py" />
     <entry file="file://$PROJECT_DIR$/scripts/trythread.py" />
     <entry file="file://$PROJECT_DIR$/scripts/followsingleNDI.py" />
-    <entry file="file://$PROJECT_DIR$/scripts/zhenjianzuobiaobiaoding.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="75" lean-forward="true" selection-start-line="17" selection-start-column="75" selection-end-line="17" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="37" lean-forward="true" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/zhenjianzuobiaobiaoding.py" />
+    <entry file="file://$PROJECT_DIR$/scripts/puncture.py" />
     <entry file="file://$PROJECT_DIR$/scripts/cet.py" />
     <entry file="file://$PROJECT_DIR$/scripts/MainWindow - untitled" />
     <entry file="file://$PROJECT_DIR$/scripts/pyqt_test.ui.py" />
@@ -451,13 +431,7 @@
     <entry file="file://$PROJECT_DIR$/scripts/testPyQt5.py" />
     <entry file="file://$PROJECT_DIR$/scripts/iiwa-toolbox-mainwindow.py" />
     <entry file="file://$PROJECT_DIR$/scripts/iiwa-toolbox.py" />
-    <entry file="file://$PROJECT_DIR$/scripts/zhenjianzuobiaobiaoding.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="18" column="29" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/zhenjianzuobiaobiaoding.py" />
     <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/431379774/PyQt5/QtCore/QTimer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
@@ -492,7 +466,6 @@
     <entry file="file://$PROJECT_DIR$/scripts/pyqttest.py" />
     <entry file="file://$PROJECT_DIR$/scripts/qttestmain.py" />
     <entry file="file://$PROJECT_DIR$/scripts/test.py" />
-    <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox_test.py" />
     <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/431379774/PyQt5/QtCore/QThread.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="151">
@@ -557,13 +530,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/calibrate_error.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="40" selection-start-line="40" selection-end-line="40" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/calibrate_error.py" />
     <entry file="file://$USER_HOME$/.PyCharmCE2018.1/system/python_stubs/431379774/__builtin__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
@@ -620,13 +587,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/puncture.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1170">
-          <caret line="84" column="68" selection-start-line="84" selection-start-column="20" selection-end-line="84" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/puncture.py" />
     <entry file="file://$PROJECT_DIR$/scripts/jointcommend.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -641,6 +602,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/mainwindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="533">
+          <caret line="650" selection-start-line="650" selection-end-line="650" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -648,27 +616,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/lib/python2.7/socket.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="227" selection-start-line="227" selection-end-line="227" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox_test.py" />
     <entry file="file://$PROJECT_DIR$/scripts/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1710">
-          <caret line="118" selection-start-line="118" selection-end-line="118" />
+        <state relative-caret-position="1680">
+          <caret line="116" column="26" selection-start-line="116" selection-start-column="26" selection-end-line="116" selection-end-column="26" />
           <folding>
             <element signature="e#47#58#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/mainwindow.py">
+    <entry file="file://$PROJECT_DIR$/scripts/client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9735">
-          <caret line="649" selection-start-line="649" selection-end-line="650" selection-end-column="104" />
+        <state relative-caret-position="315">
+          <caret line="22" column="10" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
+          <folding>
+            <element signature="e#14#27#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="680" column="43" selection-start-line="680" selection-start-column="43" selection-end-line="680" selection-end-column="43" />
+        <state relative-caret-position="637">
+          <caret line="795" column="28" lean-forward="true" selection-start-line="795" selection-start-column="28" selection-end-line="795" selection-end-column="28" />
           <folding>
             <element signature="e#25#61#0" expanded="true" />
           </folding>

@@ -1092,8 +1092,8 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>530</x>
       <y>310</y>
-      <width>531</width>
-      <height>201</height>
+      <width>551</width>
+      <height>211</height>
      </rect>
     </property>
     <property name="title">
@@ -1104,8 +1104,8 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>0</x>
        <y>30</y>
-       <width>531</width>
-       <height>171</height>
+       <width>551</width>
+       <height>181</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -1115,16 +1115,40 @@ p, li { white-space: pre-wrap; }
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QPushButton" name="pushButton_7">
+         <widget class="QLabel" name="label_30">
           <property name="text">
-           <string>连接客户端</string>
+           <string>IP地址</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_6">
+         <widget class="QLineEdit" name="lineEdit_ip">
           <property name="text">
-           <string>接收CT点</string>
+           <string>127.0.0.1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_31">
+          <property name="text">
+           <string>端口</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_port">
+          <property name="text">
+           <string>9999</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="server_button">
+          <property name="text">
+           <string>启动服务器</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -2322,6 +2346,22 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>server_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>server_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>551</x>
+     <y>521</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>524</x>
+     <y>510</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>joint_add_button_clicked()</slot>
@@ -2376,5 +2416,6 @@ p, li { white-space: pre-wrap; }
   <slot>tgg_button_clicked()</slot>
   <slot>switch_auto_matrix_button_clicked()</slot>
   <slot>switch_manual_matrix_button_clicked()</slot>
+  <slot>server_button_clicked()</slot>
  </slots>
 </ui>

@@ -12,7 +12,7 @@ from geometry_msgs.msg import PoseStamped
 from iiwa_msgs.msg import JointPosition
 import subprocess
 import matlab.engine
-import img_rcc_rc
+import socket
 
 
 class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -37,7 +37,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 启动roscore
         # subprocess.Popen('roscore')
         # 启动matlab核心
-        self.matlab_eng = matlab.engine.start_matlab()
+        # self.matlab_eng = matlab.engine.start_matlab()
         print "加载matlab核心"
 
         #  启动节点
@@ -62,6 +62,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.calibrate_error_thread.append_signal[str].connect(self.textEdit_calibrate_append_slot)
         self.calibrate_error_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
         self.follow_pose_thread = Follow_Pose_Thread()
+        self.server_thread = Server_Thread()
+        self.server_thread.settext_signal[str].connect(self.textEdit_ct_settext_slot)
+        self.server_thread.append_signal[str].connect(self.textEdit_ct_append_slot)
 
     def closeEvent(self, event):  # 改写关闭事件，添加对话框及关闭roscore
         reply = QtWidgets.QMessageBox.question(self, 'Message',"Are you sure to quit?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.Yes)
@@ -292,6 +295,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         subprocess.call("cp /home/lizq/win7share/手动标定矩阵保存/{TJM.txt,TOB.txt,TBN.txt} /home/lizq/win7share", shell=True)
         self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         self.textEdit_calibrate.append("已切换至手动标定所获得TJM,TOB,TBN矩阵")
+
+    def server_button_clicked(self):
+        self.server_thread.start()
 
     # region 输入姿态控制
     def joint_add_button_clicked(self):
@@ -565,12 +571,14 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def textEdit_calibrate_append_slot(self,str):
         self.textEdit_calibrate.append(str)
 
-    def textEdit_calibrate_clear_slot(self):
-        self.textEdit_calibrate.clear()
-
     def textEdit_calibrate_settext_slot(self,str):
         self.textEdit_calibrate.setText(str)
 
+    def textEdit_ct_settext_slot(self,str):
+        self.textEdit_ct.setText(str)
+
+    def textEdit_ct_append_slot(self,str):
+        self.textEdit_ct.append(str)
     # endregion
 
 
@@ -759,6 +767,38 @@ class Follow_Pose_Thread(QtCore.QThread):
                     rate.sleep()
             except:
                 pass
+
+
+class Server_Thread(QtCore.QThread):
+    settext_signal = QtCore.pyqtSignal(str)
+    append_signal = QtCore.pyqtSignal(str)
+    def __int__(self):
+        super(Server_Thread, self).__init__()
+
+    def run(self):
+        ip = window.lineEdit_ip.text()
+        port = int(window.lineEdit_port.text())
+        sk = socket.socket()  # 生成一个句柄
+        sk.bind((ip,port))  # 绑定ip端口
+        sk.listen(2)  # 最多连接数
+        self.append_signal[str].emit("等待CT端连接")
+        conn, addr = sk.accept()  # 等待链接,阻塞，直到渠道链接 conn打开一个新的对象 专门给当前链接的客户端 addr是ip地址
+        self.append_signal[str].emit("已连接")
+        while window.server_button.isChecked():
+            try:
+                # 获取客户端请求数据
+                client_data = conn.recv(1024)  # 接受套接字的数据。数据以字符串形式返回，bufsize指定最多可以接收的数量。
+                # 打印对方的数据
+                self.append_signal[str].emit(str(client_data))
+                # 向对方发送数据
+                conn.sendall('不要回答,不要回答,不要回答')
+            # 客户端发送flag，比如0就返回针尖位置，可以循环发0
+            # 再写个客户端的界面，可以手写
+            except Exception as e:
+                print e
+        # 关闭链接
+        conn.close()
+
 
 app = QtWidgets.QApplication(sys.argv)
 window = Mywindow()

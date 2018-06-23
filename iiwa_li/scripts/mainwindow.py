@@ -751,7 +751,7 @@ class Ui_MainWindow(object):
         self.lineEdit_ip.setText(_translate("MainWindow", "127.0.0.1"))
         self.label_31.setText(_translate("MainWindow", "端口"))
         self.lineEdit_port.setText(_translate("MainWindow", "9999"))
-        self.server_button.setText(_translate("MainWindow", "连接客户端"))
+        self.server_button.setText(_translate("MainWindow", "启动服务器"))
         self.groupBox_pose_button_contorl.setTitle(_translate("MainWindow", "位姿控制"))
         self.position_y_add_button.setText(_translate("MainWindow", "y++"))
         self.position_y_min_button.setText(_translate("MainWindow", "y--"))

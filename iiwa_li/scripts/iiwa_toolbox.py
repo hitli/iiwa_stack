@@ -66,16 +66,16 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.server_thread.settext_signal[str].connect(self.textEdit_ct_settext_slot)
         self.server_thread.append_signal[str].connect(self.textEdit_ct_append_slot)
 
-    def closeEvent(self, event):  # 改写关闭事件，添加对话框及关闭roscore
-        reply = QtWidgets.QMessageBox.question(self, 'Message',"Are you sure to quit?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.Yes)
-        if reply == QtWidgets.QMessageBox.Yes:
-            # coscoreid = subprocess.Popen('pgrep roscore', shell=True, stdout=subprocess.PIPE)
-            # out, err = coscoreid.communicate()
-            # line = 'kill ' + out
-            # subprocess.call(line, shell=True)
-            event.accept()
-        else:
-            event.ignore()
+    # def closeEvent(self, event):  # 改写关闭事件，添加对话框及关闭roscore
+    #     reply = QtWidgets.QMessageBox.question(self, 'Message',"Are you sure to quit?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.Yes)
+    #     if reply == QtWidgets.QMessageBox.Yes:
+    #         # coscoreid = subprocess.Popen('pgrep roscore', shell=True, stdout=subprocess.PIPE)
+    #         # out, err = coscoreid.communicate()
+    #         # line = 'kill ' + out
+    #         # subprocess.call(line, shell=True)
+    #         event.accept()
+    #     else:
+    #         event.ignore()
 
     def read_state(self):
         # ','.join(str(i) for i in self.tcp_pose)将数组每一位以,间隔转为字符串
@@ -280,6 +280,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def refresh_button_clicked(self):
         self.textEdit_calibrate.clear()
+        self.textEdit_ct.clear()
         try:
             self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
             # self.textEdit_calibrate.setText(str(self.TJM))
@@ -781,7 +782,7 @@ class Server_Thread(QtCore.QThread):
         sk = socket.socket()  # 生成一个句柄
         sk.bind((ip,port))  # 绑定ip端口
         sk.listen(2)  # 最多连接数
-        self.append_signal[str].emit("等待CT端连接")
+        self.settext_signal[str].emit("等待CT端连接")
         conn, addr = sk.accept()  # 等待链接,阻塞，直到渠道链接 conn打开一个新的对象 专门给当前链接的客户端 addr是ip地址
         self.append_signal[str].emit("已连接")
         while window.server_button.isChecked():
@@ -791,11 +792,13 @@ class Server_Thread(QtCore.QThread):
                 # 打印对方的数据
                 self.append_signal[str].emit(str(client_data))
                 # 向对方发送数据
-                conn.sendall('不要回答,不要回答,不要回答')
+                conn.sendall('收到命令')
             # 客户端发送flag，比如0就返回针尖位置，可以循环发0
             # 再写个客户端的界面，可以手写
             except Exception as e:
                 print e
+                window.server_button.setChecked(False)
+                self.append_signal[str].emit("连接已断开")
         # 关闭链接
         conn.close()
 

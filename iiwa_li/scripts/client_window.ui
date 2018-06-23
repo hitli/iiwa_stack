@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>563</width>
+    <height>328</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>模拟客户端</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>0</y>
+      <width>110</width>
+      <height>230</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="get_TMN_btn">
+       <property name="text">
+        <string>接收针尖位置</string>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="send_TMC_btn">
+       <property name="text">
+        <string>发射标定向量</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="jinzhendian_btn">
+       <property name="text">
+        <string>进针点坐标</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="chuancidian_btn">
+       <property name="text">
+        <string>穿刺点坐标</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="move_jinzhendian_btn">
+       <property name="text">
+        <string>运动至进针点</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="move_chuancidian_btn">
+       <property name="text">
+        <string>运动至穿刺点</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTextEdit" name="textEdit">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>431</width>
+      <height>231</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>531</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>IP</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_ip">
+       <property name="text">
+        <string>127.0.0.1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>port</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_port">
+       <property name="text">
+        <string>9999</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="connect_btn">
+       <property name="text">
+        <string>连接服务器</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="stop_connect_btn">
+       <property name="text">
+        <string>断开连接</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>563</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>get_TMN_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>get_TMN_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>510</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>45</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>send_TMC_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>send_TMC_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>82</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>560</x>
+     <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>jinzhendian_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>jinzhendian_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>515</x>
+     <y>138</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>434</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>move_jinzhendian_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>move_jinzhendian_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>464</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>437</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>move_chuancidian_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>move_chuancidian_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>475</x>
+     <y>250</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chuancidian_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>chuancidian_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>469</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>435</x>
+     <y>169</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>connect_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>connect_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>381</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>381</x>
+     <y>301</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stop_connect_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>stop_connect_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>497</x>
+     <y>282</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>494</x>
+     <y>303</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>get_TMN_btn_clicked()</slot>
+  <slot>send_TMC_btn_clicked()</slot>
+  <slot>jinzhendian_btn_clicked()</slot>
+  <slot>chuancidian_btn_clicked()</slot>
+  <slot>move_chuancidian_btn_clicked()</slot>
+  <slot>move_jinzhendian_btn_clicked()</slot>
+  <slot>connect_btn_clicked()</slot>
+  <slot>stop_connect_btn_clicked()</slot>
+ </slots>
+</ui>

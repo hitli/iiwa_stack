@@ -17,7 +17,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         ip = self.lineEdit_ip.text()
         port = int(self.lineEdit_port.text())
         try:
-            self.sk.connect(('127.0.0.1', 9999))
+            self.sk.connect((ip,port))
         except Exception as e:
             print e
             self.textEdit.append("连接失败")
@@ -42,54 +42,39 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def send_TMC_btn_clicked(self):
         TMC = (137.5000,192.4200,-1686.9700,0.1686,-0.5152,0.2581,0.7996)
-        self.sk.sendall(str(TMC))
         sentence = "发送标定向量\n" + str(TMC)
+        self.sk.sendall(sentence)
         self.textEdit.append(sentence)
-        repeat = self.sk.recv(1024)
-        if repeat == "收到命令":
-            self.textEdit.append("服务器已收到")
-        else:
-            self.textEdit.append("发送失败")
+        reply = self.sk.recv(1024)
+        self.textEdit.append(reply)
 
     def jinzhendian_btn_clicked(self):
-        p1 = (-40.4500,289.9500,-1615.9700,0.1683,-0.5151,0.2576,0.7999)
+        p1 = (-40.4500,289.9500,-1615.9700,0.0,0.0,0.0,1.0)
         sentence = "发送进针点\n"+str(p1)
         self.textEdit.append(sentence)
         self.sk.sendall(sentence)
-        repeat = self.sk.recv(1024)
-        if repeat == "收到命令":
-            self.textEdit.append("服务器已收到")
-        else:
-            self.textEdit.append("发送失败")
+        reply = self.sk.recv(1024)
+        self.textEdit.append(reply)
 
     def chuancidian_btn_clicked(self):
-        p1 = (-44.3000,276.4300,-1610.8900,0.1684,-0.5144,0.2577,0.8003)
+        p1 = (-44.3000,276.4300,-1610.8900,0.0,0.0,0.0,1.0)
         sentence = "发送穿刺点\n"+str(p1)
         self.textEdit.append(sentence)
         self.sk.sendall(sentence)
-        repeat = self.sk.recv(1024)
-        if repeat == "收到命令":
-            self.textEdit.append("服务器已收到")
-        else:
-            self.textEdit.append("发送失败")
+        reply = self.sk.recv(1024)
+        self.textEdit.append(reply)
 
     def move_jinzhendian_btn_clicked(self):
         self.sk.sendall("运动至进针点")
         self.textEdit.append("运动至进针点")
-        repeat = self.sk.recv(1024)
-        if repeat == "收到命令":
-            self.textEdit.append("服务器已收到")
-        else:
-            self.textEdit.append("发送失败")
+        reply = self.sk.recv(1024)
+        self.textEdit.append(reply)
 
     def move_chuancidian_btn_clicked(self):
         self.sk.sendall("运动至穿刺点")
         self.textEdit.append("运动至穿刺点")
-        repeat = self.sk.recv(1024)
-        if repeat == "收到命令":
-            self.textEdit.append("服务器已收到")
-        else:
-            self.textEdit.append("发送失败")
+        reply = self.sk.recv(1024)
+        self.textEdit.append(reply)
 
 
 app = QtWidgets.QApplication(sys.argv)

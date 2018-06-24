@@ -113,6 +113,11 @@ if __name__ == '__main__':
     #     lines = f.readlines()
     # with open('/home/lizq/win7share/robot_data.txt', 'w') as f:
     #     for i in n:
-    #         f.write(lines[i])
-    subprocess.call("cp /home/lizq/win7share/Rx.txt /home/lizq/win7share/自动标定矩阵保存 ", shell=True)
-
+    #         f.write(lines[i])ndi449 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+    # subprocess.call("cp /home/lizq/win7share/Rx.txt /home/lizq/win7share/自动标定矩阵保存 ", shell=True)
+    # ndi449 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1]
+    # print math.isnan(ndi449[0])
+    TMC = (137.5000, 192.4200, -1686.9700, 0.1686, -0.5152, 0.2581, 0.7996)
+    sentence = "发送标定向量\n" + str(TMC)
+    client_data = sentence.splitlines()
+    print eval(client_data[1])

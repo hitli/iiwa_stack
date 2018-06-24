@@ -789,10 +789,9 @@ class Server_Thread(QtCore.QThread):
             try:
                 # 获取客户端请求数据
                 client_data = conn.recv(1024)  # 接受套接字的数据。数据以字符串形式返回，bufsize指定最多可以接收的数量。
-                # 打印对方的数据
-                self.append_signal[str].emit(str(client_data))
-                # 向对方发送数据
-                conn.sendall('收到命令')
+                self.append_signal[str].emit(str(client_data))  # 打印对方的数据
+                reply = self.check_out(client_data)  # 处理数据
+                conn.sendall(reply)  # 向对方发送数据
             # 客户端发送flag，比如0就返回针尖位置，可以循环发0
             # 再写个客户端的界面，可以手写
             except Exception as e:
@@ -801,6 +800,87 @@ class Server_Thread(QtCore.QThread):
                 self.append_signal[str].emit("连接已断开")
         # 关闭链接
         conn.close()
+
+    def check_out(self,client_data):
+        if "请求针尖位置" in client_data:
+            # ndi数据
+            try:
+                ndi449 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+                tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+                tmn = qc.quat2matrix(ndi449).dot(tbn)
+            except:
+                reply = 'ndi丢失穿刺针视野'
+            else:
+                reply = qc.matrix2quat(tmn)
+            # 机械臂数据
+            # try:
+            #     tjm = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")
+            #     ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")
+            #     tjo = qc.quat2matrix(window.tcp_pose)
+            #     tjo[0:3][:, 3] *= 1000
+            #     tmn = np.linalg.inv(tjm)*tjo*ton
+            # except:
+            #     reply = '解算失败'
+            # else:
+            #     reply = qc.matrix2quat(tmn)
+
+        elif "发送标定向量" in client_data:
+            data = client_data.splitlines()[1]
+            self.tmc_quat = eval(data)
+            reply = "收到命令"
+
+        elif "发送进针点" in client_data:
+            data = client_data.splitlines()[1]
+            self.tcn1 = eval(data)
+            reply = "收到命令"
+
+        elif "发送穿刺点" in client_data:
+            data = client_data.splitlines()[1]
+            self.tcn2 = eval(data)
+            reply = "收到命令"
+
+        elif "运动至进针点" in client_data:
+            tjm = window.TJM  # mm
+            ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
+            tno = np.linalg.inv(ton)
+            tmn1 = qc.quat_pose_multipy(self.tmc_quat,self.tcn1)
+            tmn2 = qc.quat_pose_multipy(self.tmc_quat,self.tcn2)
+
+            # TCP入针，即视觉空间的TCP（同穿刺针）的x方向
+            fenmu = math.sqrt((tmn2[0][3] - tmn1[0][3]) ** 2 + (tmn2[1][3] - tmn1[1][3]) ** 2 + (tmn2[2][3] - tmn1[2][3]) ** 2)  # 归一化
+            xx = (tmn2[0][3] - tmn1[0][3]) / fenmu
+            xy = (tmn2[1][3] - tmn1[1][3]) / fenmu
+            xz = (tmn2[2][3] - tmn1[2][3]) / fenmu
+            # 穿刺姿势需要改
+            # y0x = -tmn1[0][0]
+            # y0y = -tmn1[1][0]
+            # y0z = -tmn1[2][0]  # 穿刺针y方向为钢针-x方向
+            #
+            # zx, zy, zz = qc.chacheng(xx, xy, xz, y0x, y0y, y0z)  # x叉乘y`得到TCP在视觉空间的z方向，保证x的方向
+            #
+            # yx, yy, yz = qc.chacheng(zx, zy, zz, xx, xy, xz)  # z叉乘x得到y，使得刚体面向变化较小
+            #
+            # tmn_jinzhen = np.array([[xx, yx, zx, tmn1[0][3]],
+            #                         [xy, yy, zy, tmn1[1][3]],
+            #                         [xz, yz, zz, tmn1[2][3]],
+            #                         [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
+            #
+            # tmn_chuanci = np.array([[xx, yx, zx, tmn2[0][3]],
+            #                         [xy, yy, zy, tmn2[1][3]],
+            #                         [xz, yz, zz, tmn2[2][3]],
+            #                         [0.0, 0.0, 0.0, 1.0]])  # 穿刺点TMN位恣矩阵
+            # tjo_1 = tjm.dot(tmn_jinzhen).dot(tno)
+            # tjo_1[0:3][:, 3] /= 1000
+            # self.TJO_jinzhen = tjo_1
+            # tjo_2 = tjm.dot(tmn_chuanci).dot(tno)
+            # tjo_2[0:3][:, 3] /= 1000
+            # self.TJO_chuanci = tjo_2
+
+        elif "运动至穿刺点" in client_data:
+
+
+        return reply
+
 
 
 app = QtWidgets.QApplication(sys.argv)

@@ -6,132 +6,149 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>563</width>
-    <height>328</height>
+    <width>579</width>
+    <height>411</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>模拟客户端</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>0</y>
-      <width>110</width>
-      <height>230</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="get_TMN_btn">
-       <property name="text">
-        <string>接收针尖位置</string>
-       </property>
-       <property name="checkable">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="send_TMC_btn">
-       <property name="text">
-        <string>发射标定向量</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="jinzhendian_btn">
-       <property name="text">
-        <string>进针点坐标</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="chuancidian_btn">
-       <property name="text">
-        <string>穿刺点坐标</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="move_jinzhendian_btn">
-       <property name="text">
-        <string>运动至进针点</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="move_chuancidian_btn">
-       <property name="text">
-        <string>运动至穿刺点</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>431</width>
-      <height>231</height>
+      <width>573</width>
+      <height>355</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>230</y>
-      <width>531</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>IP</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QTextEdit" name="textEdit"/>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QPushButton" name="keep_get_TMN_btn">
+           <property name="text">
+            <string>持续接受针尖</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="get_TMN_btn">
+           <property name="text">
+            <string>接收针尖位置</string>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="send_TMC_btn">
+           <property name="text">
+            <string>发射标定向量</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="jinzhendian_btn">
+           <property name="text">
+            <string>进针点坐标</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="chuancidian_btn">
+           <property name="text">
+            <string>穿刺点坐标</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="move_jinzhendian_btn">
+           <property name="text">
+            <string>运动至进针点</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="move_chuancidian_btn">
+           <property name="text">
+            <string>运动至穿刺点</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_ip">
-       <property name="text">
-        <string>127.0.0.1</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>IP</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_ip">
+         <property name="text">
+          <string>127.0.0.1</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>port</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_port">
+         <property name="text">
+          <string>9999</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="connect_btn">
+         <property name="text">
+          <string>连接服务器</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="stop_connect_btn">
+         <property name="text">
+          <string>断开连接</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>port</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit_port">
-       <property name="text">
-        <string>9999</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="connect_btn">
-       <property name="text">
-        <string>连接服务器</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="stop_connect_btn">
-       <property name="text">
-        <string>断开连接</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLineEdit" name="lineEdit"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="move_btn">
+         <property name="text">
+          <string>运动至指定点</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -141,7 +158,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>563</width>
+     <width>579</width>
      <height>31</height>
     </rect>
    </property>
@@ -157,11 +174,11 @@
    <slot>get_TMN_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>510</x>
-     <y>49</y>
+     <x>569</x>
+     <y>105</y>
     </hint>
     <hint type="destinationlabel">
-     <x>564</x>
+     <x>562</x>
      <y>45</y>
     </hint>
    </hints>
@@ -173,8 +190,8 @@
    <slot>send_TMC_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>522</x>
-     <y>82</y>
+     <x>569</x>
+     <y>144</y>
     </hint>
     <hint type="destinationlabel">
      <x>560</x>
@@ -189,8 +206,8 @@
    <slot>jinzhendian_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>515</x>
-     <y>138</y>
+     <x>569</x>
+     <y>183</y>
     </hint>
     <hint type="destinationlabel">
      <x>434</x>
@@ -205,8 +222,8 @@
    <slot>move_jinzhendian_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>464</x>
-     <y>210</y>
+     <x>569</x>
+     <y>261</y>
     </hint>
     <hint type="destinationlabel">
      <x>437</x>
@@ -221,8 +238,8 @@
    <slot>move_chuancidian_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>475</x>
-     <y>250</y>
+     <x>569</x>
+     <y>300</y>
     </hint>
     <hint type="destinationlabel">
      <x>436</x>
@@ -237,8 +254,8 @@
    <slot>chuancidian_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>469</x>
-     <y>169</y>
+     <x>569</x>
+     <y>222</y>
     </hint>
     <hint type="destinationlabel">
      <x>435</x>
@@ -253,8 +270,8 @@
    <slot>connect_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>381</x>
-     <y>288</y>
+     <x>479</x>
+     <y>342</y>
     </hint>
     <hint type="destinationlabel">
      <x>381</x>
@@ -269,12 +286,44 @@
    <slot>stop_connect_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>497</x>
-     <y>282</y>
+     <x>570</x>
+     <y>342</y>
     </hint>
     <hint type="destinationlabel">
      <x>494</x>
      <y>303</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>move_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>move_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>570</x>
+     <y>383</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>446</x>
+     <y>355</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>keep_get_TMN_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>keep_get_TMN_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>576</x>
+     <y>46</y>
     </hint>
    </hints>
   </connection>
@@ -288,5 +337,7 @@
   <slot>move_jinzhendian_btn_clicked()</slot>
   <slot>connect_btn_clicked()</slot>
   <slot>stop_connect_btn_clicked()</slot>
+  <slot>move_btn_clicked()</slot>
+  <slot>keep_get_TMN_btn_clicked()</slot>
  </slots>
 </ui>

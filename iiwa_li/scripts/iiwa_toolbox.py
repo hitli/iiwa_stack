@@ -13,6 +13,7 @@ from iiwa_msgs.msg import JointPosition
 import subprocess
 import matlab.engine
 import socket
+import traceback
 
 
 class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -785,7 +786,7 @@ class Server_Thread(QtCore.QThread):
             sk.listen(5)  # 最多连接数
         except Exception as e:
             print e
-            elf.append_signal[str].emit("启动失败")
+            self.append_signal[str].emit("启动失败")
             window.server_button.setChecked(False)
         else:
             self.settext_signal[str].emit("等待CT端连接")
@@ -802,6 +803,7 @@ class Server_Thread(QtCore.QThread):
                 # 再写个客户端的界面，可以手写
                 except Exception as e:
                     print e
+                    traceback.print_exc()
                     window.server_button.setChecked(False)
                     self.append_signal[str].emit("连接已断开")
             # 关闭链接
@@ -837,6 +839,21 @@ class Server_Thread(QtCore.QThread):
             x, y, z, w = [i / fenmu for i in [quat[3], quat[4], quat[5], quat[6]]]
             self.tmc_quat = (quat[0],quat[1],quat[2],x,y,z,w)
             reply = "服务器已收到"
+
+        elif "运动至点" in client_data:
+            data = client_data.splitlines()[1]
+            quat = eval(data)
+            try:
+                tmp = qc.quat_pose_multipy(self.tmc_quat,quat)
+                tjp = window.TJM.dot(qc.quat2matrix(tmp))
+                tjp[0:3][:, 3] /= 1000
+                window.pose_pub.publish(qc.get_command_pose(qc.matrix2quat(tjp)))
+                rospy.loginfo(qc.get_command_pose(qc.matrix2quat(tjp)))
+            except Exception as e:
+                print e
+                reply = "请先发送标定向量"
+            else:
+                reply = "服务器已收到"
 
         elif "发送进针点" in client_data:
             data = client_data.splitlines()[1]

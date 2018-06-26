@@ -810,14 +810,14 @@ class Server_Thread(QtCore.QThread):
             conn.close()
 
     def check_out(self,client_data):
-        if "请求针尖位置" in client_data:
+        if "ask for tmn" in client_data:
             # ndi数据
             try:
                 ndi449 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
                 tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
                 tmn = qc.quat2matrix(ndi449).dot(tbn)
             except:
-                reply = 'ndi丢失穿刺针视野'
+                reply = 'tmn is lost in ndi'
             else:
                 reply = str(qc.matrix2quat(tmn))
             # 机械臂数据
@@ -832,15 +832,15 @@ class Server_Thread(QtCore.QThread):
             # else:
             #     reply = qc.matrix2quat(tmn)
 
-        elif "发送标定向量" in client_data:
+        elif "send tmc quat" in client_data:
             data = client_data.splitlines()[1]
             quat = eval(data)
             fenmu = math.sqrt(quat[3] **2 + quat[4] **2 +quat[5] **2 +quat[6] **2)
             x, y, z, w = [i / fenmu for i in [quat[3], quat[4], quat[5], quat[6]]]
             self.tmc_quat = (quat[0],quat[1],quat[2],x,y,z,w)
-            reply = "服务器已收到"
+            reply = "tmc received"
 
-        elif "运动至点" in client_data:
+        elif "move to point" in client_data:
             data = client_data.splitlines()[1]
             quat = eval(data)
             try:
@@ -851,21 +851,21 @@ class Server_Thread(QtCore.QThread):
                 rospy.loginfo(qc.get_command_pose(qc.matrix2quat(tjp)))
             except Exception as e:
                 print e
-                reply = "请先发送标定向量"
+                reply = "please send tmc first"
             else:
-                reply = "服务器已收到"
+                reply = "command received"
 
-        elif "发送进针点" in client_data:
+        elif "send entry point" in client_data:
             data = client_data.splitlines()[1]
             self.tcn1 = eval(data)
-            reply = "服务器已收到"
+            reply = "command received"
 
-        elif "发送穿刺点" in client_data:
+        elif "send puncture point" in client_data:
             data = client_data.splitlines()[1]
             self.tcn2 = eval(data)
-            reply = "服务器已收到"
+            reply = "command received"
 
-        elif "运动至进针点" in client_data:
+        elif "move to entry point" in client_data:
             tjm = window.TJM  # mm
             ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
             tno = np.linalg.inv(ton)
@@ -876,7 +876,7 @@ class Server_Thread(QtCore.QThread):
                 # tmn2 = qc.quat2matrix(tmn2)
             except Exception as e:
                 print e
-                reply = "请先发送标定向量及进针路径"
+                reply = "please send tmc and puncture path fisrt"
             else:
 
                 # TCP入针，即视觉空间的TCP（同穿刺针）的x方向
@@ -918,16 +918,16 @@ class Server_Thread(QtCore.QThread):
 
                 window.pose_pub.publish(qc.get_command_pose(qc.matrix2quat(self.TJO_jinzhen)))
                 rospy.loginfo(qc.get_command_pose(qc.matrix2quat(self.TJO_jinzhen)))
-                reply = "服务器已收到"
+                reply = "command received"
 
-        elif "运动至穿刺点" in client_data:
+        elif "move to puncture point" in client_data:
             window.pose_pub.publish(qc.get_command_pose(qc.matrix2quat(self.TJO_chuanci)))
             rospy.loginfo(qc.get_command_pose(qc.matrix2quat(self.TJO_chuanci)))
-            reply = "服务器已收到"
+            reply = "command received"
 
         else:
             print client_data
-            reply = "命令错误"
+            reply = "wrong command"
 
         return reply
 

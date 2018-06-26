@@ -37,7 +37,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def get_TMN_btn_clicked(self):
         # while self.get_TMN_btn.isChecked():
-        self.sk.sendall("请求针尖位置")
+        self.sk.sendall("ask for tmn")
         TMN = self.sk.recv(1024)
         self.textEdit.append(str(TMN))
         print TMN
@@ -48,7 +48,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def send_TMC_btn_clicked(self):
         TMC = (137.5000,192.4200,-1686.9700,0.1686,-0.5152,0.2581,0.7996)
-        sentence = "发送标定向量\n" + str(TMC)
+        sentence = "send tmc quat\n" + str(TMC)
         self.sk.sendall(sentence)
         self.textEdit.append(sentence)
         reply = self.sk.recv(1024)
@@ -56,7 +56,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def move_btn_clicked(self):
         point = (-40.4500,289.9500,-1615.9700,0.0,0.0,0.0,1.0)
-        sentence = "运动至点\n" + self.lineEdit.text()
+        sentence = "move to point\n" + self.lineEdit.text()
         self.sk.sendall(sentence)
         self.textEdit.append(sentence)
         reply = self.sk.recv(1024)
@@ -64,7 +64,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def jinzhendian_btn_clicked(self):
         p1 = (-40.4500,289.9500,-1615.9700,0.0,0.0,0.0,1.0)
-        sentence = "发送进针点\n"+str(p1)
+        sentence = "send entry point\n"+str(p1)
         self.textEdit.append(sentence)
         self.sk.sendall(sentence)
         reply = self.sk.recv(1024)
@@ -72,21 +72,21 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def chuancidian_btn_clicked(self):
         p1 = (-44.3000,276.4300,-1610.8900,0.0,0.0,0.0,1.0)
-        sentence = "发送穿刺点\n"+str(p1)
+        sentence = "send puncture point\n"+str(p1)
         self.textEdit.append(sentence)
         self.sk.sendall(sentence)
         reply = self.sk.recv(1024)
         self.textEdit.append(reply)
 
     def move_jinzhendian_btn_clicked(self):
-        self.sk.sendall("运动至进针点")
-        self.textEdit.append("运动至进针点")
+        self.sk.sendall("move to entry point")
+        self.textEdit.append("move to entry point")
         reply = self.sk.recv(1024)
         self.textEdit.append(reply)
 
     def move_chuancidian_btn_clicked(self):
-        self.sk.sendall("运动至穿刺点")
-        self.textEdit.append("运动至穿刺点")
+        self.sk.sendall("move to puncture point")
+        self.textEdit.append("move to puncture point")
         reply = self.sk.recv(1024)
         self.textEdit.append(reply)
 
@@ -102,7 +102,7 @@ class Get_TMN_Thread(QtCore.QThread):
 
     def run(self):
         while window.keep_get_TMN_btn.isChecked():
-            window.sk.sendall("请求针尖位置")
+            window.sk.sendall("ask for tmn")
             TMN = window.sk.recv(1024)
             self.append_signal[str].emit(TMN)
             time.sleep(1)

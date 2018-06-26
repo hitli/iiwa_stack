@@ -38,7 +38,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 启动roscore
         # subprocess.Popen('roscore')
         # 启动matlab核心
-        # self.matlab_eng = matlab.engine.start_matlab()
+        self.matlab_eng = matlab.engine.start_matlab()
         print "加载matlab核心"
 
         #  启动节点
@@ -67,16 +67,16 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.server_thread.settext_signal[str].connect(self.textEdit_ct_settext_slot)
         self.server_thread.append_signal[str].connect(self.textEdit_ct_append_slot)
 
-    # def closeEvent(self, event):  # 改写关闭事件，添加对话框及关闭roscore
-    #     reply = QtWidgets.QMessageBox.question(self, 'Message',"Are you sure to quit?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.Yes)
-    #     if reply == QtWidgets.QMessageBox.Yes:
-    #         # coscoreid = subprocess.Popen('pgrep roscore', shell=True, stdout=subprocess.PIPE)
-    #         # out, err = coscoreid.communicate()
-    #         # line = 'kill ' + out
-    #         # subprocess.call(line, shell=True)
-    #         event.accept()
-    #     else:
-    #         event.ignore()
+    def closeEvent(self, event):  # 改写关闭事件，添加对话框及关闭roscore
+        reply = QtWidgets.QMessageBox.question(self, 'Message',"Are you sure to quit?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.Yes)
+        if reply == QtWidgets.QMessageBox.Yes:
+            # coscoreid = subprocess.Popen('pgrep roscore', shell=True, stdout=subprocess.PIPE)
+            # out, err = coscoreid.communicate()
+            # line = 'kill ' + out
+            # subprocess.call(line, shell=True)
+            event.accept()
+        else:
+            event.ignore()
 
     def read_state(self):
         # ','.join(str(i) for i in self.tcp_pose)将数组每一位以,间隔转为字符串

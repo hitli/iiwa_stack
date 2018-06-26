@@ -10,12 +10,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="iiwa_toolbox.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="926" lean-forward="true" selection-start-line="926" selection-end-line="926" />
+            <state relative-caret-position="3360">
+              <caret line="224" column="35" lean-forward="true" selection-start-line="224" selection-start-column="35" selection-end-line="224" selection-end-column="35" />
               <folding>
                 <element signature="e#25#61#0" expanded="true" />
               </folding>
@@ -26,8 +26,8 @@
       <file leaf-file-name="client.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="79" lean-forward="true" selection-start-line="79" selection-end-line="79" />
+            <state relative-caret-position="1125">
+              <caret line="79" selection-start-line="79" selection-end-line="79" />
             </state>
           </provider>
         </entry>
@@ -35,11 +35,8 @@
       <file leaf-file-name="servertest.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/servertest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="30">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
             </state>
           </provider>
         </entry>
@@ -149,17 +146,17 @@
         <option value="$PROJECT_DIR$/?.py" />
         <option value="$PROJECT_DIR$/scripts/q.py" />
         <option value="$PROJECT_DIR$/scripts/test.py" />
-        <option value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
         <option value="$PROJECT_DIR$/scripts/client.py" />
         <option value="$PROJECT_DIR$/scripts/servertest.py" />
+        <option value="$PROJECT_DIR$/scripts/iiwa_toolbox.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="164" />
-    <option name="y" value="-4" />
-    <option name="width" value="1855" />
-    <option name="height" value="1112" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="124" />
+    <option name="y" value="155" />
+    <option name="width" value="1853" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -222,7 +219,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.servertest">
+  <component name="RunManager" selected="Python.iiwa_toolbox">
     <configuration name="client" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="iiwa_li" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -322,9 +319,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.iiwa_toolbox" />
         <item itemvalue="Python.servertest" />
         <item itemvalue="Python.client" />
-        <item itemvalue="Python.iiwa_toolbox" />
         <item itemvalue="Python.pubtest" />
         <item itemvalue="Python.test" />
       </list>
@@ -382,19 +379,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="124" y="155" width="1853" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13373363" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13387978" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32948583" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50054586" side_tool="true" weight="0.39874083" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.3578174" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32948583" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.36864865" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49945414" weight="0.39349422" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49945414" weight="0.39349422" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -425,6 +422,13 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/scripts/servertest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/MainWindow - untitled" />
     <entry file="file://$PROJECT_DIR$/scripts/pyqt_test.ui.py" />
     <entry file="file://$PROJECT_DIR$/scripts/pyqt_test.py" />
@@ -640,30 +644,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/client_window.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/servertest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="30">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="79" lean-forward="true" selection-start-line="79" selection-end-line="79" />
+        <state relative-caret-position="1125">
+          <caret line="79" selection-start-line="79" selection-end-line="79" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="611">
-          <caret line="926" lean-forward="true" selection-start-line="926" selection-end-line="926" />
+        <state relative-caret-position="3360">
+          <caret line="224" column="35" lean-forward="true" selection-start-line="224" selection-start-column="35" selection-end-line="224" selection-end-column="35" />
           <folding>
             <element signature="e#25#61#0" expanded="true" />
           </folding>

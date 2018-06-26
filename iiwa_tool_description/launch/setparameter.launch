@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   
-  <arg name="tool_name" default="penTool"/>
+  <arg name="tool_name" default="Toolone"/>
   <param name="/iiwa/toolName" type="string" value="$(arg tool_name)" />
   
 </launch>

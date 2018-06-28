@@ -259,10 +259,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                 [xz, yz, zz, tmg2[2][3]],
                                 [0.0, 0.0, 0.0, 1.0]])  # 穿刺点TMN位恣矩阵
         tjo_1 = tjm.dot(tmn_jinzhen).dot(tno)
-        tjo_1[0:3][:, 3] /= 1000
+        tjo_1[0:3][:, 3] /= 1000.0
         self.TJO_jinzhen = tjo_1
         tjo_2 = tjm.dot(tmn_chuanci).dot(tno)
-        tjo_2[0:3][:, 3] /= 1000
+        tjo_2[0:3][:, 3] /= 1000.0
         self.TJO_chuanci = tjo_2
 
     def puncture_move_jinzhendian_button_clicked(self):
@@ -343,7 +343,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         try:
             command_pose = list(eval(self.lineEdit_pose_in.text()))
             for i in range(0, 3):
-                command_pose[i] /= 1000
+                command_pose[i] /= 1000.0
             command_quat = qc.quat_pose_multipy(tcp, command_pose)
             command_line = qc.get_command_pose(command_quat)
         except:
@@ -357,7 +357,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         try:
             command_pose = list(eval(self.lineEdit_pose_in.text()))
             for i in range(0, 3):
-                command_pose[i] /= 1000
+                command_pose[i] /= 1000.0
             command_line = qc.get_command_pose(command_pose)
         except:
             QtWidgets.QMessageBox.warning(self, "Warning", "输入错误")
@@ -672,7 +672,7 @@ class Calibrate_Error_Thread(QtCore.QThread):
             rospy.sleep(3)
 
             tjo = window.TJM.dot(tmb).dot(tbo)  # 可能误差出现在tjm,tbo
-            tjo[0:3][:, 3] /= 1000  # mm->m
+            tjo[0:3][:, 3] /= 1000.0  # mm->m
             command_point = qc.matrix2quat(tjo)
             command_line = qc.get_command_pose(command_point)
             window.pose_pub.publish(command_line)
@@ -728,7 +728,7 @@ class Follow_Thread(QtCore.QThread):
                     gangzhen[3:] = tcp[3:]  # 使得TCP姿态不变，被动刚体朝向NDI，只做位移
                     tjn = qc.quat2matrix(gangzhen)
                     tjo = tjn.dot(tno)
-                    tjo[0:3][:, 3] /= 1000  # mm->m
+                    tjo[0:3][:, 3] /= 1000.0  # mm->m
                     command_point = qc.get_command_pose(qc.matrix2quat(tjo))
                     rospy.loginfo(command_point)
                     window.pose_pub.publish(command_point)
@@ -762,7 +762,7 @@ class Follow_Pose_Thread(QtCore.QThread):
                                     [tjg[2][2], -tjg[2][0], -tjg[2][1], tjg[2][3]],
                                     [0.0, 0.0, 0.0, 1.0]])
                     tjo = tjn.dot(tno)
-                    tjo[0:3][:, 3] /= 1000  # mm->m
+                    tjo[0:3][:, 3] /= 1000.0  # mm->m
                     command_point = qc.get_command_pose(qc.matrix2quat(tjo))
                     rospy.loginfo(command_point)
                     window.pose_pub.publish(command_point)
@@ -774,6 +774,7 @@ class Follow_Pose_Thread(QtCore.QThread):
 class Server_Thread(QtCore.QThread):
     settext_signal = QtCore.pyqtSignal(str)
     append_signal = QtCore.pyqtSignal(str)
+
     def __int__(self):
         super(Server_Thread, self).__init__()
 
@@ -846,7 +847,7 @@ class Server_Thread(QtCore.QThread):
             try:
                 tmp = qc.quat_pose_multipy(self.tmc_quat,quat)
                 tjp = window.TJM.dot(qc.quat2matrix(tmp))
-                tjp[0:3][:, 3] /= 1000
+                tjp[0:3][:, 3] /= 1000.0
                 window.pose_pub.publish(qc.get_command_pose(qc.matrix2quat(tjp)))
                 rospy.loginfo(qc.get_command_pose(qc.matrix2quat(tjp)))
             except Exception as e:
@@ -910,10 +911,10 @@ class Server_Thread(QtCore.QThread):
                                         [xz, yz, zz, tmn2[2]],
                                         [0.0, 0.0, 0.0, 1.0]])  # 穿刺点TMN位恣矩阵
                 tjo_1 = tjm.dot(tmn_jinzhen).dot(tno)
-                tjo_1[0:3][:, 3] /= 1000
+                tjo_1[0:3][:, 3] /= 1000.0
                 self.TJO_jinzhen = tjo_1
                 tjo_2 = tjm.dot(tmn_chuanci).dot(tno)
-                tjo_2[0:3][:, 3] /= 1000
+                tjo_2[0:3][:, 3] /= 1000.0
                 self.TJO_chuanci = tjo_2
 
                 window.pose_pub.publish(qc.get_command_pose(qc.matrix2quat(self.TJO_jinzhen)))
@@ -930,7 +931,6 @@ class Server_Thread(QtCore.QThread):
             reply = "wrong command"
 
         return reply
-
 
 
 app = QtWidgets.QApplication(sys.argv)

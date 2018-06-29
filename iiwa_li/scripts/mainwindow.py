@@ -748,7 +748,7 @@ class Ui_MainWindow(object):
         self.switch_manual_matrix_button.setText(_translate("MainWindow", "手动标定矩阵"))
         self.groupBox_ct_services.setTitle(_translate("MainWindow", "CT通讯"))
         self.label_30.setText(_translate("MainWindow", "IP地址"))
-        self.lineEdit_ip.setText(_translate("MainWindow", "127.0.0.1"))
+        self.lineEdit_ip.setText(_translate("MainWindow", "192.168.168.100"))
         self.label_31.setText(_translate("MainWindow", "端口"))
         self.lineEdit_port.setText(_translate("MainWindow", "9999"))
         self.server_button.setText(_translate("MainWindow", "启动服务器"))

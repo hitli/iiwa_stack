@@ -877,7 +877,7 @@ class Server_Thread(QtCore.QThread):
                 # tmn2 = qc.quat2matrix(tmn2)
             except Exception as e:
                 print e
-                reply = "please send tmc and puncture path fisrt"
+                reply = "please send puncture path fisrt"
             else:
 
                 # TCP入针，即视觉空间的TCP（同穿刺针）的x方向
@@ -922,8 +922,11 @@ class Server_Thread(QtCore.QThread):
                 reply = "command received"
 
         elif "move to puncture point" in client_data:
-            window.pose_pub.publish(qc.get_command_pose(qc.matrix2quat(self.TJO_chuanci)))
-            rospy.loginfo(qc.get_command_pose(qc.matrix2quat(self.TJO_chuanci)))
+            try:
+                window.pose_pub.publish(qc.get_command_pose(qc.matrix2quat(self.TJO_chuanci)))
+                rospy.loginfo(qc.get_command_pose(qc.matrix2quat(self.TJO_chuanci)))
+            except Exception as e:
+                reply = 'please move to entry point first'
             reply = "command received"
 
         else:

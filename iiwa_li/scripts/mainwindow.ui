@@ -1124,7 +1124,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLineEdit" name="lineEdit_ip">
           <property name="text">
-           <string>127.0.0.1</string>
+           <string>192.168.168.100</string>
           </property>
          </widget>
         </item>

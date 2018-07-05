@@ -121,5 +121,6 @@ if __name__ == '__main__':
     # sentence = "发送标定向量\n" + str(TMC)
     # client_data = sentence.splitlines()
     # print eval(client_data[1])
-    s = str((137.5000, 192.4200, -1686.9700, 0.1686, -0.5152, 0.2581, 0.7996))
-    print type(eval(s))
+    # s = str((137.5000, 192.4200, -1686.9700, 0.1686, -0.5152, 0.2581, 0.7996))
+    # print type(eval(s))
+    subprocess.call("cp /home/lizq/win7share/TJM.txt /home/lizq/win7share/自动标定矩阵保存", shell=True)

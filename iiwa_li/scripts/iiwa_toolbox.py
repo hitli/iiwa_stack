@@ -38,8 +38,8 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 启动roscore
         # subprocess.Popen('roscore')
         # 启动matlab核心
-        self.matlab_eng = matlab.engine.start_matlab()
         print "加载matlab核心"
+        self.matlab_eng = matlab.engine.start_matlab()
 
         #  启动节点
         rospy.init_node('iiwa_toolbox', anonymous=True)
@@ -186,7 +186,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.matlab_eng.hand_eye_calibration(nargout=0)
             self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
             self.textEdit_calibrate.setText(str(self.TJM))
-            subprocess.call("cp /home/lizq/win7share/{TJM.txt,TOB.txt,TBN.txt} /home/lizq/win7share/手动标定矩阵保存", shell=True)
+            subprocess.call("cp /home/lizq/win7share/TJM.txt /home/lizq/win7share/手动标定矩阵保存", shell=True)
+            subprocess.call("cp /home/lizq/win7share/TOB.txt /home/lizq/win7share/手动标定矩阵保存", shell=True)
+            subprocess.call("cp /home/lizq/win7share/TBN.txt /home/lizq/win7share/手动标定矩阵保存", shell=True)
         except:
             self.textEdit_calibrate.setText("解算失败，请查看控制台说明")
 
@@ -289,14 +291,37 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QtWidgets.QMessageBox.information(self, "提示", "未找到TJM标定矩阵，穿刺及跟随前请先执行标定程序")
 
     def switch_auto_matrix_button_clicked(self):
-        subprocess.call("cp /home/lizq/win7share/自动标定矩阵保存/{TJM.txt,TOB.txt,TBN.txt} /home/lizq/win7share", shell=True)
+        subprocess.call("cp /home/lizq/win7share/自动标定矩阵保存/TJM.txt /home/lizq/win7share", shell=True)
+        subprocess.call("cp /home/lizq/win7share/自动标定矩阵保存/TOB.txt /home/lizq/win7share", shell=True)
+        subprocess.call("cp /home/lizq/win7share/自动标定矩阵保存/TBN.txt /home/lizq/win7share", shell=True)
         self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         self.textEdit_calibrate.append("已切换至自动标定所获得TJM,TOB,TBN矩阵")
 
     def switch_manual_matrix_button_clicked(self):
-        subprocess.call("cp /home/lizq/win7share/手动标定矩阵保存/{TJM.txt,TOB.txt,TBN.txt} /home/lizq/win7share", shell=True)
+        subprocess.call("cp /home/lizq/win7share/手动标定矩阵保存/TJM.txt /home/lizq/win7share", shell=True)
+        subprocess.call("cp /home/lizq/win7share/手动标定矩阵保存/TOB.txt /home/lizq/win7share", shell=True)
+        subprocess.call("cp /home/lizq/win7share/手动标定矩阵保存/TBN.txt /home/lizq/win7share", shell=True)
         self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         self.textEdit_calibrate.append("已切换至手动标定所获得TJM,TOB,TBN矩阵")
+
+    def save_error_button_clicked(self):
+        tbo = np.linalg.inv(np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=","))  # mm
+        point = list(eval(self.textEdit_calibrate.toPlainText()))
+        tmb = qc.quat2matrix(point)
+        tjo = self.TJM.dot(tmb).dot(tbo)  # 可能误差出现在tjm,tbo
+        tjo[0:3][:, 3] /= 1000.0  # mm->m
+        command_point = qc.matrix2quat(tjo)
+        command_line = qc.get_command_pose(command_point)
+        rospy.loginfo(command_line)
+        self.pose_pub.publish(command_line)
+        rospy.sleep(3)
+        p2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+        with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+            p2_output = ndi.read().splitlines()[0]
+        self.textEdit_calibrate.append(p2_output)
+        distance, degree = qc.point_distance(point, p2)
+        sentence = "%s mm %s °" % (distance, degree)
+        self.textEdit_calibrate.append(sentence)
 
     def server_button_clicked(self):
         self.server_thread.start()
@@ -639,10 +664,13 @@ class Calibrate_Thread(QtCore.QThread):
             self.append_signal[str].emit("!!标定已人为中止!!")
         except:
             self.settext_signal[str].emit("!!标定失败,请查看控制台说明!!")
+            traceback.print_exc()
         else:
             window.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm 更新TJM
             self.settext_signal[str].emit(str(window.TJM))
-            subprocess.call("cp /home/lizq/win7share/{TJM.txt,TOB.txt,TBN.txt} /home/lizq/win7share/自动标定矩阵保存", shell=True)
+            subprocess.call("cp /home/lizq/win7share/TJM.txt /home/lizq/win7share/自动标定矩阵保存", shell=True)
+            subprocess.call("cp /home/lizq/win7share/TOB.txt /home/lizq/win7share/自动标定矩阵保存", shell=True)
+            subprocess.call("cp /home/lizq/win7share/TBN.txt /home/lizq/win7share/自动标定矩阵保存", shell=True)
         window.auto_calibrate_button.setChecked(False)
 
 

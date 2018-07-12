@@ -777,7 +777,7 @@
       <item row="1" column="1">
        <widget class="QLineEdit" name="lineEdit_joint_in">
         <property name="text">
-         <string>-50, 30, 0, -100, -30, -90, 0</string>
+         <string>-10,60,0,-65,22,-85,-30</string>
         </property>
        </widget>
       </item>
@@ -879,7 +879,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLineEdit" name="lineEdit_calibrate_step">
           <property name="text">
-           <string>9</string>
+           <string>13</string>
           </property>
          </widget>
         </item>
@@ -893,7 +893,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLineEdit" name="lineEdit_calibrate_lengh">
           <property name="text">
-           <string>0.015</string>
+           <string>0.01</string>
           </property>
          </widget>
         </item>
@@ -907,7 +907,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLineEdit" name="lineEdit_calibrate_rad">
           <property name="text">
-           <string>0.11</string>
+           <string>0.1</string>
           </property>
          </widget>
         </item>
@@ -976,7 +976,7 @@ p, li { white-space: pre-wrap; }
        <x>0</x>
        <y>30</y>
        <width>110</width>
-       <height>561</height>
+       <height>623</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1088,6 +1088,20 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="switch_manual_matrix_button">
         <property name="text">
          <string>手动标定矩阵</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_32">
+        <property name="text">
+         <string>自动标定步时</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_calibrate_time">
+        <property name="text">
+         <string>1</string>
         </property>
        </widget>
       </item>

@@ -15,7 +15,9 @@ import matlab.engine
 import socket
 import traceback
 
-
+#-20, 50, 0, -90, -20, -90, 0
+#-10,30,0,-100,20,-90,10
+#-10,60,0,-65,22,-85,-30 13步0.01m0.1rad标定位置
 class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
 
@@ -167,22 +169,24 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def finish_manual_calibrate_button_clicked(self):
         try:
+
             # 删除miss行
-            # with open('/home/lizq/win7share/ndi_data.txt', 'r') as f:
-            #     lines = f.readlines()
-            # with open('/home/lizq/win7share/ndi_data.txt', 'w') as f:
-            #     n = []
-            #     i = 0
-            #     for line in lines:
-            #         if not "miss" in line:
-            #             f.write(line)
-            #             n.append(i)
-            #         i += 1
-            # with open('/home/lizq/win7share/robot_data.txt', 'r') as f:
-            #     lines = f.readlines()
-            # with open('/home/lizq/win7share/robot_data.txt', 'w') as f:
-            #     for i in n:
-            #         f.write(lines[i])
+            with open('/home/lizq/win7share/ndi_data.txt', 'r') as f:
+                lines = f.readlines()
+            with open('/home/lizq/win7share/ndi_data.txt', 'w') as f:
+                n = []
+                i = 0
+                for line in lines:
+                    if not "miss" in line:
+                        f.write(line)
+                        n.append(i)
+                    i += 1
+            with open('/home/lizq/win7share/robot_data.txt', 'r') as f:
+                lines = f.readlines()
+            with open('/home/lizq/win7share/robot_data.txt', 'w') as f:
+                for i in n:
+                    f.write(lines[i])
+
             self.matlab_eng.hand_eye_calibration(nargout=0)
             self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
             self.textEdit_calibrate.setText(str(self.TJM))
@@ -625,6 +629,7 @@ class Calibrate_Thread(QtCore.QThread):
         step = int(window.lineEdit_calibrate_step.text())
         lengh = float(window.lineEdit_calibrate_lengh.text())
         rad = float(window.lineEdit_calibrate_rad.text())
+        f = 1.0/float(window.lineEdit_calibrate_time.text())
         # print step, type(step), lengh, type(lengh)
         try:
             for axs in ('rx', 'ry', 'rz', 'dx', 'dy', 'dz'):  # x,y,z旋转,x,y,z平移
@@ -635,7 +640,7 @@ class Calibrate_Thread(QtCore.QThread):
                     command_point = qc.get_command_pose(calibrate_point, n)
                     rospy.loginfo(command_point)
                     window.pose_pub.publish(command_point)
-                    rate = rospy.Rate(0.7)  # 0.7hz
+                    rate = rospy.Rate(f)  # 1hz
                     rate.sleep()
                     with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
                         ndi449 = ndi.read().splitlines()[0]

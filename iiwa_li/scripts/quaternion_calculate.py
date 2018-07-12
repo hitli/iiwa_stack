@@ -120,7 +120,7 @@ def quat_pose_multipy((dx1,dy1,dz1,x1,y1,z1,w1),(dx2,dy2,dz2,x2,y2,z2,w2)):
 
 def turn_TCP_axs_rad_len(position,axs,rad,len):  # 自动标定用
     if axs=='rx':
-        Tmat=quat2matrix((0,0,0,math.sin(rad/2.0),0,0,math.cos(rad/2.0)))  # 对x轴正转
+        Tmat=quat2matrix((0,0,0,-math.sin(rad/2.0),0,0,math.cos(rad/2.0)))  # 对x轴正转
     elif axs=='ry':
         Tmat=quat2matrix((0,0,0,0,math.sin(rad/2.0),0,math.cos(rad/2.0)))
     elif axs=='rz':

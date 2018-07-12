@@ -58,6 +58,8 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 线程,信号槽连接
         self.follow_thread = Follow_Thread()
         self.follow_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)  # 线程.信号.connect(槽)
+        self.mfollow_thread = MFollow_Thread()
+        self.mfollow_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
         self.calibrate_thread = Calibrate_Thread()
         self.calibrate_thread.append_signal[str].connect(self.textEdit_calibrate_append_slot)
         self.calibrate_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
@@ -224,6 +226,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def follow_button_clicked(self):
         self.follow_thread.start()
+
+    def mfollow_button_clicked(self):
+        self.mfollow_thread.start()
 
     def follow_pose_button_clicked(self):
         self.follow_pose_thread.start()
@@ -629,7 +634,7 @@ class Calibrate_Thread(QtCore.QThread):
         step = int(window.lineEdit_calibrate_step.text())
         lengh = float(window.lineEdit_calibrate_lengh.text())
         rad = float(window.lineEdit_calibrate_rad.text())
-        f = 1.0/float(window.lineEdit_calibrate_time.text())
+        freq = 1.0/float(window.lineEdit_calibrate_time.text())
         # print step, type(step), lengh, type(lengh)
         try:
             for axs in ('rx', 'ry', 'rz', 'dx', 'dy', 'dz'):  # x,y,z旋转,x,y,z平移
@@ -640,7 +645,7 @@ class Calibrate_Thread(QtCore.QThread):
                     command_point = qc.get_command_pose(calibrate_point, n)
                     rospy.loginfo(command_point)
                     window.pose_pub.publish(command_point)
-                    rate = rospy.Rate(f)  # 1hz
+                    rate = rospy.Rate(freq)  # 1hz
                     rate.sleep()
                     with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
                         ndi449 = ndi.read().splitlines()[0]
@@ -748,7 +753,7 @@ class Follow_Thread(QtCore.QThread):
                         tmb = qc.quat2matrix(ndi[0].tolist())
                         tmn = tmb.dot(tbn)
                         distance = ((tmn[0][3] - tmg[0][3])**2 + (tmg[1][3] - tmn[1][3])**2 +(tmg[2][3] - tmn[2][3])**2)**0.5
-                        sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：%fmm" % (tmg, tmn, distance)
+                        sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：%fmm" % (qc.matrix2quat(tmg), qc.matrix2quat(tmn), distance)
                     else:  # 看不到449时，针尖位姿通过关节角度传感器与ton取得，误差来源多了TJM,还算得慢
                         tjo = qc.quat2matrix(tcp)
                         tjo[0:3][:, 3] *= 1000
@@ -761,6 +766,62 @@ class Follow_Thread(QtCore.QThread):
                     gangzhen[3:] = tcp[3:]  # 使得TCP姿态不变，被动刚体朝向NDI，只做位移
                     tjn = qc.quat2matrix(gangzhen)
                     tjo = tjn.dot(tno)
+                    tjo[0:3][:, 3] /= 1000.0  # mm->m
+                    command_point = qc.get_command_pose(qc.matrix2quat(tjo))
+                    rospy.loginfo(command_point)
+                    window.pose_pub.publish(command_point)
+                    rate.sleep()
+            except:
+                pass
+
+
+class MFollow_Thread(QtCore.QThread):
+    settext_signal = QtCore.pyqtSignal(str)
+
+    def __int__(self):
+        super(MFollow_Thread, self).__init__()
+
+    def run(self):
+        rate = rospy.Rate(1)  # smart servo 可以达到 20ms 50hz
+        ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
+        tno = np.linalg.inv(ton)
+        tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
+        tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
+        tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+        while window.mfollow_button.isChecked():  # 等待NDI数据
+            try:
+                ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+                if math.isnan(ndi[0][0]):
+                    self.settext_signal[str].emit("等待被动刚体")
+                elif math.isnan(ndi[1][0]):
+                    self.settext_signal[str].emit("等待钢针")
+                else:
+                    tcp = qc.quat2matrix(window.tcp_pose)  # 米
+                    tcp[0:3][:, 3] *= 1000
+                    tmb = qc.quat2matrix(ndi[0].tolist())
+                    tmg = qc.quat2matrix(ndi[1].tolist())
+                    tmg = tmg.dot(tgg)  # 更正钢针位姿
+
+                    tmg = np.array([[tmg[0][2], -tmg[0][0], -tmg[0][1], tmg[0][3]],
+                                    [tmg[1][2], -tmg[1][0], -tmg[1][1], tmg[1][3]],
+                                    [tmg[2][2], -tmg[2][0], -tmg[2][1], tmg[2][3]],
+                                    [0.0, 0.0, 0.0, 1.0]])  # 目标位姿变换,此为位姿跟随
+                    tjo = tcp.dot(tob).dot(np.linalg.inv(tmb)).dot(tmg).dot(tno)
+
+                    # tjn = tcp.dot(tob).dot(np.linalg.inv(tmb)).dot(tmg)
+                    # tjn = np.array([[tcp[0][2], -tcp[0][0], -tcp[0][1], tjn[0][3]],
+                    #                 [tcp[1][2], -tcp[1][0], -tcp[1][1], tjn[1][3]],
+                    #                 [tcp[2][2], -tcp[2][0], -tcp[2][1], tjn[2][3]],
+                    #                 [0.0, 0.0, 0.0, 1.0]])  # 目标位姿变换,此为位置跟随
+                    # tjo = tjn.dot(tno)
+
+                    tmn = tmb.dot(tbn)
+                    tmn = qc.matrix2quat(tmn)
+                    tmg = qc.matrix2quat(tmg)
+                    distance,degree = qc.point_distance(tmn,tmg)
+                    sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (tmg, tmn, tmn[0]-tmg[0],tmn[1]-tmg[1],tmn[2]-tmg[2],distance,degree)
+                    self.settext_signal[str].emit(sentence)
+
                     tjo[0:3][:, 3] /= 1000.0  # mm->m
                     command_point = qc.get_command_pose(qc.matrix2quat(tjo))
                     rospy.loginfo(command_point)
@@ -866,13 +927,15 @@ class Server_Thread(QtCore.QThread):
             # else:
             #     reply = qc.matrix2quat(tmn)
 
-        elif "send tmc quat" in client_data:
-            data = client_data.splitlines()[1]
-            quat = eval(data)
-            fenmu = math.sqrt(quat[3] **2 + quat[4] **2 +quat[5] **2 +quat[6] **2)
-            x, y, z, w = [i / fenmu for i in [quat[3], quat[4], quat[5], quat[6]]]
-            self.tmc_quat = (quat[0],quat[1],quat[2],x,y,z,w)
-            reply = "tmc received"
+        elif "ask for tmg" in client_data:
+            try:
+                tmg = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1]
+                tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")
+                tmg = qc.quat2matrix(tmg).dot(tgg)
+            except:
+                reply = 'tmg is lost in ndi'
+            else:
+                reply = str(qc.matrix2quat(tmg))
 
         elif "move to point" in client_data:
             data = client_data.splitlines()[1]
@@ -939,11 +1002,13 @@ class Server_Thread(QtCore.QThread):
                                         [xy, yy, zy, tmn1[1]],
                                         [xz, yz, zz, tmn1[2]],
                                         [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
+                tmn_jinzhen_buchang = (-2.,0.,0.,0.,0.,0.,1.)
+
                 tmn_chuanci = np.array([[xx, yx, zx, tmn2[0]],
                                         [xy, yy, zy, tmn2[1]],
                                         [xz, yz, zz, tmn2[2]],
                                         [0.0, 0.0, 0.0, 1.0]])  # 穿刺点TMN位恣矩阵
-                tjo_1 = tjm.dot(tmn_jinzhen).dot(tno)
+                tjo_1 = tjm.dot(tmn_jinzhen).dot(qc.quat2matrix(tmn_jinzhen_buchang)).dot(tno)
                 tjo_1[0:3][:, 3] /= 1000.0
                 self.TJO_jinzhen = tjo_1
                 tjo_2 = tjm.dot(tmn_chuanci).dot(tno)

@@ -14,11 +14,41 @@
       <file leaf-file-name="iiwa_toolbox.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-9113">
-              <caret line="31" column="54" selection-start-line="31" selection-start-column="54" selection-end-line="31" selection-end-column="54" />
+            <state relative-caret-position="41">
+              <caret line="661" lean-forward="true" selection-start-line="661" selection-end-line="661" />
               <folding>
                 <element signature="e#25#61#0" expanded="true" />
+                <element signature="e#15652#15667#0" />
+                <element signature="e#18564#18578#0" />
+                <element signature="e#22219#22234#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="whereisg.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/whereisg.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="quaternion_calculate.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2">
+              <caret line="75" column="18" lean-forward="true" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="client.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/client.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="26" column="13" lean-forward="true" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -365,7 +395,7 @@
     <frame x="64" y="-11" width="1297" height="780" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49609983" visible="true" weight="0.19339623" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49609983" visible="true" weight="0.19339623" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32948583" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50054586" side_tool="true" weight="0.39874083" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49945414" weight="0.3775351" />
@@ -601,20 +631,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/whereisg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="11" lean-forward="true" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="51" column="33" selection-start-line="51" selection-start-column="33" selection-end-line="51" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/test/pubtest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -642,13 +658,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="554">
-          <caret line="122" column="33" selection-start-line="122" selection-start-column="33" selection-end-line="122" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/client_window.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="359">
@@ -656,12 +665,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/whereisg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/quaternion_calculate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2">
+          <caret line="75" column="18" lean-forward="true" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="26" column="13" lean-forward="true" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9113">
-          <caret line="31" column="54" selection-start-line="31" selection-start-column="54" selection-end-line="31" selection-end-column="54" />
+        <state relative-caret-position="41">
+          <caret line="661" lean-forward="true" selection-start-line="661" selection-end-line="661" />
           <folding>
             <element signature="e#25#61#0" expanded="true" />
+            <element signature="e#15652#15667#0" />
+            <element signature="e#18564#18578#0" />
+            <element signature="e#22219#22234#0" />
           </folding>
         </state>
       </provider>

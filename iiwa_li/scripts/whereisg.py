@@ -15,6 +15,7 @@ while True:
         else:
             tmg = qc.quat2matrix(ndi[1].tolist())  # 被动刚体位姿
             tmg = tmg.dot(tgg)  # 更正钢针位姿
+            print "tmg"
             print qc.matrix2quat(tmg)
     except:
         pass

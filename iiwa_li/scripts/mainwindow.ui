@@ -976,7 +976,7 @@ p, li { white-space: pre-wrap; }
        <x>0</x>
        <y>30</y>
        <width>110</width>
-       <height>623</height>
+       <height>662</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -984,6 +984,16 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="follow_button">
         <property name="text">
          <string>针尖位置跟随</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="mfollow_button">
+        <property name="text">
+         <string>反馈位置跟随</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -1718,8 +1728,8 @@ p, li { white-space: pre-wrap; }
    <slot>calibrate_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1091</x>
-     <y>250</y>
+     <x>1092</x>
+     <y>289</y>
     </hint>
     <hint type="destinationlabel">
      <x>1111</x>
@@ -1846,8 +1856,8 @@ p, li { white-space: pre-wrap; }
    <slot>refresh_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1130</x>
-     <y>172</y>
+     <x>1131</x>
+     <y>211</y>
     </hint>
     <hint type="destinationlabel">
      <x>1063</x>
@@ -2214,8 +2224,8 @@ p, li { white-space: pre-wrap; }
    <slot>follow_pose_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1172</x>
-     <y>133</y>
+     <x>1173</x>
+     <y>172</y>
     </hint>
     <hint type="destinationlabel">
      <x>1188</x>
@@ -2230,8 +2240,8 @@ p, li { white-space: pre-wrap; }
    <slot>ndi_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1139</x>
-     <y>197</y>
+     <x>1140</x>
+     <y>250</y>
     </hint>
     <hint type="destinationlabel">
      <x>1187</x>
@@ -2262,8 +2272,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_jinzhendian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1108</x>
-     <y>357</y>
+     <x>1109</x>
+     <y>396</y>
     </hint>
     <hint type="destinationlabel">
      <x>1189</x>
@@ -2278,8 +2288,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_chuancidian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1097</x>
-     <y>396</y>
+     <x>1098</x>
+     <y>435</y>
     </hint>
     <hint type="destinationlabel">
      <x>1196</x>
@@ -2294,8 +2304,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_move_jinzhendian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1163</x>
-     <y>474</y>
+     <x>1164</x>
+     <y>513</y>
     </hint>
     <hint type="destinationlabel">
      <x>1192</x>
@@ -2310,8 +2320,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_move_chuancidian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1142</x>
-     <y>513</y>
+     <x>1143</x>
+     <y>552</y>
     </hint>
     <hint type="destinationlabel">
      <x>1188</x>
@@ -2326,8 +2336,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_cal_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1094</x>
-     <y>435</y>
+     <x>1095</x>
+     <y>474</y>
     </hint>
     <hint type="destinationlabel">
      <x>1063</x>
@@ -2342,8 +2352,8 @@ p, li { white-space: pre-wrap; }
    <slot>switch_auto_matrix_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1122</x>
-     <y>581</y>
+     <x>1123</x>
+     <y>620</y>
     </hint>
     <hint type="destinationlabel">
      <x>1084</x>
@@ -2358,8 +2368,8 @@ p, li { white-space: pre-wrap; }
    <slot>switch_manual_matrix_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1157</x>
-     <y>620</y>
+     <x>1158</x>
+     <y>659</y>
     </hint>
     <hint type="destinationlabel">
      <x>1072</x>
@@ -2390,12 +2400,28 @@ p, li { white-space: pre-wrap; }
    <slot>save_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1136</x>
-     <y>283</y>
+     <x>1137</x>
+     <y>328</y>
     </hint>
     <hint type="destinationlabel">
      <x>1084</x>
      <y>276</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mfollow_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>mfollow_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1145</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1086</x>
+     <y>115</y>
     </hint>
    </hints>
   </connection>
@@ -2455,5 +2481,6 @@ p, li { white-space: pre-wrap; }
   <slot>switch_manual_matrix_button_clicked()</slot>
   <slot>server_button_clicked()</slot>
   <slot>save_error_button_clicked()</slot>
+  <slot>mfollow_button_clicked()</slot>
  </slots>
 </ui>

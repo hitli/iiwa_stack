@@ -52,23 +52,16 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="send_TMC_btn">
+          <widget class="QPushButton" name="tmg_btn">
            <property name="text">
-            <string>发射标定向量</string>
+            <string>探针针尖</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="jinzhendian_btn">
+          <widget class="QPushButton" name="path_btn">
            <property name="text">
-            <string>进针点坐标</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="chuancidian_btn">
-           <property name="text">
-            <string>穿刺点坐标</string>
+            <string>穿刺路径</string>
            </property>
           </widget>
          </item>
@@ -184,38 +177,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>send_TMC_btn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>send_TMC_btn_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>569</x>
-     <y>144</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>560</x>
-     <y>85</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>jinzhendian_btn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>jinzhendian_btn_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>569</x>
-     <y>183</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>434</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>move_jinzhendian_btn</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
@@ -223,7 +184,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>569</x>
-     <y>261</y>
+     <y>247</y>
     </hint>
     <hint type="destinationlabel">
      <x>437</x>
@@ -239,27 +200,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>569</x>
-     <y>300</y>
+     <y>291</y>
     </hint>
     <hint type="destinationlabel">
      <x>436</x>
      <y>243</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chuancidian_btn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>chuancidian_btn_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>569</x>
-     <y>222</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>435</x>
-     <y>169</y>
     </hint>
    </hints>
   </connection>
@@ -327,6 +272,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>path_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>path_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>517</x>
+     <y>186</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>459</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tmg_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>tmg_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>511</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>457</x>
+     <y>140</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>get_TMN_btn_clicked()</slot>
@@ -339,5 +316,7 @@
   <slot>stop_connect_btn_clicked()</slot>
   <slot>move_btn_clicked()</slot>
   <slot>keep_get_TMN_btn_clicked()</slot>
+  <slot>path_btn_clicked()</slot>
+  <slot>tmg_btn_clicked()</slot>
  </slots>
 </ui>

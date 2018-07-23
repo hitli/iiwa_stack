@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>850</height>
+    <width>1216</width>
+    <height>929</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>530</y>
+      <y>610</y>
       <width>511</width>
       <height>261</height>
      </rect>
@@ -639,7 +639,7 @@
       <x>10</x>
       <y>0</y>
       <width>511</width>
-      <height>301</height>
+      <height>381</height>
      </rect>
     </property>
     <property name="title">
@@ -651,10 +651,13 @@
        <x>0</x>
        <y>25</y>
        <width>511</width>
-       <height>274</height>
+       <height>352</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="lineEdit_joint_out"/>
+      </item>
       <item row="0" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
@@ -673,56 +676,8 @@
         </item>
        </layout>
       </item>
-      <item row="6" column="1">
-       <widget class="QLabel" name="label_19">
-        <property name="text">
-         <string>NDI读数</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_joint_out"/>
-      </item>
       <item row="5" column="1">
        <widget class="QLineEdit" name="lineEdit_pose_out"/>
-      </item>
-      <item row="7" column="1">
-       <layout class="QFormLayout" name="formLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_20">
-          <property name="text">
-           <string>449TCP</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_21">
-          <property name="text">
-           <string>340钢针</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_22">
-          <property name="text">
-           <string>339副针</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="lineEdit_ndi449">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="lineEdit_ndi340"/>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="lineEdit_ndi339"/>
-        </item>
-       </layout>
       </item>
       <item row="3" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -742,6 +697,103 @@
         </item>
        </layout>
       </item>
+      <item row="7" column="1">
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_20">
+          <property name="text">
+           <string>449TCP</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lineEdit_ndi449">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_33">
+          <property name="text">
+           <string>穿刺针尖</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineEdit_tmn"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>340钢针</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="lineEdit_ndi340"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_34">
+          <property name="text">
+           <string>探针针尖</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="lineEdit_tmg"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_22">
+          <property name="text">
+           <string>339副针</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="lineEdit_ndi339"/>
+        </item>
+       </layout>
+      </item>
+      <item row="6" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="QLabel" name="label_19">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="lineEdit_ndi449_copy_button">
+          <property name="text">
+           <string>复制449</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="lineEdit_tmn_copy_button">
+          <property name="text">
+           <string>复制tmn</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="lineEdit_ndi340_copy_button">
+          <property name="text">
+           <string>复制340</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="lineEdit_tmg_copy_button">
+          <property name="text">
+           <string>复制tmg</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </widget>
@@ -749,7 +801,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>300</y>
+      <y>380</y>
       <width>511</width>
       <height>231</height>
      </rect>
@@ -840,7 +892,7 @@
       <x>530</x>
       <y>0</y>
       <width>551</width>
-      <height>311</height>
+      <height>351</height>
      </rect>
     </property>
     <property name="title">
@@ -852,7 +904,7 @@
        <x>0</x>
        <y>20</y>
        <width>551</width>
-       <height>291</height>
+       <height>331</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -911,6 +963,24 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QLabel" name="label_32">
+          <property name="text">
+           <string>步时(s)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_calibrate_time">
+          <property name="text">
+           <string>1</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
          <widget class="QPushButton" name="auto_calibrate_button">
           <property name="text">
@@ -976,24 +1046,21 @@ p, li { white-space: pre-wrap; }
        <x>0</x>
        <y>30</y>
        <width>110</width>
-       <height>662</height>
+       <height>551</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QPushButton" name="follow_button">
+       <widget class="QLabel" name="label_35">
         <property name="text">
-         <string>针尖位置跟随</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
+         <string>tjm控制</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="mfollow_button">
+       <widget class="QPushButton" name="follow_button">
         <property name="text">
-         <string>反馈位置跟随</string>
+         <string>针尖位置跟随</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -1011,9 +1078,47 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="label_36">
+        <property name="text">
+         <string>反馈控制</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="mfollow_button">
+        <property name="text">
+         <string>反馈位置跟随</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="mfollow_pose_button">
+        <property name="text">
+         <string>反馈位姿跟随</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ndi_distance_add_button">
+        <property name="text">
+         <string>NDI距离补偿</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="refresh_button">
         <property name="text">
          <string>刷新</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_37">
+        <property name="text">
+         <string>误差分析</string>
         </property>
        </widget>
       </item>
@@ -1039,48 +1144,6 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_28">
-        <property name="text">
-         <string>穿刺测试</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="puncture_jinzhendian_button">
-        <property name="text">
-         <string>进针点</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="puncture_chuancidian_button">
-        <property name="text">
-         <string>穿刺点</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="puncture_cal_button">
-        <property name="text">
-         <string>解算</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="puncture_move_jinzhendian_button">
-        <property name="text">
-         <string>运动到进针点</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="puncture_move_chuancidian_button">
-        <property name="text">
-         <string>运动到穿刺点</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="label_29">
         <property name="text">
          <string>切换标定矩阵</string>
@@ -1101,20 +1164,6 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="label_32">
-        <property name="text">
-         <string>自动标定步时</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_calibrate_time">
-        <property name="text">
-         <string>1</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </widget>
@@ -1122,7 +1171,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>530</x>
-      <y>310</y>
+      <y>350</y>
       <width>551</width>
       <height>211</height>
      </rect>
@@ -1155,7 +1204,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLineEdit" name="lineEdit_ip">
           <property name="text">
-           <string>192.168.168.100</string>
+           <string>192.168.0.10</string>
           </property>
          </widget>
         </item>
@@ -1192,7 +1241,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>520</y>
+      <y>600</y>
       <width>541</width>
       <height>261</height>
      </rect>
@@ -1563,13 +1612,67 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>560</y>
+      <width>563</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_10">
+     <item>
+      <widget class="QLabel" name="label_28">
+       <property name="text">
+        <string>穿刺测试</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="puncture_jinzhendian_button">
+       <property name="text">
+        <string>进针点</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="puncture_chuancidian_button">
+       <property name="text">
+        <string>穿刺点</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="puncture_cal_button">
+       <property name="text">
+        <string>解算</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="puncture_move_jinzhendian_button">
+       <property name="text">
+        <string>运动到进针点</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="puncture_move_chuancidian_button">
+       <property name="text">
+        <string>运动到穿刺点</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
+     <width>1216</width>
      <height>31</height>
     </rect>
    </property>
@@ -1616,8 +1719,8 @@ p, li { white-space: pre-wrap; }
    <slot>pose_absolute_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>498</x>
-     <y>560</y>
+     <x>518</x>
+     <y>640</y>
     </hint>
     <hint type="destinationlabel">
      <x>316</x>
@@ -1632,8 +1735,8 @@ p, li { white-space: pre-wrap; }
    <slot>pose_add_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>200</x>
-     <y>560</y>
+     <x>202</x>
+     <y>640</y>
     </hint>
     <hint type="destinationlabel">
      <x>186</x>
@@ -1680,8 +1783,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_add_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>65</x>
-     <y>457</y>
+     <x>67</x>
+     <y>537</y>
     </hint>
     <hint type="destinationlabel">
      <x>74</x>
@@ -1696,8 +1799,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_absolute_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>498</x>
-     <y>457</y>
+     <x>518</x>
+     <y>537</y>
     </hint>
     <hint type="destinationlabel">
      <x>326</x>
@@ -1728,8 +1831,8 @@ p, li { white-space: pre-wrap; }
    <slot>calibrate_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1092</x>
-     <y>289</y>
+     <x>1093</x>
+     <y>454</y>
     </hint>
     <hint type="destinationlabel">
      <x>1111</x>
@@ -1744,8 +1847,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_right_button_7_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>462</x>
-     <y>613</y>
+     <x>482</x>
+     <y>693</y>
     </hint>
     <hint type="destinationlabel">
      <x>447</x>
@@ -1761,7 +1864,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>571</x>
-     <y>620</y>
+     <y>731</y>
     </hint>
     <hint type="destinationlabel">
      <x>573</x>
@@ -1777,7 +1880,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>118</x>
-     <y>613</y>
+     <y>693</y>
     </hint>
     <hint type="destinationlabel">
      <x>94</x>
@@ -1793,7 +1896,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>858</x>
-     <y>590</y>
+     <y>701</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -1841,7 +1944,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>1108</x>
-     <y>76</y>
+     <y>105</y>
     </hint>
     <hint type="destinationlabel">
      <x>1065</x>
@@ -1856,8 +1959,8 @@ p, li { white-space: pre-wrap; }
    <slot>refresh_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1131</x>
-     <y>211</y>
+     <x>1132</x>
+     <y>347</y>
     </hint>
     <hint type="destinationlabel">
      <x>1063</x>
@@ -1872,8 +1975,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_left_button_6_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>101</x>
-     <y>641</y>
+     <x>118</x>
+     <y>725</y>
     </hint>
     <hint type="destinationlabel">
      <x>121</x>
@@ -1888,8 +1991,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_left_button_5_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>670</y>
+     <x>118</x>
+     <y>757</y>
     </hint>
     <hint type="destinationlabel">
      <x>83</x>
@@ -1904,8 +2007,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_left_button_4_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>109</x>
-     <y>703</y>
+     <x>118</x>
+     <y>789</y>
     </hint>
     <hint type="destinationlabel">
      <x>4</x>
@@ -1920,8 +2023,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_left_button_3_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>736</y>
+     <x>118</x>
+     <y>821</y>
     </hint>
     <hint type="destinationlabel">
      <x>2</x>
@@ -1936,8 +2039,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_left_button_2_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>87</x>
-     <y>765</y>
+     <x>118</x>
+     <y>853</y>
     </hint>
     <hint type="destinationlabel">
      <x>4</x>
@@ -1952,8 +2055,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_left_button_1_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>109</x>
-     <y>799</y>
+     <x>118</x>
+     <y>885</y>
     </hint>
     <hint type="destinationlabel">
      <x>5</x>
@@ -1969,7 +2072,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>482</x>
-     <y>645</y>
+     <y>725</y>
     </hint>
     <hint type="destinationlabel">
      <x>509</x>
@@ -1985,7 +2088,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>482</x>
-     <y>677</y>
+     <y>757</y>
     </hint>
     <hint type="destinationlabel">
      <x>514</x>
@@ -2001,7 +2104,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>482</x>
-     <y>709</y>
+     <y>789</y>
     </hint>
     <hint type="destinationlabel">
      <x>517</x>
@@ -2017,7 +2120,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>482</x>
-     <y>741</y>
+     <y>821</y>
     </hint>
     <hint type="destinationlabel">
      <x>506</x>
@@ -2032,8 +2135,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_right_button_2_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>453</x>
-     <y>765</y>
+     <x>482</x>
+     <y>853</y>
     </hint>
     <hint type="destinationlabel">
      <x>511</x>
@@ -2048,8 +2151,8 @@ p, li { white-space: pre-wrap; }
    <slot>joint_right_button_1_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>793</y>
+     <x>482</x>
+     <y>885</y>
     </hint>
     <hint type="destinationlabel">
      <x>510</x>
@@ -2065,7 +2168,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>724</x>
-     <y>604</y>
+     <y>715</y>
     </hint>
     <hint type="destinationlabel">
      <x>545</x>
@@ -2081,7 +2184,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>650</x>
-     <y>648</y>
+     <y>759</y>
     </hint>
     <hint type="destinationlabel">
      <x>716</x>
@@ -2097,7 +2200,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>615</x>
-     <y>787</y>
+     <y>891</y>
     </hint>
     <hint type="destinationlabel">
      <x>612</x>
@@ -2113,7 +2216,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>723</y>
+     <y>821</y>
     </hint>
     <hint type="destinationlabel">
      <x>693</x>
@@ -2129,7 +2232,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>553</x>
-     <y>692</y>
+     <y>803</y>
     </hint>
     <hint type="destinationlabel">
      <x>514</x>
@@ -2145,7 +2248,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>1034</x>
-     <y>613</y>
+     <y>701</y>
     </hint>
     <hint type="destinationlabel">
      <x>972</x>
@@ -2161,7 +2264,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>919</x>
-     <y>632</y>
+     <y>743</y>
     </hint>
     <hint type="destinationlabel">
      <x>1064</x>
@@ -2177,7 +2280,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>918</x>
-     <y>765</y>
+     <y>876</y>
     </hint>
     <hint type="destinationlabel">
      <x>1063</x>
@@ -2193,7 +2296,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>1017</x>
-     <y>705</y>
+     <y>801</y>
     </hint>
     <hint type="destinationlabel">
      <x>1063</x>
@@ -2209,7 +2312,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>870</x>
-     <y>700</y>
+     <y>801</y>
     </hint>
     <hint type="destinationlabel">
      <x>1064</x>
@@ -2224,8 +2327,8 @@ p, li { white-space: pre-wrap; }
    <slot>follow_pose_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1173</x>
-     <y>172</y>
+     <x>1174</x>
+     <y>162</y>
     </hint>
     <hint type="destinationlabel">
      <x>1188</x>
@@ -2240,8 +2343,8 @@ p, li { white-space: pre-wrap; }
    <slot>ndi_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1140</x>
-     <y>250</y>
+     <x>1141</x>
+     <y>415</y>
     </hint>
     <hint type="destinationlabel">
      <x>1187</x>
@@ -2272,8 +2375,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_jinzhendian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1109</x>
-     <y>396</y>
+     <x>616</x>
+     <y>587</y>
     </hint>
     <hint type="destinationlabel">
      <x>1189</x>
@@ -2288,8 +2391,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_chuancidian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1098</x>
-     <y>435</y>
+     <x>696</x>
+     <y>587</y>
     </hint>
     <hint type="destinationlabel">
      <x>1196</x>
@@ -2304,8 +2407,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_move_jinzhendian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1164</x>
-     <y>513</y>
+     <x>944</x>
+     <y>587</y>
     </hint>
     <hint type="destinationlabel">
      <x>1192</x>
@@ -2320,8 +2423,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_move_chuancidian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1143</x>
-     <y>552</y>
+     <x>1037</x>
+     <y>587</y>
     </hint>
     <hint type="destinationlabel">
      <x>1188</x>
@@ -2336,8 +2439,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_cal_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1095</x>
-     <y>474</y>
+     <x>784</x>
+     <y>587</y>
     </hint>
     <hint type="destinationlabel">
      <x>1063</x>
@@ -2352,8 +2455,8 @@ p, li { white-space: pre-wrap; }
    <slot>switch_auto_matrix_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1123</x>
-     <y>620</y>
+     <x>1124</x>
+     <y>561</y>
     </hint>
     <hint type="destinationlabel">
      <x>1084</x>
@@ -2368,8 +2471,8 @@ p, li { white-space: pre-wrap; }
    <slot>switch_manual_matrix_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1158</x>
-     <y>659</y>
+     <x>1159</x>
+     <y>600</y>
     </hint>
     <hint type="destinationlabel">
      <x>1072</x>
@@ -2400,8 +2503,8 @@ p, li { white-space: pre-wrap; }
    <slot>save_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1137</x>
-     <y>328</y>
+     <x>1138</x>
+     <y>493</y>
     </hint>
     <hint type="destinationlabel">
      <x>1084</x>
@@ -2417,11 +2520,107 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>1145</x>
-     <y>117</y>
+     <y>214</y>
     </hint>
     <hint type="destinationlabel">
      <x>1086</x>
      <y>115</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_ndi449_copy_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>lineEdit_ndi449_copy_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>158</x>
+     <y>223</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>2</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_tmn_copy_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>lineEdit_tmn_copy_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>226</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_ndi340_copy_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>lineEdit_ndi340_copy_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>356</x>
+     <y>224</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>233</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_tmg_copy_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>lineEdit_tmg_copy_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>467</x>
+     <y>229</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mfollow_pose_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>mfollow_pose_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1175</x>
+     <y>245</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1207</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ndi_distance_add_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ndi_distance_add_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1182</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1209</x>
+     <y>281</y>
     </hint>
    </hints>
   </connection>
@@ -2482,5 +2681,12 @@ p, li { white-space: pre-wrap; }
   <slot>server_button_clicked()</slot>
   <slot>save_error_button_clicked()</slot>
   <slot>mfollow_button_clicked()</slot>
+  <slot>lineEdit_ndi449_copy_button_clicked()</slot>
+  <slot>lineEdit_ndi340_copy_button_clicked()</slot>
+  <slot>lineEdit_ndi339_copy_button_clicked()</slot>
+  <slot>lineEdit_tmn_copy_button_clicked()</slot>
+  <slot>lineEdit_tmg_copy_button_clicked()</slot>
+  <slot>mfollow_pose_button_clicked()</slot>
+  <slot>ndi_distance_add_button_clicked()</slot>
  </slots>
 </ui>

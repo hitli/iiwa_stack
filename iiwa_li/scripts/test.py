@@ -123,4 +123,19 @@ if __name__ == '__main__':
     # print eval(client_data[1])
     # s = str((137.5000, 192.4200, -1686.9700, 0.1686, -0.5152, 0.2581, 0.7996))
     # print type(eval(s))
-    subprocess.call("cp /home/lizq/win7share/TJM.txt /home/lizq/win7share/自动标定矩阵保存", shell=True)
+    # TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+    # TBN_quat = qc.matrix2quat(TBN)
+    #
+    # with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+    #     ndi = ndi.read().splitlines()
+    #     print eval(ndi[1])
+    #
+    # np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1].tolist()
+    tjg = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+    print tjg
+    tjn = np.array([[tjg[0][2], -tjg[0][0], -tjg[0][1], tjg[0][3]],
+                    [tjg[1][2], -tjg[1][0], -tjg[1][1], tjg[1][3]],
+                    [tjg[2][2], -tjg[2][0], -tjg[2][1], tjg[2][3]],
+                    [0.0, 0.0, 0.0, 1.0]])
+    print np.linalg.inv(tjg).dot(tjn)
+    print qc.matrix2quat( np.linalg.inv(tjg).dot(tjn))

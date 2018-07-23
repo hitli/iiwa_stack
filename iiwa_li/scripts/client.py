@@ -43,16 +43,14 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         print TMN
         # time.sleep(0.5)
 
+    def tmg_btn_clicked(self):
+        self.sk.sendall("ask for tmg")
+        TMG = self.sk.recv(1024)
+        self.textEdit.append(str(TMG))
+        print TMG
+
     def keep_get_TMN_btn_clicked(self):
         self.get_TMN_thread.start()
-
-    def send_TMC_btn_clicked(self):
-        TMC = (137.5000,192.4200,-1686.9700,0.1686,-0.5152,0.2581,0.7996)
-        sentence = "send tmc quat\n" + str(TMC)
-        self.sk.sendall(sentence)
-        self.textEdit.append(sentence)
-        reply = self.sk.recv(1024)
-        self.textEdit.append(reply)
 
     def move_btn_clicked(self):
         point = (-40.4500,289.9500,-1615.9700,0.0,0.0,0.0,1.0)
@@ -62,17 +60,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         reply = self.sk.recv(1024)
         self.textEdit.append(reply)
 
-    def jinzhendian_btn_clicked(self):
-        p1 = (-40.4500,289.9500,-1615.9700,0.0,0.0,0.0,1.0)
-        sentence = "send entry point\n"+str(p1)
-        self.textEdit.append(sentence)
-        self.sk.sendall(sentence)
-        reply = self.sk.recv(1024)
-        self.textEdit.append(reply)
-
-    def chuancidian_btn_clicked(self):
-        p1 = (-44.3000,276.4300,-1610.8900,0.0,0.0,0.0,1.0)
-        sentence = "send puncture point\n"+str(p1)
+    def path_btn_clicked(self):
+        path = (-40.4500,289.9500,-1615.9700,-44.3000,276.4300,-1610.8900)
+        sentence = "send path\n"+str(path)
         self.textEdit.append(sentence)
         self.sk.sendall(sentence)
         reply = self.sk.recv(1024)

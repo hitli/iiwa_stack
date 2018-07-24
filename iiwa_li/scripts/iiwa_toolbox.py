@@ -50,7 +50,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # subprocess.Popen('roscore')
         # 启动matlab核心
         print "加载matlab核心"
-        # self.matlab_eng = matlab.engine.start_matlab()
+        self.matlab_eng = matlab.engine.start_matlab()
 
         #  启动节点
         rospy.init_node('iiwa_toolbox', anonymous=True)
@@ -73,6 +73,8 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.mfollow_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
         self.mfollow_pose_thread = MFollow_Pose_Thread()
         self.mfollow_pose_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
+        self.distance_follow_thread = Distance_Follow_Thread()
+        self.distance_follow_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)  # 线程.信号.connect(槽)
         self.calibrate_thread = Calibrate_Thread()
         self.calibrate_thread.append_signal[str].connect(self.textEdit_calibrate_append_slot)
         self.calibrate_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
@@ -267,6 +269,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def ndi_distance_add_button_clicked(self):
         pass
+
+    def distance_follow_button_clicked(self):
+        self.distance_follow_thread.start()
 
     def puncture_jinzhendian_button_clicked(self):
         self.puncture_point1 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1].tolist()
@@ -902,12 +907,11 @@ class MFollow_Thread(QtCore.QThread):
                     tcp[0:3][:, 3] *= 1000
                     tmb = qc.quat2matrix(ndi[0].tolist())
                     tmg = qc.quat2matrix(ndi[1].tolist())
-                    tmg = tmg.dot(tgg)  # 更正钢针位姿
-
+                    tmg = tmg.dot(tgg)
                     tjn = tcp.dot(tob).dot(np.linalg.inv(tmb)).dot(tmg)
-                    tjn = np.array([[tcp[0][2], -tcp[0][0], -tcp[0][1], tjn[0][3]],
-                                    [tcp[1][2], -tcp[1][0], -tcp[1][1], tjn[1][3]],
-                                    [tcp[2][2], -tcp[2][0], -tcp[2][1], tjn[2][3]],
+                    tjn = np.array([[tcp[0][0], tcp[0][1], tcp[0][2], tjn[0][3]],
+                                    [tcp[1][0], tcp[1][1], tcp[1][2], tjn[1][3]],
+                                    [tcp[2][0], tcp[2][1], tcp[2][2], tjn[2][3]],
                                     [0.0, 0.0, 0.0, 1.0]])  # 目标位姿变换,此为位置跟随
                     tjo = tjn.dot(tno)
 
@@ -940,7 +944,7 @@ class MFollow_Pose_Thread(QtCore.QThread):
         tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
         tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
         tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
-        while window.mfollow_button.isChecked():  # 等待NDI数据
+        while window.mfollow_pose_button_clicked().isChecked():  # 等待NDI数据
             try:
                 ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
                 if math.isnan(ndi[0][0]):
@@ -983,6 +987,48 @@ class MFollow_Pose_Thread(QtCore.QThread):
                 pass
 
 
+class Distance_Follow_Thread(QtCore.QThread):
+    settext_signal = QtCore.pyqtSignal(str)
+
+    def __int__(self):
+        super(Distance_Follow_Thread, self).__init__()
+
+    def run(self):
+        rate = rospy.Rate(2)  # smart servo 可以达到 20ms 50hz
+        ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
+        tno = np.linalg.inv(ton)
+        tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
+        tgg_quat = qc.matrix2quat(tgg)
+        tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+        tbn_quat = qc.matrix2quat(tbn)
+        while window.distance_follow_button.isChecked():  # 等待NDI数据
+            try:
+                ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+                if math.isnan(ndi[0][0]):
+                    self.settext_signal[str].emit("等待被动刚体")
+                elif math.isnan(ndi[1][0]):
+                    self.settext_signal[str].emit("等待钢针")
+                else:
+                    tcp = qc.quat2matrix(window.tcp_pose)  # 米
+                    tcp[0:3][:, 3] *= 1000
+                    tmn = qc.quat_pose_multipy(ndi[0].tolist(),tbn_quat)
+                    tmg = qc.quat_pose_multipy(ndi[1].tolist(),tgg_quat)
+                    tng = np.linalg.inv(qc.quat2matrix(tmn)).dot(qc.quat2matrix(tmg))
+                    too = (tng[0][3],tng[1][3],tng[2][3],0,0,0,1)
+                    tjo = tcp.dot(qc.quat2matrix(too))
+                    distance,degree = qc.point_distance(tmn,tmg)
+                    sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\ntngx:%f,y:%f,z:%f\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (tmg, tmn,tng[0][3],tng[1][3],tng[2][3], tmn[0]-tmg[0],tmn[1]-tmg[1],tmn[2]-tmg[2],distance,degree)
+                    self.settext_signal[str].emit(sentence)
+                    tjo[0:3][:, 3] /= 1000.0  # mm->m
+                    command_point = qc.get_command_pose(qc.matrix2quat(tjo))
+                    rospy.loginfo(command_point)
+                    window.pose_pub.publish(command_point)
+                    rate.sleep()
+            except Exception as e:
+                print e
+                print traceback.print_exc()
+
+
 class Server_Thread(QtCore.QThread):
     settext_signal = QtCore.pyqtSignal(str)
     append_signal = QtCore.pyqtSignal(str)
@@ -1011,6 +1057,7 @@ class Server_Thread(QtCore.QThread):
                     client_data = conn.recv(1024)  # 接受套接字的数据。数据以字符串形式返回，bufsize指定最多可以接收的数量。
                     self.append_signal[str].emit(str(client_data))  # 打印对方的数据
                     reply = self.check_out(client_data)  # 处理数据
+                    print reply
                     conn.sendall(reply)  # 向对方发送数据
                 # 客户端发送flag，比如0就返回针尖位置，可以循环发0
                 # 再写个客户端的界面，可以手写
@@ -1029,12 +1076,11 @@ class Server_Thread(QtCore.QThread):
                 ndi449 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
                 tmn = list(qc.quat_pose_multipy(ndi449,window.TBN_quat))
             except:
-                reply = 'tmn is lost in ndi'
+                reply = '0,0,0,0,0,0,0,0'
             else:
                 for i in range(7):
                     tmn[i] = round(tmn[i], 6)
                 reply = ','.join(str(i) for i in tmn)
-                print reply
             # 机械臂数据
             # try:
             #     tjm = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")
@@ -1052,12 +1098,11 @@ class Server_Thread(QtCore.QThread):
                 tmg = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1]
                 tmg = list(qc.quat_pose_multipy(tmg,window.TGG_quat))
             except:
-                reply = 'tmg is lost in ndi'
+                reply = '0'
             else:
                 for i in range(7):
                     tmg[i] = round(tmg[i], 6)
                 reply = ','.join(str(i) for i in tmg)
-                print reply
 
         # elif "move to point" in client_data:
         #     data = client_data.splitlines()[1]
@@ -1075,65 +1120,71 @@ class Server_Thread(QtCore.QThread):
         #         reply = "command received"
 
         elif "send path" in client_data:
-            data = client_data.splitlines()[1]
-            path = eval(data)
-            tmn1 = path[0:3]
-            tmn2 = path[3:6]
-            tjm = window.TJM  # mm
-            ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
-            tno = np.linalg.inv(ton)
-            fenmu = math.sqrt((tmn2[0] - tmn1[0]) ** 2 + (tmn2[1] - tmn1[1]) ** 2 + (tmn2[2] - tmn1[2]) ** 2)  # 归一化
-            xx = (tmn2[0] - tmn1[0]) / fenmu
-            xy = (tmn2[1] - tmn1[1]) / fenmu
-            xz = (tmn2[2] - tmn1[2]) / fenmu
-            tcp = qc.quat2matrix(window.tcp_pose)
-            y0x = tcp[0][1]
-            y0y = tcp[1][1]
-            y0z = tcp[2][1]  # 穿刺针y方向应取当前tcp y方向附近，可以被ndi所视方向
-            zx, zy, zz = qc.chacheng(xx, xy, xz, y0x, y0y, y0z)  # x叉乘y`得到TCP在视觉空间的z方向，保证x的方向
-            yx, yy, yz = qc.chacheng(zx, zy, zz, xx, xy, xz)  # z叉乘x得到y，使得刚体面向变化较小
-            tmn_jinzhen = np.array([[xx, yx, zx, tmn1[0]],
-                                    [xy, yy, zy, tmn1[1]],
-                                    [xz, yz, zz, tmn1[2]],
-                                    [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
-            tmn_jinzhen_buchang = np.array([[1., 0., 0., -2.],
-                                            [0., 1., 0., 0.],
-                                            [0., 0., 1., 0.],
-                                            [0., 0., 0., 1.]])
-            tmn_chuanci = np.array([[xx, yx, zx, tmn2[0]],
-                                    [xy, yy, zy, tmn2[1]],
-                                    [xz, yz, zz, tmn2[2]],
-                                    [0.0, 0.0, 0.0, 1.0]])  # 穿刺点TMN位恣矩阵
-            tjo_1 = tjm.dot(tmn_jinzhen).dot(tmn_jinzhen_buchang).dot(tno)
-            tjo_1[0:3][:, 3] /= 1000.0
-            self.TJO_jinzhen = tjo_1
-            tjo_2 = tjm.dot(tmn_chuanci).dot(tno)
-            tjo_2[0:3][:, 3] /= 1000.0
-            self.TJO_chuanci = tjo_2
-            # 可以将tmn全局使用距离驱动
-            reply = "command received"
+            try:
+                data = client_data.splitlines()[1]
+                path = eval(data)
+                tmn1 = path[0:3]
+                tmn2 = path[3:6]
+                tjm = window.TJM  # mm
+                ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
+                tno = np.linalg.inv(ton)
+                fenmu = math.sqrt((tmn2[0] - tmn1[0]) ** 2 + (tmn2[1] - tmn1[1]) ** 2 + (tmn2[2] - tmn1[2]) ** 2)  # 归一化
+                xx = (tmn2[0] - tmn1[0]) / fenmu
+                xy = (tmn2[1] - tmn1[1]) / fenmu
+                xz = (tmn2[2] - tmn1[2]) / fenmu
+                tcp = qc.quat2matrix(window.tcp_pose)
+                y0x = tcp[0][1]
+                y0y = tcp[1][1]
+                y0z = tcp[2][1]  # 穿刺针y方向应取当前tcp y方向附近，可以被ndi所视方向
+                zx, zy, zz = qc.chacheng(xx, xy, xz, y0x, y0y, y0z)  # x叉乘y`得到TCP在视觉空间的z方向，保证x的方向
+                yx, yy, yz = qc.chacheng(zx, zy, zz, xx, xy, xz)  # z叉乘x得到y，使得刚体面向变化较小
+                tmn_jinzhen = np.array([[xx, yx, zx, tmn1[0]],
+                                        [xy, yy, zy, tmn1[1]],
+                                        [xz, yz, zz, tmn1[2]],
+                                        [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
+                tmn_jinzhen_buchang = np.array([[1., 0., 0., -2.],
+                                                [0., 1., 0., 0.],
+                                                [0., 0., 1., 0.],
+                                                [0., 0., 0., 1.]])
+                tmn_chuanci = np.array([[xx, yx, zx, tmn2[0]],
+                                        [xy, yy, zy, tmn2[1]],
+                                        [xz, yz, zz, tmn2[2]],
+                                        [0.0, 0.0, 0.0, 1.0]])  # 穿刺点TMN位恣矩阵
+                tjo_1 = tjm.dot(tmn_jinzhen).dot(tmn_jinzhen_buchang).dot(tno)
+                tjo_1[0:3][:, 3] /= 1000.0
+                self.TJO_jinzhen = tjo_1
+                tjo_2 = tjm.dot(tmn_chuanci).dot(tno)
+                tjo_2[0:3][:, 3] /= 1000.0
+                self.TJO_chuanci = tjo_2
+            except Exception as e:
+                print e
+                traceback.print_exc()
+                reply = "0"
+            else:
+                # 可以将tmn全局使用距离驱动
+                reply = "1"
 
         elif "move to entry point" in client_data:
             try:
                 window.pose_pub.publish(qc.get_command_pose(qc.matrix2quat(self.TJO_jinzhen)))
                 rospy.loginfo(qc.get_command_pose(qc.matrix2quat(self.TJO_jinzhen)))
             except Exception as e:
-                reply = "please send puncture path"
+                reply = "0"
             else:
-                reply = "command received"
+                reply = "1"
 
         elif "move to puncture point" in client_data:
             try:
                 window.pose_pub.publish(qc.get_command_pose(qc.matrix2quat(self.TJO_chuanci)))
                 rospy.loginfo(qc.get_command_pose(qc.matrix2quat(self.TJO_chuanci)))
             except Exception as e:
-                reply = 'please move to entry point first'
+                reply = '0'
             else:
-                reply = "command received"
+                reply = "1"
 
         else:
             print client_data
-            reply = "wrong command"
+            reply = "0"
 
         return reply
 

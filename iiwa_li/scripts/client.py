@@ -61,10 +61,20 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textEdit.append(reply)
 
     def path_btn_clicked(self):
-        path = (-40.4500,289.9500,-1615.9700,-44.3000,276.4300,-1610.8900)
+        path = (-74.214,111.528,-1383.14,-31.1147,103.454,-1415.52)
+        # path = (47.1193,130.8626,-1313.0105,64.4142,152.6892,-1317.6314)
+        # path = (83.6979,-28.5724,-1137.6173,133.6672,-10.0353,-1153.9324)
+        # path = (61.7195,-32.8224,-1352.2596,78.1596,-32.9236,-1353.8509)  # 0725
+        path = (152.419,36.289,-1398.56,198.309,43.6798,-1427.03)  # 0726实验一
         sentence = "send path\n"+str(path)
         self.textEdit.append(sentence)
         self.sk.sendall(sentence)
+        reply = self.sk.recv(1024)
+        self.textEdit.append(reply)
+
+    def change_pose_btn_clicked(self):
+        self.sk.sendall("change pose")
+        self.textEdit.append("change pose")
         reply = self.sk.recv(1024)
         self.textEdit.append(reply)
 

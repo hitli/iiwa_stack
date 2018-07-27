@@ -61,7 +61,14 @@
          <item>
           <widget class="QPushButton" name="path_btn">
            <property name="text">
-            <string>穿刺路径</string>
+            <string>发送穿刺路径</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="change_pose_button">
+           <property name="text">
+            <string>改变姿态</string>
            </property>
           </widget>
          </item>
@@ -279,8 +286,8 @@
    <slot>path_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>517</x>
-     <y>186</y>
+     <x>569</x>
+     <y>183</y>
     </hint>
     <hint type="destinationlabel">
      <x>459</x>
@@ -304,6 +311,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>change_pose_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>change_pose_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>547</x>
+     <y>196</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>574</x>
+     <y>198</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>get_TMN_btn_clicked()</slot>
@@ -318,5 +341,6 @@
   <slot>keep_get_TMN_btn_clicked()</slot>
   <slot>path_btn_clicked()</slot>
   <slot>tmg_btn_clicked()</slot>
+  <slot>change_pose_btn_clicked()</slot>
  </slots>
 </ui>

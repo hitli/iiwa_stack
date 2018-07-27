@@ -41,6 +41,9 @@ class Ui_MainWindow(object):
         self.path_btn = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
         self.path_btn.setObjectName("path_btn")
         self.verticalLayout.addWidget(self.path_btn)
+        self.change_pose_button = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
+        self.change_pose_button.setObjectName("change_pose_button")
+        self.verticalLayout.addWidget(self.change_pose_button)
         self.move_jinzhendian_btn = QtWidgets.QPushButton(self.verticalLayoutWidget_2)
         self.move_jinzhendian_btn.setObjectName("move_jinzhendian_btn")
         self.verticalLayout.addWidget(self.move_jinzhendian_btn)
@@ -98,6 +101,7 @@ class Ui_MainWindow(object):
         self.keep_get_TMN_btn.clicked.connect(MainWindow.keep_get_TMN_btn_clicked)
         self.path_btn.clicked.connect(MainWindow.path_btn_clicked)
         self.tmg_btn.clicked.connect(MainWindow.tmg_btn_clicked)
+        self.change_pose_button.clicked.connect(MainWindow.change_pose_btn_clicked)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -106,7 +110,8 @@ class Ui_MainWindow(object):
         self.keep_get_TMN_btn.setText(_translate("MainWindow", "持续接受针尖"))
         self.get_TMN_btn.setText(_translate("MainWindow", "接收针尖位置"))
         self.tmg_btn.setText(_translate("MainWindow", "探针针尖"))
-        self.path_btn.setText(_translate("MainWindow", "穿刺路径"))
+        self.path_btn.setText(_translate("MainWindow", "发送穿刺路径"))
+        self.change_pose_button.setText(_translate("MainWindow", "改变姿态"))
         self.move_jinzhendian_btn.setText(_translate("MainWindow", "运动至进针点"))
         self.move_chuancidian_btn.setText(_translate("MainWindow", "运动至穿刺点"))
         self.label.setText(_translate("MainWindow", "IP"))

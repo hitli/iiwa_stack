@@ -386,7 +386,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         path = list(eval(self.textEdit_calibrate.toPlainText()))
         p1 = path[0:3]
         p2 = path[3:6]
-        ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm
+
         fenmu = math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2 + (p2[2] - p1[2]) ** 2)  # 归一化
         xx = (p2[0] - p1[0]) / fenmu
         xy = (p2[1] - p1[1]) / fenmu
@@ -408,8 +408,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                 [0.0, 0.0, 0.0, 1.0]])  # 穿刺点TMN位恣矩阵
         self.test_p1 = tmn_jinzhen
         self.test_p2 = tmn_chuanci
+        print "p1:%s\n%s" %(p1,tmn_jinzhen)
+        print "p2:%s\n%s" %(p2,tmn_chuanci)
 
-    def test_p1_btn_clicked(self):
+    def test_pose_btn_clicked(self):
         ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
         tno = np.linalg.inv(ton)
         tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
@@ -426,16 +428,47 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 tjo = tcp.dot(tob).dot(np.linalg.inv(tmb)).dot(tmg).dot(tno)
                 tmn = tmb.dot(tbn)
                 tmn = qc.matrix2quat(tmn)
-                tmg = qc.matrix2quat(tjo)
+                tmg = qc.matrix2quat(tmg)
                 distance,degree = qc.point_distance(tmn,tmg)
                 sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (tmg, tmn, tmn[0]-tmg[0],tmn[1]-tmg[1],tmn[2]-tmg[2],distance,degree)
                 print sentence
                 tjo[0:3][:, 3] /= 1000.0  # mm->m
                 command_point = qc.get_command_pose(qc.matrix2quat(tjo))
-                rospy.loginfo(command_point)
+                # rospy.loginfo(command_point)
                 window.pose_pub.publish(command_point)
         except:
             pass
+
+    def test_p1_btn_clicked(self):
+        ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
+        tno = np.linalg.inv(ton)
+        tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+        tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
+        ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+        if math.isnan(ndi[0][0]):
+            self.settext_signal[str].emit("等待被动刚体")
+        else:
+            tcp = qc.quat2matrix(window.tcp_pose)  # 米
+            tcp[0:3][:, 3] *= 1000
+            tmb = qc.quat2matrix(ndi[0].tolist())
+            tmg = self.test_p1
+            tjn = tcp.dot(tob).dot(np.linalg.inv(tmb)).dot(tmg)  # 现算了一个tjm?
+            tjn = np.array([[tcp[0][0], tcp[0][1], tcp[0][2], tjn[0][3]],
+                            [tcp[1][0], tcp[1][1], tcp[1][2], tjn[1][3]],
+                            [tcp[2][0], tcp[2][1], tcp[2][2], tjn[2][3]],
+                            [0.0, 0.0, 0.0, 1.0]])  # 目标位姿变换,此为位置跟随
+            tjo = tjn.dot(tno)
+            tmn = tmb.dot(tbn)
+            tmn = qc.matrix2quat(tmn)
+            tmg = qc.matrix2quat(tmg)
+            distance, degree = qc.point_distance(tmn, tmg)
+            sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
+                tmg, tmn, tmn[0] - tmg[0], tmn[1] - tmg[1], tmn[2] - tmg[2], distance, degree)
+            print sentence
+            tjo[0:3][:, 3] /= 1000.0  # mm->m
+            command_point = qc.get_command_pose(qc.matrix2quat(tjo))
+            # rospy.loginfo(command_point)
+            window.pose_pub.publish(command_point)
 
     def test_p2_btn_clicked(self):
         ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
@@ -465,13 +498,13 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             print sentence
             tjo[0:3][:, 3] /= 1000.0  # mm->m
             command_point = qc.get_command_pose(qc.matrix2quat(tjo))
-            rospy.loginfo(command_point)
+            # rospy.loginfo(command_point)
             window.pose_pub.publish(command_point)
 
     def test_dis_btn_clicked(self):
         tmg = qc.quat2matrix(np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1].tolist()).dot(self.TGG)
         dis = math.sqrt((tmg[0][3]-self.test_p2[0][3])**2+(tmg[1][3]-self.test_p2[1][3])**2+(tmg[2][3]-self.test_p2[2][3])**2)
-        print "针尖坐标 %f,%f,%f\n误差%s" %(tmg[0][3]-self.test_p2[0][3],tmg[1][3]-self.test_p2[1][3],tmg[2][3]-self.test_p2[2][3],dis)
+        print "针尖坐标\n%f,%f,%f\n目标坐标\n%f,%f,%f\n%f,%f,%f\n误差%s" %(tmg[0][3],tmg[1][3],tmg[2][3],self.test_p2[0][3],self.test_p2[1][3],self.test_p2[2][3],tmg[0][3]-self.test_p2[0][3],tmg[1][3]-self.test_p2[1][3],tmg[2][3]-self.test_p2[2][3],dis)
 
     def test_cal_spd_btn_clicked(self):
         pass

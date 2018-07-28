@@ -1721,7 +1721,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>1210</x>
-      <y>60</y>
+      <y>30</y>
       <width>99</width>
       <height>27</height>
      </rect>
@@ -1743,17 +1743,17 @@ p, li { white-space: pre-wrap; }
      <string>计算误差</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="test_p1_btn">
+   <widget class="QPushButton" name="test_pose_btn">
     <property name="geometry">
      <rect>
       <x>1210</x>
-      <y>90</y>
+      <y>60</y>
       <width>99</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
-     <string>进针点</string>
+     <string>进针姿态</string>
     </property>
    </widget>
    <widget class="QPushButton" name="test_p2_btn">
@@ -1780,6 +1780,19 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="text">
      <string>计算速度</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="test_p1_btn">
+    <property name="geometry">
+     <rect>
+      <x>1210</x>
+      <y>90</y>
+      <width>99</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>进针点</string>
     </property>
    </widget>
   </widget>
@@ -2812,27 +2825,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>1268</x>
-     <y>104</y>
+     <y>87</y>
     </hint>
     <hint type="destinationlabel">
      <x>1319</x>
      <y>104</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>test_p1_btn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>test_p1_btn_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1275</x>
-     <y>142</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1320</x>
-     <y>139</y>
     </hint>
    </hints>
   </connection>
@@ -2881,6 +2878,38 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>1321</x>
      <y>221</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>test_pose_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>test_pose_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1229</x>
+     <y>112</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1309</x>
+     <y>48</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>test_p1_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>test_p1_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1301</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1321</x>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -2957,5 +2986,6 @@ p, li { white-space: pre-wrap; }
   <slot>test_p2_btn_clicked()</slot>
   <slot>test_dis_btn_clicked()</slot>
   <slot>test_cal_spd_btn_clicked()</slot>
+  <slot>test_pose_btn_clicked()</slot>
  </slots>
 </ui>

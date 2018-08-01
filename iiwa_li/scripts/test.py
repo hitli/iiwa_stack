@@ -174,4 +174,47 @@ if __name__ == '__main__':
     # dz = p[2] - tmn1[2]
     #
     # print dx,dy,dz
-    pd
+    # a=np.array([[0.023253,0.999753,0.007923,683.405138],
+    #           [-0.404332,0.016806,-0.914669,-1312.145584],
+    #           [-0.914341,0.022574,0.404529,999.771630],
+    #           [0.0, 0.0, 0.0, 1.0]])
+    # # print qc.matrix2quat(a)
+    # # a = qc.quat2matrix(qc.matrix2quat(a))
+    # print np.linalg.inv(a)
+    # print qc.matrix2quat(np.linalg.inv(a))
+    # q = qc.matrix2quat(a)
+    # print qc.inv_quat(q)
+    # print qc.point_distance(qc.matrix2quat(np.linalg.inv(a)),qc.inv_quat(q))
+    #
+    # q = (4.6500,198.8300,-1206.4900,0.6439,-0.0888,0.7597,0.0137)
+    # a = qc.quat2matrix(q)
+    # print np.linalg.inv(a)
+    # print qc.matrix2quat(np.linalg.inv(a))
+    # print qc.inv_quat(q)
+    # print qc.point_distance(qc.inv_quat(q),qc.matrix2quat(np.linalg.inv(a)))
+    # ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+    # qc.quat_pose_multipy(ndi[0], ndi[2])
+
+    ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+    tmn = list(qc.quat_pose_multipy(ndi[0], ndi[2]))
+    print tmn
+    #
+    # a = (1,1,1,1,1,1,1)
+    # tcp = list(a)
+    # tcp[0,3] *= 1000
+    # print  tcp
+
+    # tgn = (0., 0., 0., 0.5, -0.5, 0.5, 0.5)
+    # print qc.quat2matrix(tgn)
+    # a = np.array([[0.023253, 0.999753, 0.007923, 683.405138],
+    #               [-0.404332, 0.016806, -0.914669, -1312.145584],
+    #               [-0.914341, 0.022574, 0.404529, 999.771630],
+    #               [0.0, 0.0, 0.0, 1.0]])
+    # b=np.array([[0, 1, 0, -683],
+    #           [0, 0, 1, 1312],
+    #           [1, 0, 0, 999],
+    #           [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
+    # print a.dot(b)
+    path =(0,1,2,3,4,5,6)
+    p1 = (path[0:3],0,0,0,1)
+    print p1

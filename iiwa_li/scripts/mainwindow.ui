@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1328</width>
-    <height>917</height>
+    <width>1320</width>
+    <height>926</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -746,7 +746,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="label_22">
           <property name="text">
-           <string>339副针</string>
+           <string>339病人</string>
           </property>
          </widget>
         </item>
@@ -884,6 +884,19 @@
        </layout>
       </item>
      </layout>
+    </widget>
+    <widget class="QCheckBox" name="tmh_checkbox">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>0</y>
+       <width>161</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>启用病人空间坐标系</string>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_calibrate">
@@ -1040,7 +1053,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>1090</x>
       <y>0</y>
-      <width>111</width>
+      <width>221</width>
       <height>851</height>
      </rect>
     </property>
@@ -1211,7 +1224,145 @@ p, li { white-space: pre-wrap; }
       <item>
        <widget class="QLineEdit" name="lineEdit_zhenjianbuchang">
         <property name="text">
-         <string>-15</string>
+         <string>50</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget_5">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>30</y>
+       <width>101</width>
+       <height>663</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="QLabel" name="label_39">
+        <property name="text">
+         <string>穿刺测试</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="test_cal_btn">
+        <property name="text">
+         <string>文本路径</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_jinzhendian_button">
+        <property name="text">
+         <string>点取进针点</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_chuancidian_button">
+        <property name="text">
+         <string>点取穿刺点</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_pose_button">
+        <property name="text">
+         <string>姿态调整</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="roll_checkbox">
+        <property name="text">
+         <string>旋转进针</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_move_jinzhendian_button">
+        <property name="text">
+         <string>移至进针点</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="puncture_move_chuancidian_button">
+        <property name="text">
+         <string>移至穿刺点</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="test_dis_btn">
+        <property name="text">
+         <string>计算误差</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="test_cal_spd_btn">
+        <property name="text">
+         <string>计算速度</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_40">
+        <property name="text">
+         <string>探针误差</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tmg_error_p1_btn">
+        <property name="text">
+         <string>点1</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tmg_error_p2_btn">
+        <property name="text">
+         <string>点2</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_41">
+        <property name="text">
+         <string>材料坐标</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pork1_btn">
+        <property name="text">
+         <string>左上</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pork2_btn">
+        <property name="text">
+         <string>右上</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pork3_btn">
+        <property name="text">
+         <string>左下</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pork_save_btn">
+        <property name="text">
+         <string>记录</string>
         </property>
        </widget>
       </item>
@@ -1224,7 +1375,7 @@ p, li { white-space: pre-wrap; }
       <x>530</x>
       <y>350</y>
       <width>551</width>
-      <height>211</height>
+      <height>251</height>
      </rect>
     </property>
     <property name="title">
@@ -1236,7 +1387,7 @@ p, li { white-space: pre-wrap; }
        <x>0</x>
        <y>30</y>
        <width>551</width>
-       <height>181</height>
+       <height>221</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -1663,145 +1814,13 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>532</x>
-      <y>560</y>
-      <width>541</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_10">
-     <item>
-      <widget class="QLabel" name="label_28">
-       <property name="text">
-        <string>穿刺测试</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="puncture_jinzhendian_button">
-       <property name="text">
-        <string>进针点</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="puncture_chuancidian_button">
-       <property name="text">
-        <string>穿刺点</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="puncture_cal_button">
-       <property name="text">
-        <string>解算</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="puncture_move_jinzhendian_button">
-       <property name="text">
-        <string>移至进针点</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="puncture_move_chuancidian_button">
-       <property name="text">
-        <string>移至穿刺点</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QPushButton" name="test_cal_btn">
-    <property name="geometry">
-     <rect>
-      <x>1210</x>
-      <y>30</y>
-      <width>99</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>解算路径</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="test_dis_btn">
-    <property name="geometry">
-     <rect>
-      <x>1210</x>
-      <y>150</y>
-      <width>99</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>计算误差</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="test_pose_btn">
-    <property name="geometry">
-     <rect>
-      <x>1210</x>
-      <y>60</y>
-      <width>99</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>进针姿态</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="test_p2_btn">
-    <property name="geometry">
-     <rect>
-      <x>1210</x>
-      <y>120</y>
-      <width>99</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>穿刺点</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="test_cal_spd_btn">
-    <property name="geometry">
-     <rect>
-      <x>1210</x>
-      <y>180</y>
-      <width>99</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>计算速度</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="test_p1_btn">
-    <property name="geometry">
-     <rect>
-      <x>1210</x>
-      <y>90</y>
-      <width>99</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>进针点</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1328</width>
+     <width>1320</width>
      <height>31</height>
     </rect>
    </property>
@@ -2562,22 +2581,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>puncture_cal_button</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>puncture_cal_button_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>853</x>
-     <y>622</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1063</x>
-     <y>389</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>switch_auto_matrix_button</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
@@ -2828,24 +2831,8 @@ p, li { white-space: pre-wrap; }
      <y>87</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1319</x>
+     <x>1316</x>
      <y>104</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>test_p2_btn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>test_p2_btn_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1268</x>
-     <y>175</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1318</x>
-     <y>178</y>
     </hint>
    </hints>
   </connection>
@@ -2856,8 +2843,8 @@ p, li { white-space: pre-wrap; }
    <slot>test_dis_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1232</x>
-     <y>189</y>
+     <x>1234</x>
+     <y>293</y>
     </hint>
     <hint type="destinationlabel">
      <x>1203</x>
@@ -2872,44 +2859,124 @@ p, li { white-space: pre-wrap; }
    <slot>test_cal_spd_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1286</x>
-     <y>220</y>
+     <x>1288</x>
+     <y>332</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1321</x>
+     <x>1316</x>
      <y>221</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>test_pose_btn</sender>
+   <sender>tmg_error_p1_btn</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>test_pose_btn_clicked()</slot>
+   <slot>tmg_error_p1_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1229</x>
-     <y>112</y>
+     <x>1252</x>
+     <y>400</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1309</x>
-     <y>48</y>
+     <x>1314</x>
+     <y>261</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>test_p1_btn</sender>
+   <sender>tmg_error_p2_btn</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>test_p1_btn_clicked()</slot>
+   <slot>tmg_error_p2_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1301</x>
-     <y>134</y>
+     <x>1299</x>
+     <y>439</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1321</x>
-     <y>135</y>
+     <x>1320</x>
+     <y>385</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pork1_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pork1_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1277</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1317</x>
+     <y>464</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pork2_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pork2_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1297</x>
+     <y>546</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1314</x>
+     <y>501</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pork3_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pork3_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1298</x>
+     <y>585</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1318</x>
+     <y>538</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pork_save_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pork_save_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1297</x>
+     <y>663</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1317</x>
+     <y>613</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>puncture_pose_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>puncture_pose_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>829</x>
+     <y>617</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>820</x>
+     <y>593</y>
     </hint>
    </hints>
   </connection>
@@ -2963,7 +3030,7 @@ p, li { white-space: pre-wrap; }
   <slot>puncture_move_jinzhendian_button_clicked()</slot>
   <slot>puncture_chuancidian_button_clicked()</slot>
   <slot>puncture_move_chuancidian_button_clicked()</slot>
-  <slot>puncture_cal_button_clicked()</slot>
+  <slot>puncture_pose_button_clicked()</slot>
   <slot>tgg_button_clicked()</slot>
   <slot>switch_auto_matrix_button_clicked()</slot>
   <slot>switch_manual_matrix_button_clicked()</slot>
@@ -2987,5 +3054,12 @@ p, li { white-space: pre-wrap; }
   <slot>test_dis_btn_clicked()</slot>
   <slot>test_cal_spd_btn_clicked()</slot>
   <slot>test_pose_btn_clicked()</slot>
+  <slot>tmg_error_p1_btn_clicked()</slot>
+  <slot>tmg_error_p2_btn_clicked()</slot>
+  <slot>pork1_btn_clicked()</slot>
+  <slot>pork2_btn_clicked()</slot>
+  <slot>pork3_btn_clicked()</slot>
+  <slot>pork4_btn_clicked()</slot>
+  <slot>pork_save_btn_clicked()</slot>
  </slots>
 </ui>

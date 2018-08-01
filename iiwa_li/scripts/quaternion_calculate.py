@@ -91,6 +91,8 @@ def point_distance(p1,p2):  # 计算两点位姿差
     # y = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2
     # z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
     w = w1 * w2 + x1 * x2 + y1 * y2 + z1 * z2
+    if w>1:
+        w=2-w
     degree = math.acos(w)*2.0*180.0/np.pi
     return distance,degree
 
@@ -116,6 +118,15 @@ def quat_pose_multipy((dx1,dy1,dz1,x1,y1,z1,w1),(dx2,dy2,dz2,x2,y2,z2,w2)):
     fenmu = math.sqrt(x * x + y * y + z * z + w * w)
     x, y, z, w = [i / fenmu for i in [x, y, z, w]]
     return dx1 + qx2,dy1 + qy2,dz1 + qz2,x,y,z,w
+
+
+def inv_quat((dx, dy, dz, x, y, z, w)):
+    fenmu = math.sqrt(x * x + y * y + z * z + w * w)
+    x, y, z, w = [i / fenmu for i in [x, y, z, w]]
+    qx = (1-2*y*y-2*z*z)*dx+(2*x*y+2*z*w)*dy+(2*x*z-2*y*w)*dz
+    qy = (2*x*y-2*w*z)*dx+(1-2*x*x-2*z*z)*dy+(2*y*z+2*x*w)*dz
+    qz = (2*x*z+2*y*w)*dx+(2*y*z-2*x*w)*dy+(1-2*x*x-2*y*y)*dz
+    return -qx,-qy,-qz,-x,-y,-z,w
 
 
 def turn_TCP_axs_rad_len(position,axs,rad,len):  # 自动标定用

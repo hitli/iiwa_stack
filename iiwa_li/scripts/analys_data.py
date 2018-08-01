@@ -5,9 +5,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import time
 
-ati = pd.read_csv('/home/lizq/实验数据整理/0728材料穿刺/rou_v15_xie/ati_rou_v15_xie3.csv',header=7,names=['Fx','Fy','Fz','Tx','Ty','Tz'],usecols=[3,4,5,6,7,8])  # 十万行 0.064s
-# ati = pd.read_csv('/home/lizq/桌面/ati_test3.csv',header=7,usecols=[3,4,5,6,7,8])  # 五百行 0.0036秒
-print ati.index
+# ati = pd.read_csv('/home/lizq/实验数据整理/0730粗针穿刺/ni_v90_xie/ati_ni_v90_xie1.csv',header=7,names=['Fx','Fy','Fz','Tx','Ty','Tz'],usecols=[3,4,5,6,7,8])  # 十万行 0.064s
+ati = pd.read_csv('/home/lizq/桌面/ati_test3.csv',header=7,usecols=[3,4,5,6,7,8])  # 五百行 0.0036秒
+# ati = pd.read_csv('/home/lizq/桌面/nditest_000.csv',header=0)
+# print ati.columns
 # 原点相交
 ax = plt.gca()
 ax.xaxis.set_ticks_position('bottom')
@@ -17,7 +18,7 @@ ax.spines['left'].set_position(('data',0))
 # 去掉边框
 ax.spines['top'].set_color('none')
 ax.spines['right'].set_color('none')
-plt.plot(ati.index,-ati.Fy/1000000.)
+plt.plot(ati.index,-ati.Fx/1000000.)
 # plt.scatter(ati.index,ati.Fx/1000000.)
 plt.savefig('aa.png')
 plt.show()

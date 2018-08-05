@@ -19,6 +19,7 @@ import time
 #-20, 50, 0, -90, -20, -90, 0
 #-10,30,0,-100,20,-90,10
 #-10,60,0,-65,22,-85,-30 13步0.01m0.1rad标定位置
+#0.0,0.0,0.0,-90.0,0.0,90.0,0.0  倒挂位置
 class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
 
@@ -31,18 +32,22 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.ndi_error_button.setToolTip("通过角关节位置得到末端位姿TJO,与TJM*TMB*TBO=TJO比较,查看标定误差")
-        self.calibrate_error_button.setToolTip("记录449位置,命令末端运动到附近再返回记录位置,比较ndi数据距离,确定重定位精度")
+        self.calibrate_error_button.setToolTip("记录针尖位置,平移至附近,再位置运动至记录位置,用平台测量定位误差")
+        self.save_error_button.setToolTip("tjm控制被动刚体运动到标定对话框指定视觉空间点,计算误差")
         self.manual_calibrate_button.setToolTip("初始化ndi,robot_data文件,需要可以看到449")
         self.refresh_button.setToolTip("清空文本框,刷新各标定矩阵")
         self.cal_tbn_button.setToolTip("以tob为准,根据当前ton及位置读数计算tbn和tjm")
-        self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
-        self.TBN_quat = qc.matrix2quat(self.TBN)
+
         self.TGG = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")
         self.TGG_quat = qc.matrix2quat(self.TGG)
         self.TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")
         self.TON_quat = qc.matrix2quat(self.TON)
+        self.TON_quat_m = (self.TON_quat[0]/1000.,self.TON_quat[1]/1000.,self.TON_quat[2]/1000.,0.,0.,0.,1.)
         self.TOB = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
         self.TOB_quat = qc.matrix2quat(self.TOB)
+        self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+        self.TBN_quat = qc.matrix2quat(self.TBN)
+        # self.TBN_quat = qc.quat_pose_multipy(qc.inv_quat(self.TOB_quat),self.TON_quat)
         self.Server_TMN1 = []
         self.Server_TMN2 = []
         try:
@@ -89,9 +94,11 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.server_thread = Server_Thread()
         self.server_thread.settext_signal[str].connect(self.textEdit_ct_settext_slot)
         self.server_thread.append_signal[str].connect(self.textEdit_ct_append_slot)
+        self.test_thread = Test_Thread()
+        self.test_thread.settext_signal[str].connect(self.textEdit_calibrate_settext_slot)
 
     def closeEvent(self, event):  # 改写关闭事件，添加对话框及关闭roscore
-        reply = QtWidgets.QMessageBox.question(self, 'Message',"Are you sure to quit?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.Yes)
+        reply = QtWidgets.QMessageBox.question(self, 'Message',"安排完了?", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.Yes)
         if reply == QtWidgets.QMessageBox.Yes:
             # coscoreid = subprocess.Popen('pgrep roscore', shell=True, stdout=subprocess.PIPE)
             # out, err = coscoreid.communicate()
@@ -146,13 +153,19 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.lineEdit_tmg.setText(tmg_out)
                 self.lineEdit_ndi339.setText(ndi[2])
         except IndexError,e:
-            print e,ndi
+            print "ndi.txt又空了一下"
+            # traceback.print_exc()
 
     def get_tcp_pose(self, tcp):
+        # f = tcp.pose.orientation.x**2+tcp.pose.orientation.y**2+tcp.pose.orientation.z**2+tcp.pose.orientation.w**2
+        # rx = tcp.pose.orientation.x /f
+        # ry = tcp.pose.orientation.y /f
+        # rz = tcp.pose.orientation.z /f
+        # rw = tcp.pose.orientation.x /f
+        # self.tcp_pose = (
+        #     tcp.pose.position.x, tcp.pose.position.y, tcp.pose.position.z, rx,ry,rz,rw)
         self.tcp_pose = (
-            tcp.pose.position.x, tcp.pose.position.y, tcp.pose.position.z, tcp.pose.orientation.x,
-            tcp.pose.orientation.y,
-            tcp.pose.orientation.z, tcp.pose.orientation.w)
+            tcp.pose.position.x, tcp.pose.position.y, tcp.pose.position.z, tcp.pose.orientation.x, tcp.pose.orientation.y, tcp.pose.orientation.z, tcp.pose.orientation.w)
 
     def get_joint_position(self, joint):
         self.joint_position = (
@@ -173,7 +186,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def calibrate_error_button_clicked(self):
         self.calibrate_error_thread.start()
 
-    def ndi_error_button_clicked(self):
+    def ndi_error_button_clicked(self):  # 比较ndi所视乘tjm和编码器所得tjo的差
         tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")  # mm
         tbo = np.linalg.inv(tob)
         ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")  # 可以识别miss
@@ -196,8 +209,24 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             sentence = "角度偏差: %s °" %degree
             self.textEdit_calibrate.append(sentence)
 
-    def ndi_distance_add_button_clicked(self):
-        pass
+    def save_error_button_clicked(self):  # tjm控制被动刚体运动到视觉空间点,计算误差
+        tbo = np.linalg.inv(np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=","))  # mm
+        point = list(eval(self.textEdit_calibrate.toPlainText()))
+        tmb = qc.quat2matrix(point)
+        tjo = self.TJM.dot(tmb).dot(tbo)  # 可能误差出现在tjm,tbo
+        tjo[0:3][:, 3] /= 1000.0  # mm->m
+        command_point = qc.matrix2quat(tjo)
+        command_line = qc.get_command_pose(command_point)
+        rospy.loginfo(command_line)
+        self.pose_pub.publish(command_line)
+        rospy.sleep(3)
+        p2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+        with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+            p2_output = ndi.read().splitlines()[0]
+        self.textEdit_calibrate.append(p2_output)
+        distance, degree = qc.point_distance(point, p2)
+        sentence = "%s mm %s °" % (distance, degree)
+        self.textEdit_calibrate.append(sentence)
 
     def distance_follow_button_clicked(self):
         self.distance_follow_thread.start()
@@ -205,8 +234,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def refresh_button_clicked(self):
         self.textEdit_calibrate.clear()
         self.textEdit_ct.clear()
-        self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
-        self.TBN_quat = qc.matrix2quat(self.TBN)
+        # self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+        # self.TBN_quat = qc.matrix2quat(self.TBN)
+        self.TBN_quat = qc.quat_pose_multipy(self.TOB_quat,self.TON_quat)
+        self.TBN = qc.quat2matrix(self.TBN_quat)
         self.TGG = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")
         self.TGG_quat = qc.matrix2quat(self.TGG)
         self.TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")
@@ -236,26 +267,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.TJM_quat = qc.matrix2quat(self.TJM)
         self.textEdit_calibrate.append("已切换至手动标定所获得TJM,TOB,TBN矩阵")
 
-    def save_error_button_clicked(self):
-        tbo = np.linalg.inv(np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=","))  # mm
-        point = list(eval(self.textEdit_calibrate.toPlainText()))
-        tmb = qc.quat2matrix(point)
-        tjo = self.TJM.dot(tmb).dot(tbo)  # 可能误差出现在tjm,tbo
-        tjo[0:3][:, 3] /= 1000.0  # mm->m
-        command_point = qc.matrix2quat(tjo)
-        command_line = qc.get_command_pose(command_point)
-        rospy.loginfo(command_line)
-        self.pose_pub.publish(command_line)
-        rospy.sleep(3)
-        p2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
-        with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
-            p2_output = ndi.read().splitlines()[0]
-        self.textEdit_calibrate.append(p2_output)
-        distance, degree = qc.point_distance(point, p2)
-        sentence = "%s mm %s °" % (distance, degree)
-        self.textEdit_calibrate.append(sentence)
+    def test_btn_clicked(self):
+        self.test_thread.start()
 
-    # region 实验程序
+    # region 测量实验程序
     def tmg_error_p1_btn_clicked(self):
         self.tmg_error_p1 = copy.deepcopy(self.TMG)
 
@@ -311,9 +326,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for i in range(line):
             for j in range(column):
                 sentence += ','.join(str(k) for k in path[i][j])
-                sentence += '    '
+                sentence += '\t'
             sentence += '\n'
-        with open('/home/lizq/win7share/porkpoint.txt', 'w') as f:
+        with open('/home/lizq/win7share/porkpoint', 'w') as f:
             f.write(sentence)
     # endregion
 
@@ -395,7 +410,102 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     # endregion
 
     # region 穿刺测试程序
-    def test_cal_btn_clicked(self):
+
+    def puncture_path_cal(self,p1,p2):  # 根据当前tcp姿态,得到路径全局变量self.TMN_jinzhen和self.TMN_chuanci
+        try:
+            dis = math.sqrt((p2[0] - p1[0])**2+(p2[1] - p1[1])**2+(p2[2] - p1[2])**2)
+            ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+            if self.tmh_checkbox.isChecked():
+                tmh = ndi[2].tolist()
+                p1 = qc.quat_pose_multipy(tmh, p1)  # 从患者空间提取到视觉空间
+                p2 = qc.quat_pose_multipy(tmh, p2)
+            tmb = qc.quat2matrix(ndi[0].tolist())
+            y0x = -tmb[0][0]
+            y0y = -tmb[1][0]
+            y0z = -tmb[2][0]  # 穿刺针y方向应取当前tcp**相对于NDI的**y方向附近，可以被ndi所视方向,即被动刚体-x
+            if self.new_noodle_checkbox.isChecked():
+                zx,zy,zz = qc.normalization(p2[0] - p1[0],p2[1] - p1[1],p2[2] - p1[2])
+                xx, xy, xz = qc.chacheng(y0x, y0y, y0z, zx, zy, zz)  # y`差乘z得到TCP在视觉空间的x方向
+                xx, xy, xz = qc.normalization(xx, xy, xz)
+            else:
+                xx,xy,xz = qc.normalization(p2[0] - p1[0],p2[1] - p1[1],p2[2] - p1[2])
+                zx, zy, zz = qc.chacheng(xx, xy, xz, y0x, y0y, y0z)  # x叉乘y`得到TCP在视觉空间的z方向，保证x的方向
+                zx, zy, zz = qc.normalization(zx, zy, zz)
+            yx, yy, yz = qc.chacheng(zx, zy, zz, xx, xy, xz)  # z叉乘x得到y，使得刚体面向变化较小
+            yx, yy, yz = qc.normalization(yx, yy, yz)
+            tmn_jinzhen = np.array([[xx, yx, zx, p1[0]],
+                                    [xy, yy, zy, p1[1]],
+                                    [xz, yz, zz, p1[2]],
+                                    [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
+            tmn_jinzhen = qc.matrix2quat(tmn_jinzhen)  # 归一化
+            tmn_chuanci = (p2[0], p2[1], p2[2], tmn_jinzhen[3], tmn_jinzhen[4], tmn_jinzhen[5], tmn_jinzhen[6])
+            self.TMN_jinzhen = tmn_jinzhen
+            self.TMN_chuanci = tmn_chuanci
+            self.puncture_depth = dis
+            print "穿刺深度",dis,"mm"
+        except:
+            traceback.print_exc()
+            return 0
+        else:
+            return 1
+
+    def tmn_pose_control(self,aim_pose):
+        tno = (-self.TON[0][3],-self.TON[1][3],-self.TON[2][3],0.,0.,0.,1.)
+        try:
+            tcp = list(self.tcp_pose)
+            ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+            tcp[0] *= 1000
+            tcp[1] *= 1000
+            tcp[2] *= 1000
+            # tjo = qc.quat_pose_multipy(qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,window.TOB_quat),
+            #                                           qc.quat_pose_multipy(qc.inv_quat(ndi), aim_pose)),tno)
+            tjo = qc.quat_pose_multipy(qc.quat_pose_multipy(qc.matrix2quat(qc.quat2matrix(tcp).dot(window.TOB)),
+                                                            qc.quat_pose_multipy(qc.inv_quat(ndi), aim_pose)), tno)
+            if math.isnan(tjo[0]):
+                return "丢失视野"
+            else:
+                tmn = qc.quat_pose_multipy(ndi, self.TBN_quat)
+                distance, degree = qc.point_distance(tmn, aim_pose)
+                sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
+                    aim_pose, tmn, tmn[0] - aim_pose[0], tmn[1] - aim_pose[1], tmn[2] - aim_pose[2], distance, degree)
+                tjo = (tjo[0] / 1000., tjo[1] / 1000., tjo[2] / 1000., tjo[3], tjo[4], tjo[5], tjo[6])
+                command_point = qc.get_command_pose(tjo)
+                # rospy.loginfo(command_point)
+                self.pose_pub.publish(command_point)
+                return sentence
+        except:
+            traceback.print_exc()
+            return "失败"
+
+    def tmn_position_control(self,aim_position):
+        try:
+            ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+            tcp = list(self.tcp_pose)
+            tcp[0] *= 1000
+            tcp[1] *= 1000
+            tcp[2] *= 1000
+            tjn = qc.quat_pose_multipy(qc.matrix2quat(qc.quat2matrix(tcp).dot(window.TOB)),qc.quat_pose_multipy(qc.inv_quat(ndi),aim_position))
+            # tjn = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,window.TOB_quat),
+            #                            qc.quat_pose_multipy(qc.inv_quat(ndi), aim_position))
+            tjn = (tjn[0],tjn[1],tjn[2],tcp[3],tcp[4],tcp[5],tcp[6])  # 目标位姿变换,此为位置跟随
+            tjo = qc.quat_pose_multipy(tjn,qc.inv_quat(self.TON_quat))
+            if math.isnan(tjo[0]):
+                return "丢失视野"
+            else:
+                tmn = qc.quat_pose_multipy(ndi, self.TBN_quat)
+                distance, degree = qc.point_distance(tmn, aim_position)
+                sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
+                    aim_position, tmn, tmn[0] - aim_position[0], tmn[1] - aim_position[1], tmn[2] - aim_position[2], distance, degree)
+                tjo = (tjo[0]/1000.,tjo[1]/1000.,tjo[2]/1000.,tjo[3],tjo[4],tjo[5],tjo[6])
+                command_point = qc.get_command_pose(tjo)
+                # rospy.loginfo(command_point)
+                self.pose_pub.publish(command_point)
+                return sentence
+        except:
+            traceback.print_exc()
+            return "失败"
+
+    def puncture_strpath_btn_clicked(self):
         path = list(eval(self.textEdit_calibrate.toPlainText()))
         p1 = (path[0],path[1],path[2],0.,0.,0.,1.)
         p2 = (path[3],path[4],path[5],0.,0.,0.,1.)
@@ -430,121 +540,130 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.textEdit_calibrate.append(str(tmg))
 
     def puncture_pose_button_clicked(self):
-        tno = np.linalg.inv(self.TON)
-        try:
-            ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
-            p1 = self.puncture_point1
-            p2 = self.puncture_point2
-            if self.tmh_checkbox.isChecked():
-                tmh = ndi[2].tolist()
-                p1 = qc.quat_pose_multipy(tmh,p1)  # 从患者空间提取到视觉空间
-                p2 = qc.quat_pose_multipy(tmh, p2)
-            fenmu = math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2 + (p2[2] - p1[2]) ** 2)  # 归一化
-            xx = (p2[0] - p1[0]) / fenmu
-            xy = (p2[1] - p1[1]) / fenmu
-            xz = (p2[2] - p1[2]) / fenmu
-            tmb = qc.quat2matrix(ndi[0].tolist())
-            y0x = -tmb[0][0]
-            y0y = -tmb[1][0]
-            y0z = -tmb[2][0]  # 穿刺针y方向应取当前tcp**相对于NDI的**y方向附近，可以被ndi所视方向,即被动刚体-x
-            zx, zy, zz = qc.chacheng(xx, xy, xz, y0x, y0y, y0z)  # x叉乘y`得到TCP在视觉空间的z方向，保证x的方向
-            yx, yy, yz = qc.chacheng(zx, zy, zz, xx, xy, xz)  # z叉乘x得到y，使得刚体面向变化较小
-            tmn_jinzhen = np.array([[xx, yx, zx, p1[0]],
-                                    [xy, yy, zy, p1[1]],
-                                    [xz, yz, zz, p1[2]],
-                                    [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
-            tmn_jinzhen = qc.matrix2quat(tmn_jinzhen)  # 归一化
-            tmn_chuanci = (p2[0],p2[1],p2[2],tmn_jinzhen[3],tmn_jinzhen[4],tmn_jinzhen[5],tmn_jinzhen[6])
-            tmn_jinzhen_buchang = np.array([[1., 0., 0., -eval(self.lineEdit_zhenjianbuchang.text())],
-                                            [0., 1., 0., 0.],
-                                            [0., 0., 1., 0.],
-                                            [0., 0., 0., 1.]])
-            self.TMN_jinzhen = tmn_jinzhen
-            self.TMN_chuanci = tmn_chuanci
-            tcp = list(self.tcp_pose)
-            tcp[0] *= 1000
-            tcp[1] *= 1000
-            tcp[2] *= 1000
-            tjo = qc.quat2matrix(qc.quat_pose_multipy(qc.quat_pose_multipy(tcp, self.TOB_quat),qc.quat_pose_multipy(qc.inv_quat(ndi[0]), tmn_jinzhen))).dot(tmn_jinzhen_buchang).dot(tno)
-
-            tmg = qc.quat_pose_multipy(tmn_jinzhen,qc.matrix2quat(tmn_jinzhen_buchang))
-            tmn = qc.quat_pose_multipy(ndi[0], self.TBN_quat)
-            distance, degree = qc.point_distance(tmn, tmg)
-            sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
-            tmg, tmn, tmn[0] - tmg[0], tmn[1] - tmg[1], tmn[2] - tmg[2], distance, degree)
-            self.textEdit_calibrate.setText(sentence)
-            print sentence
-        except:
-            traceback.print_exc()
+        flg = self.puncture_path_cal(self.puncture_point1,self.puncture_point2)
+        if flg == 0:
+            sentence = "路径计算失败"
         else:
-            if math.isnan(tjo[0][0]):
-                print "丢失视野"
+            if self.new_noodle_checkbox.isChecked():
+                tmn_jinzhen_buchang = (0.,0.,-eval(self.lineEdit_zhenjianbuchang.text()),0.,0.,0.,1.)
             else:
-                tjo[0:3][:, 3] /= 1000.0  # mm->m
-                command_point = qc.get_command_pose(qc.matrix2quat(tjo))
-                # rospy.loginfo(command_point)
-                self.pose_pub.publish(command_point)
+                tmn_jinzhen_buchang = (-eval(self.lineEdit_zhenjianbuchang.text()), 0., 0., 0., 0., 0., 1.)
+            sentence = self.tmn_pose_control(qc.quat_pose_multipy(self.TMN_jinzhen,tmn_jinzhen_buchang))
+        self.textEdit_calibrate.setText(sentence)
+
+    # def puncture_pose_button_clicked(self):
+    #     tno = np.linalg.inv(self.TON)
+    #     try:
+    #         ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+    #         p1 = self.puncture_point1
+    #         p2 = self.puncture_point2
+    #         if self.tmh_checkbox.isChecked():
+    #             tmh = ndi[2].tolist()
+    #             p1 = qc.quat_pose_multipy(tmh,p1)  # 从患者空间提取到视觉空间
+    #             p2 = qc.quat_pose_multipy(tmh, p2)
+    #         fenmu = math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2 + (p2[2] - p1[2]) ** 2)  # 归一化
+    #         tmb = qc.quat2matrix(ndi[0].tolist())
+    #         if self.new_noodle_checkbox.isChecked():
+    #             zx = (p2[0] - p1[0]) / fenmu
+    #             zy = (p2[1] - p1[1]) / fenmu
+    #             zz = (p2[2] - p1[2]) / fenmu
+    #             y0x = -tmb[0][0]
+    #             y0y = -tmb[1][0]
+    #             y0z = -tmb[2][0]  # 穿刺针y方向应取当前tcp**相对于NDI的**y方向附近，可以被ndi所视方向,即被动刚体-x
+    #             xx,xy,xz = qc.chacheng(y0x,y0y,y0z,zx,zy,zz)  # y`差乘z得到TCP在视觉空间的x方向
+    #         else:
+    #             xx = (p2[0] - p1[0]) / fenmu
+    #             xy = (p2[1] - p1[1]) / fenmu
+    #             xz = (p2[2] - p1[2]) / fenmu
+    #             y0x = -tmb[0][0]
+    #             y0y = -tmb[1][0]
+    #             y0z = -tmb[2][0]  # 穿刺针y方向应取当前tcp**相对于NDI的**y方向附近，可以被ndi所视方向,即被动刚体-x
+    #             zx, zy, zz = qc.chacheng(xx, xy, xz, y0x, y0y, y0z)  # x叉乘y`得到TCP在视觉空间的z方向，保证x的方向
+    #         yx, yy, yz = qc.chacheng(zx, zy, zz, xx, xy, xz)  # z叉乘x得到y，使得刚体面向变化较小
+    #         tmn_jinzhen = np.array([[xx, yx, zx, p1[0]],
+    #                                 [xy, yy, zy, p1[1]],
+    #                                 [xz, yz, zz, p1[2]],
+    #                                 [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
+    #         tmn_jinzhen = qc.matrix2quat(tmn_jinzhen)  # 归一化
+    #         tmn_chuanci = (p2[0],p2[1],p2[2],tmn_jinzhen[3],tmn_jinzhen[4],tmn_jinzhen[5],tmn_jinzhen[6])
+    #         tmn_jinzhen_buchang = np.array([[1., 0., 0., -eval(self.lineEdit_zhenjianbuchang.text())],
+    #                                         [0., 1., 0., 0.],
+    #                                         [0., 0., 1., 0.],
+    #                                         [0., 0., 0., 1.]])
+    #         self.TMN_jinzhen = tmn_jinzhen
+    #         self.TMN_chuanci = tmn_chuanci
+    #         tcp = list(self.tcp_pose)
+    #         tcp[0] *= 1000
+    #         tcp[1] *= 1000
+    #         tcp[2] *= 1000
+    #         tjo = qc.quat2matrix(qc.quat_pose_multipy(qc.quat_pose_multipy(tcp, self.TOB_quat),qc.quat_pose_multipy(qc.inv_quat(ndi[0]), tmn_jinzhen))).dot(tmn_jinzhen_buchang).dot(tno)
+    #
+    #         tmg = qc.quat_pose_multipy(tmn_jinzhen,qc.matrix2quat(tmn_jinzhen_buchang))
+    #         tmn = qc.quat_pose_multipy(ndi[0], self.TBN_quat)
+    #         distance, degree = qc.point_distance(tmn, tmg)
+    #         sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
+    #         tmg, tmn, tmn[0] - tmg[0], tmn[1] - tmg[1], tmn[2] - tmg[2], distance, degree)
+    #         self.textEdit_calibrate.setText(sentence)
+    #         print sentence
+    #     except:
+    #         traceback.print_exc()
+    #     else:
+    #         if math.isnan(tjo[0][0]):
+    #             print "丢失视野"
+    #         else:
+    #             tjo[0:3][:, 3] /= 1000.0  # mm->m
+    #             command_point = qc.get_command_pose(qc.matrix2quat(tjo))
+    #             # rospy.loginfo(command_point)
+    #             self.pose_pub.publish(command_point)
 
     def puncture_move_jinzhendian_button_clicked(self):
-        try:
-            ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
-            if math.isnan(ndi[0][0]):
-                print "等待被动刚体"
-            else:
-                tmg = self.TMN_jinzhen
-                tcp = list(self.tcp_pose)
-                tcp[0] *= 1000
-                tcp[1] *= 1000
-                tcp[2] *= 1000
-                # tjn = tcp.dot(tob).dot(np.linalg.inv(tmb)).dot(tmg)  # 现算了一个tjm?
-                tjn = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TOB_quat),qc.quat_pose_multipy(qc.inv_quat(ndi[0]),tmg))
-                tjn = (tjn[0],tjn[1],tjn[2],tcp[3],tcp[4],tcp[5],tcp[6])  # 目标位姿变换,此为位置跟随
-                tjo = qc.quat_pose_multipy(tjn,qc.inv_quat(self.TON_quat))
-
-                tmn = qc.quat_pose_multipy(ndi[0], self.TBN_quat)
-                distance, degree = qc.point_distance(tmn, tmg)
-                sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
-                    tmg, tmn, tmn[0] - tmg[0], tmn[1] - tmg[1], tmn[2] - tmg[2], distance, degree)
-                self.textEdit_calibrate.setText(sentence)
-                print sentence
-                tjo = (tjo[0]/1000.,tjo[1]/1000.,tjo[2]/1000.,tjo[3],tjo[4],tjo[5],tjo[6])
-                command_point = qc.get_command_pose(tjo)
-                # rospy.loginfo(command_point)
-                self.pose_pub.publish(command_point)
-        except:
-            traceback.print_exc()
+        # sentence = self.tmn_position_control(self.TMN_jinzhen)
+        sentence = self.tmn_pose_control(self.TMN_jinzhen)
+        self.textEdit_calibrate.setText(sentence)
 
     def puncture_move_chuancidian_button_clicked(self):
-        try:
-            ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
-            if math.isnan(ndi[0][0]):
-                print "等待被动刚体"
-            else:
-                tmg = self.TMN_chuanci
-                tcp = list(self.tcp_pose)
-                tcp[0] *= 1000
-                tcp[1] *= 1000
-                tcp[2] *= 1000
-                # tjn = tcp.dot(tob).dot(np.linalg.inv(tmb)).dot(tmg)  # 现算了一个tjm?
-                tjn = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp, self.TOB_quat),
-                                           qc.quat_pose_multipy(qc.inv_quat(ndi[0]), tmg))
-                tjn = (tjn[0], tjn[1], tjn[2], tcp[3], tcp[4], tcp[5], tcp[6])  # 目标位姿变换,此为位置跟随
-                tjo = qc.quat_pose_multipy(tjn, qc.inv_quat(self.TON_quat))
+        # sentence = self.tmn_position_control(self.TMN_chuanci)
+        sentence = self.tmn_pose_control(self.TMN_chuanci)
+        self.textEdit_calibrate.setText(sentence)
 
-                tmn = qc.quat_pose_multipy(ndi[0], self.TBN_quat)
-                distance, degree = qc.point_distance(tmn, tmg)
-                sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
-                    tmg, tmn, tmn[0] - tmg[0], tmn[1] - tmg[1], tmn[2] - tmg[2], distance, degree)
-                self.textEdit_calibrate.setText(sentence)
-                print sentence
-                tjo = (tjo[0] / 1000., tjo[1] / 1000., tjo[2] / 1000., tjo[3], tjo[4], tjo[5], tjo[6])
-                command_point = qc.get_command_pose(tjo)
-                # rospy.loginfo(command_point)
-                self.pose_pub.publish(command_point)
-        except:
-            traceback.print_exc()
+    def fenduanjinzhen_btn_clicked(self):
+        # step = eval(self.lineEdit_puncture_step.text())
+        # deep = self.puncture_depth/step
+        # p = list()
+        # for i in range(step+1):
+        #     if self.new_noodle_checkbox.isChecked():
+        #         point = qc.quat_pose_multipy(self.TMN_jinzhen,(0.,0.,deep*i,0.,0.,0.,1.))
+        #     else:
+        #         point = qc.quat_pose_multipy(self.TMN_jinzhen,(deep*i,0.,0.,0.,0.,0.,1.))
+        #     p.append(point)
+        # for i in range(step+1):
+            # self.tmn_position_control(p[i])
+            # rospy.sleep(1)
+        # sentence = self.tmn_pose_control(self.TMN_chuanci)
+        # self.textEdit_calibrate.setText(sentence)
+        # print p
 
-    def test_dis_btn_clicked(self):
+        # step = eval(self.lineEdit_puncture_step.text())
+        # line = qc.quat_pose_multipy(qc.inv_quat(self.TMN_jinzhen),self.TMN_chuanci)
+        # x = line[0]/step
+        # y = line[1]/step
+        # z = line[2]/step
+        # for i in range(step+1):
+        #     point = qc.quat2matrix(self.TMN_jinzhen,(x,y,z,0.,0.,0.,1.))
+
+        step = eval(self.lineEdit_puncture_step.text())
+        x = (self.TMN_chuanci[0]-self.TMN_jinzhen[0])/step
+        y = (self.TMN_chuanci[1]-self.TMN_jinzhen[1])/step
+        z = (self.TMN_chuanci[2]-self.TMN_jinzhen[2])/step
+        for i in range(step+1):
+            point = (self.TMN_jinzhen[0]+x*i,self.TMN_jinzhen[1]+y*i,self.TMN_jinzhen[2]+z*i,self.TMN_jinzhen[3],self.TMN_jinzhen[4],self.TMN_jinzhen[5],self.TMN_jinzhen[6])
+            # print point
+            self.tmn_pose_control(point)
+            rospy.sleep(eval(self.lineEdit_puncture_step_time.text()))
+        sentence = self.tmn_pose_control(self.TMN_chuanci)
+        self.textEdit_calibrate.setText(sentence)
+
+    def pork_dis_btn_clicked(self):
         tmg = qc.quat_pose_multipy(np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1],self.TGG_quat)
         dis = math.sqrt((tmg[0]-self.TMN_chuanci[0])**2+(tmg[1]-self.TMN_chuanci[1])**2+(tmg[2]-self.TMN_chuanci[2])**2)
         print "目标坐标\n%f,%f,%f\n针尖坐标\n%f,%f,%f\n误差%s" %(self.TMN_chuanci[0],self.TMN_chuanci[1],self.TMN_chuanci[2],tmg[0],tmg[1],tmg[2],dis)
@@ -555,43 +674,15 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     # endregion
 
     # region 输入姿态控制,复制对话框函数
-    def save_tmn1_error_button_clicked(self):
-        try:
-            p = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
-            p = qc.quat_pose_multipy(p,self.TBN_quat)
-            tmn1 = self.Server_TMN1
-            dx = p[0]-tmn1[0]
-            dy = p[1]-tmn1[1]
-            dz = p[2]-tmn1[2]
-            d = math.sqrt(dx**2+dy**2+dz**2)
-            if np.isnan(dx):
-                self.textEdit_ct.append("丢了")
-            else:
-                sentence = "目标位置：\n%s\n到达位置\n%s\ndx:%f,dy:%f,dz:%f\n空间距离%fmm\n" % (tmn1,p,dx,dy,dz,d)
-                self.textEdit_ct.append(sentence)
-                with open('/home/lizq/桌面/0726联调实验/进针点误差记录', 'a') as f:
-                    f.write(sentence)
-        except:
-            print "没有目标点位置数据"
+    def copy_thg_btn_clicked(self):
+        clipboard = QtWidgets.QApplication.clipboard()
+        ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
 
-    def save_tmn2_error_button_clicked(self):
-        try:
-            p = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
-            p = qc.quat_pose_multipy(p, self.TBN_quat)
-            tmn2 = self.Server_TMN2
-            dx = p[0]-tmn2[0]
-            dy = p[1]-tmn2[1]
-            dz = p[2]-tmn2[2]
-            d = math.sqrt(dx**2+dy**2+dz**2)
-            if np.isnan(dx):
-                self.textEdit_ct.append("丢了")
-            else:
-                sentence = "目标位置：\n%s\n到达位置\n%s\ndx:%f,dy:%f,dz:%f\n空间距离%fmm\n" % (tmn2,p,dx,dy,dz,d)
-                self.textEdit_ct.append(sentence)
-                with open('/home/lizq/桌面/0726联调实验/穿刺点误差记录', 'a') as f:
-                    f.write(sentence)
-        except:
-            print "没有目标点位置数据"
+        thg = list(qc.quat_pose_multipy(qc.inv_quat(ndi[2]),qc.quat_pose_multipy(ndi[1],self.TGG_quat)))
+        for i in range(0, 7):
+            thg[i] = round(thg[i], 3)
+        sentence = ','.join(str(i) for i in thg)
+        clipboard.setText(sentence)
 
     def lineEdit_joint_out_copy_button_clicked(self):
         clipboard = QtWidgets.QApplication.clipboard()
@@ -787,42 +878,60 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     # region 位姿控制按钮
     def position_z_add_button_clicked(self):
         tcp = list(self.tcp_pose)
-        tcp[2] += 0.005  # 5毫米
+        if self.tool_radiobtn.isChecked():
+            tcp = qc.quat_pose_multipy(tcp,(0.,0.,0.005,0.,0.,0.,1.))
+        else:
+            tcp[2] += 0.005  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
 
     def position_z_min_button_clicked(self):
         tcp = list(self.tcp_pose)
-        tcp[2] -= 0.005  # 5毫米
+        if self.tool_radiobtn.isChecked():
+            tcp = qc.quat_pose_multipy(tcp,(0.,0.,-0.005,0.,0.,0.,1.))
+        else:
+            tcp[2] -= 0.005  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
 
     def position_y_add_button_clicked(self):
         tcp = list(self.tcp_pose)
-        tcp[1] += 0.005  # 5毫米
+        if self.tool_radiobtn.isChecked():
+            tcp = qc.quat_pose_multipy(tcp,(0.,0.005,0.0,0.,0.,0.,1.))
+        else:
+            tcp[1] += 0.005  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
 
     def position_y_min_button_clicked(self):
         tcp = list(self.tcp_pose)
-        tcp[1] -= 0.005  # 5毫米
+        if self.tool_radiobtn.isChecked():
+            tcp = qc.quat_pose_multipy(tcp,(0.,-0.005,0.,0.,0.,0.,1.))
+        else:
+            tcp[1] -= 0.005  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
 
     def position_x_add_button_clicked(self):
         tcp = list(self.tcp_pose)
-        tcp[0] += 0.005  # 5毫米
+        if self.tool_radiobtn.isChecked():
+            tcp = qc.quat_pose_multipy(tcp,(0.005,0.,0.,0.,0.,0.,1.))
+        else:
+            tcp[0] += 0.005  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
 
     def position_x_min_button_clicked(self):
         tcp = list(self.tcp_pose)
-        tcp[0] -= 0.005  # 5毫米
+        if self.tool_radiobtn.isChecked():
+            tcp = qc.quat_pose_multipy(tcp,(-0.005,0.,0.,0.,0.,0.,1.))
+        else:
+            tcp[0] -= 0.005  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -831,7 +940,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.0, 0.0, 0.008726535, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
+        if self.tool_radiobtn.isChecked():
+            command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
+        else:
+            command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -840,7 +952,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.0, 0.0, -0.008726535, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
+        if self.tool_radiobtn.isChecked():
+            command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
+        else:
+            command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -849,7 +964,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.0, 0.008726535, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
+        if self.tool_radiobtn.isChecked():
+            command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
+        else:
+            command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -858,7 +976,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.0, -0.008726535, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
+        if self.tool_radiobtn.isChecked():
+            command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
+        else:
+            command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -867,7 +988,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, 0.008726535, 0.0, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
+        if self.tool_radiobtn.isChecked():
+            command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
+        else:
+            command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -876,7 +1000,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
             0.0, 0.0, 0.0, -0.008726535, 0.0, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
-        command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
+        if self.tool_radiobtn.isChecked():
+            command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
+        else:
+            command_tcp = qc.quat_pose_multipy(tcp, add_tcp)
         command_line = qc.get_command_pose(command_tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -991,37 +1118,20 @@ class Calibrate_Error_Thread(QtCore.QThread):
         super(Calibrate_Error_Thread, self).__init__()
 
     def run(self):
-        tbo = np.linalg.inv(np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=","))  # mm
-        p1 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
-        with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
-            p1_output = ndi.read().splitlines()[0]
-        self.settext_signal[str].emit("出发点位姿："+ p1_output)
-        tmb = qc.quat2matrix(p1)
         try:
-            joint = list(eval(window.textEdit_calibrate.toPlainText()))
-            for i in range(7):
-                joint[i] *= math.pi/180.0
-            backpoint = qc.get_command_joint(joint)
-        except:
-            self.append_signal[str].emit("请在标定对话框中输入附近的角关节空间坐标,如\n-50, 30, 0, -90, 0, -90, 0")
-        else:
-            window.joint_pub.publish(backpoint)
-            rospy.sleep(3)
-
-            tjo = window.TJM.dot(tmb).dot(tbo)  # 可能误差出现在tjm,tbo
-            tjo[0:3][:, 3] /= 1000.0  # mm->m
-            command_point = qc.matrix2quat(tjo)
-            command_line = qc.get_command_pose(command_point)
+            tmn = window.TMN
+            tcp = list(window.tcp_pose)
+            tcp[2] += 0.05
+            tcp[1] += 0.05
+            command_line = qc.get_command_pose(tcp)
             window.pose_pub.publish(command_line)
             rospy.sleep(3)
-
-            p2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
-            with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
-                p2_output = ndi.read().splitlines()[0]
-            self.append_signal[str].emit("返回点位姿：" + p2_output)
-            distance, degree = qc.point_distance(p1, p2)
-            sentence = "位置偏差: %s mm\n角度偏差: %s °" %(distance,degree)
-            self.append_signal[str].emit(sentence)
+            window.tmn_position_control(tmn)
+            rospy.sleep(3)
+            sentence = window.tmn_position_control(tmn)
+            self.settext_signal[str].emit(sentence)
+        except:
+            traceback.print_exc()
 
 
 class Follow_Thread(QtCore.QThread):
@@ -1066,6 +1176,7 @@ class Follow_Thread(QtCore.QThread):
                     window.pose_pub.publish(command_point)
                     rate.sleep()
             except:
+                # print traceback.print_exc()
                 pass
 
 
@@ -1083,7 +1194,10 @@ class Follow_Pose_Thread(QtCore.QThread):
         tgg_quat = qc.matrix2quat(tgg)
         tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
         tbn_quat = qc.matrix2quat(tbn)
-        tgn = (0., 0., 0., 0.5, -0.5, 0.5, 0.5)  # 穿刺针x为钢针z方向，穿刺针y方向为钢针-x,因此穿刺针z方向为钢针-y
+        if window.new_noodle_checkbox.isChecked():
+            tgn = (0.0, 0.0, 0.0, 0.0, 0.0, 0.7071067811865476, 0.7071067811865476)
+        else:
+            tgn = (0., 0., 0., 0.5, -0.5, 0.5, 0.5)  # 穿刺针x为钢针z方向，穿刺针y方向为钢针-x,因此穿刺针z方向为钢针-y
         while window.follow_pose_button.isChecked():  # 等待NDI数据
             try:
                 ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
@@ -1107,9 +1221,8 @@ class Follow_Pose_Thread(QtCore.QThread):
                     window.pose_pub.publish(command_point)
                     rate.sleep()
             except Exception as e:
-                print e
-                print 'traceback.print_exc():'; traceback.print_exc()
-
+                print traceback.print_exc()
+                pass
 
 class MFollow_Thread(QtCore.QThread):
     settext_signal = QtCore.pyqtSignal(str)
@@ -1119,51 +1232,16 @@ class MFollow_Thread(QtCore.QThread):
 
     def run(self):
         rate = rospy.Rate(2)  # smart servo 可以达到 20ms 50hz
-        ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
-        tno = np.linalg.inv(ton)
         tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
-        tgg_quat = qc.matrix2quat(tgg)
-        tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
-        tbn_quat = qc.matrix2quat(tbn)
-        tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
-        tgn = (0., 0., 0., 0.5, -0.5, 0.5, 0.5)  # 穿刺针x为钢针z方向，穿刺针y方向为钢针-x,因此穿刺针z方向为钢针-y
-        while window.mfollow_button.isChecked():  # 等待NDI数据
+        tgg = (tgg[0][3], tgg[1][3], tgg[2][3], 0., 0., 0., 1.)
+        while window.mfollow_button.isChecked():
             try:
-                ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
-                if math.isnan(ndi[0][0]):
-                    self.settext_signal[str].emit("等待被动刚体")
-                elif math.isnan(ndi[1][0]):
-                    self.settext_signal[str].emit("等待钢针")
-                else:
-                    tcp = qc.quat2matrix(window.tcp_pose)  # 米
-                    tcp[0:3][:, 3] *= 1000
-                    tmb = qc.quat2matrix(ndi[0].tolist())
-                    tmg = qc.quat2matrix(ndi[1].tolist()).dot(tgg)
-                    # tmg = (-1.1123,44.2341,-1194.2039,-0.3561,-0.1127,0.2383,0.8965)
-                    # tmg = qc.quat2matrix((-74.214,111.528,-1383.14,0,0,0,1))
-                    # tmg = qc.quat2matrix((-31.1147, 103.454, -1415.52, 0, 0, 0, 1))
-                    tjn = tcp.dot(tob).dot(np.linalg.inv(tmb)).dot(tmg)  # 现算了一个tjm?
-                    tjn = np.array([[tcp[0][0], tcp[0][1], tcp[0][2], tjn[0][3]],
-                                    [tcp[1][0], tcp[1][1], tcp[1][2], tjn[1][3]],
-                                    [tcp[2][0], tcp[2][1], tcp[2][2], tjn[2][3]],
-                                    [0.0, 0.0, 0.0, 1.0]])  # 目标位姿变换,此为位置跟随
-                    tjo = tjn.dot(tno)
-
-                    tmn = tmb.dot(tbn)
-                    tmn = qc.matrix2quat(tmn)
-                    tmg = qc.matrix2quat(tmg)
-                    distance,degree = qc.point_distance(tmn,tmg)
-                    sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (tmg, tmn, tmn[0]-tmg[0],tmn[1]-tmg[1],tmn[2]-tmg[2],distance,degree)
-                    self.settext_signal[str].emit(sentence)
-
-                    tjo[0:3][:, 3] /= 1000.0  # mm->m
-                    command_point = qc.get_command_pose(qc.matrix2quat(tjo))
-                    rospy.loginfo(command_point)
-                    window.pose_pub.publish(command_point)
-                    rate.sleep()
-            except Exception as e:
-                print e
-                print traceback.print_exc()
+                tmg = qc.quat_pose_multipy(np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1],tgg)
+                sentence = window.tmn_position_control(tmg)
+                self.settext_signal[str].emit(sentence)
+            except:
+                traceback.print_exc()
+            rate.sleep()
 
 
 class MFollow_Pose_Thread(QtCore.QThread):
@@ -1173,55 +1251,66 @@ class MFollow_Pose_Thread(QtCore.QThread):
         super(MFollow_Pose_Thread, self).__init__()
 
     def run(self):
-        rate = rospy.Rate(1)  # smart servo 可以达到 20ms 50hz
-        ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
-        tno = np.linalg.inv(ton)
+        # rate = rospy.Rate(1)  # smart servo 可以达到 20ms 50hz
+        # ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
+        # tno = np.linalg.inv(ton)
+        # tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
+        # tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
+        # tob_quat = qc.matrix2quat(tob)
+        # tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+        # if window.new_noodle_checkbox.isChecked():
+        #     tgn = np.array([[0., -1., 0., 0.],  # 垂直穿刺针
+        #                     [1., 0., 0., 0.],
+        #                     [0., 0., 1., 0.],
+        #                     [0., 0., 0., 1.]])  # 穿刺针z为钢针z方向，穿刺针y方向为钢针-x,因此穿刺针x方向为钢针y
+        # else:
+        #     tgn = np.array([[0., -1., 0., 0.],
+        #                     [0., 0., -1., 0.],
+        #                     [1., 0., 0., 0.],
+        #                     [0., 0., 0., 1.]])  # 穿刺针x为钢针z方向，穿刺针y方向为钢针-x,因此穿刺针z方向为钢针-y
+        # while window.mfollow_pose_button.isChecked():  # 等待NDI数据
+        #     try:
+        #         ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+        #         if math.isnan(ndi[0][0]):
+        #             self.settext_signal[str].emit("等待被动刚体")
+        #         elif math.isnan(ndi[1][0]):
+        #             self.settext_signal[str].emit("等待钢针")
+        #         else:
+        #             tcp = list(window.tcp_pose)
+        #             tcp[0] *= 1000
+        #             tcp[1] *= 1000
+        #             tcp[2] *= 1000
+        #             tjo = qc.quat2matrix(qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,tob_quat),qc.quat_pose_multipy(qc.inv_quat(ndi[0]),ndi[1]))).dot(tgg).dot(tgn).dot(tno)
+        #
+        #             tmg = qc.matrix2quat(qc.quat2matrix(ndi[1]).dot(tgg).dot(tgn))
+        #             tmn = qc.quat_pose_multipy(ndi[0],qc.matrix2quat(tbn))
+        #             distance,degree = qc.point_distance(tmn,tmg)
+        #             sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (tmg, tmn, tmn[0]-tmg[0],tmn[1]-tmg[1],tmn[2]-tmg[2],distance,degree)
+        #             self.settext_signal[str].emit(sentence)
+        #
+        #             tjo[0:3][:, 3] /= 1000.0  # mm->m
+        #             command_point = qc.get_command_pose(qc.matrix2quat(tjo))
+        #             rospy.loginfo(command_point)
+        #             window.pose_pub.publish(command_point)
+        #             rate.sleep()
+        #     except:
+        #         print traceback.print_exc()
+        #         pass
+        rate = rospy.Rate(2)  # smart servo 可以达到 20ms 50hz
         tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
-        tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
-        tob_quat = qc.matrix2quat(tob)
-        tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
-        while window.mfollow_pose_button.isChecked():  # 等待NDI数据
+        tgg = (tgg[0][3], tgg[1][3], tgg[2][3], 0., 0., 0., 1.)
+        if window.new_noodle_checkbox.isChecked():
+            tgn = (0.0, 0.0, 0.0, 0.0, 0.0, 0.7071067811865476, 0.7071067811865476)
+        else:
+            tgn = (0., 0., 0., 0.5, -0.5, 0.5, 0.5)  # 穿刺针x为钢针z方向，穿刺针y方向为钢针-x,因此穿刺针z方向为钢针-y
+        while window.mfollow_pose_button.isChecked():
             try:
-                ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
-                if math.isnan(ndi[0][0]):
-                    self.settext_signal[str].emit("等待被动刚体")
-                elif math.isnan(ndi[1][0]):
-                    self.settext_signal[str].emit("等待钢针")
-                else:
-                    # tcp = qc.quat2matrix(window.tcp_pose)  # 米
-                    # tcp[0:3][:, 3] *= 1000
-                    # tmb = qc.quat2matrix(ndi[0].tolist())
-                    # tmg = qc.quat2matrix(ndi[1].tolist()).dot(tgg)
-                    # tmgg = np.array([[tmg[0][2], -tmg[0][0], -tmg[0][1], tmg[0][3]],
-                    #                 [tmg[1][2], -tmg[1][0], -tmg[1][1], tmg[1][3]],
-                    #                 [tmg[2][2], -tmg[2][0], -tmg[2][1], tmg[2][3]],
-                    #                 [0.0, 0.0, 0.0, 1.0]])  # 目标位姿变换,此为位姿跟随
-                    # tjo = tcp.dot(tob).dot(np.linalg.inv(tmb)).dot(tmgg).dot(tno)
-                    # 矩阵计算误差大,没有归一化
-                    tcp = list(window.tcp_pose)
-                    tcp[0] *= 1000
-                    tcp[1] *= 1000
-                    tcp[2] *= 1000
-                    tgn = np.array([[ 0., -1.,  0.,  0.],
-                                    [ 0.,  0., -1.,  0.],
-                                    [ 1.,  0.,  0.,  0.],
-                                    [ 0.,  0.,  0.,  1.]])  # 穿刺针x为钢针z方向，穿刺针y方向为钢针-x,因此穿刺针z方向为钢针-y
-                    tjo = qc.quat2matrix(qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,tob_quat),qc.quat_pose_multipy(qc.inv_quat(ndi[0]),ndi[1]))).dot(tgg).dot(tgn).dot(tno)
-
-                    tmg = qc.matrix2quat(qc.quat2matrix(ndi[1]).dot(tgg).dot(tgn))
-                    tmn = qc.quat_pose_multipy(ndi[0],qc.matrix2quat(tbn))
-                    # print tmg,tmn
-                    distance,degree = qc.point_distance(tmn,tmg)
-                    sentence = "ndi下钢针位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (tmg, tmn, tmn[0]-tmg[0],tmn[1]-tmg[1],tmn[2]-tmg[2],distance,degree)
-                    self.settext_signal[str].emit(sentence)
-
-                    tjo[0:3][:, 3] /= 1000.0  # mm->m
-                    command_point = qc.get_command_pose(qc.matrix2quat(tjo))
-                    rospy.loginfo(command_point)
-                    window.pose_pub.publish(command_point)
-                    rate.sleep()
+                tmg = qc.quat_pose_multipy(np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[1],tgg)
+                sentence = window.tmn_pose_control(qc.quat_pose_multipy(tmg,tgn))
+                self.settext_signal[str].emit(sentence)
             except:
-                print traceback.print_exc()
+                traceback.print_exc()
+            rate.sleep()
 
 
 class Distance_Follow_Thread(QtCore.QThread):
@@ -1233,7 +1322,6 @@ class Distance_Follow_Thread(QtCore.QThread):
     def run(self):
         rate = rospy.Rate(2)  # smart servo 可以达到 20ms 50hz
         ton = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")  # mm 需要优化
-        tno = np.linalg.inv(ton)
         tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
         tgg_quat = qc.matrix2quat(tgg)
         tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
@@ -1286,10 +1374,10 @@ class Server_Thread(QtCore.QThread):
             window.server_button.setChecked(False)
         else:
             self.settext_signal[str].emit("等待CT端连接")
-            conn, addr = sk.accept()  # 等待链接,阻塞，直到渠道链接 conn打开一个新的对象 专门给当前链接的客户端 addr是ip地址
-            self.append_signal[str].emit("已连接")
             while window.server_button.isChecked():
                 try:
+                    conn, addr = sk.accept()  # 等待链接,阻塞，直到渠道链接 conn打开一个新的对象 专门给当前链接的客户端 addr是ip地址
+                    self.append_signal[str].emit("已连接")
                     # 获取客户端请求数据
                     client_data = conn.recv(1024)  # 接受套接字的数据。数据以字符串形式返回，bufsize指定最多可以接收的数量。
                     self.append_signal[str].emit(str(client_data))  # 打印对方的数据
@@ -1303,8 +1391,12 @@ class Server_Thread(QtCore.QThread):
                     traceback.print_exc()
                     window.server_button.setChecked(False)
                     self.append_signal[str].emit("连接已断开")
-            # 关闭链接
-            conn.close()
+            try:
+                # 关闭链接
+                conn.close()
+            except:
+                traceback.print_exc()
+                window.server_button.setChecked(True)
 
     def check_out(self,client_data):
         if "ask for tmn" in client_data:
@@ -1518,6 +1610,53 @@ class Server_Thread(QtCore.QThread):
 
         return reply
 
+class Test_Thread(QtCore.QThread):
+    settext_signal = QtCore.pyqtSignal(str)
+
+    def __int__(self):
+        super(Test_Thread, self).__init__()
+
+    def run(self):
+        rate = rospy.Rate(2)  # smart servo 可以达到 20ms 50hz
+        tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
+        tgg = (tgg[0][3], tgg[1][3], tgg[2][3], 0., 0., 0., 1.)
+        while window.test_btn.isChecked():
+            try:
+                ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+                tmg = qc.quat_pose_multipy(ndi[1],tgg)
+
+                tcp = list(window.tcp_pose)
+                tcp[0] *= 1000
+                tcp[1] *= 1000
+                tcp[2] *= 1000
+                t1 = qc.matrix2quat(qc.quat2matrix(tcp).dot(window.TOB))  # 好
+                print t1
+                t =qc.quat_pose_multipy(tcp,qc.matrix2quat(window.TOB))  # 不好
+                t2 = qc.quat_pose_multipy(tcp,window.TOB_quat)
+                print t2
+                distance,degree = qc.point_distance(t1,t2)
+                print distance,degree
+                print "tcp模",tcp[3]**2+tcp[4]**2+tcp[5]**2
+                tjn = qc.quat_pose_multipy(t,
+                                           qc.quat_pose_multipy(qc.inv_quat(ndi[0]), tmg))
+                tjn = (tjn[0], tjn[1], tjn[2], tcp[3], tcp[4], tcp[5], tcp[6])  # 目标位姿变换,此为位置跟随
+                tjo = qc.quat_pose_multipy(tjn, qc.inv_quat(window.TON_quat))
+                if math.isnan(tjo[0]):
+                    print "丢失视野"
+                else:
+                    tmn = qc.quat_pose_multipy(ndi[0], window.TBN_quat)
+                    distance, degree = qc.point_distance(tmn, tmg)
+                    sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
+                        tmg, tmn, tmn[0] - tmg[0], tmn[1] - tmg[1],
+                        tmn[2] - tmg[2], distance, degree)
+                    tjo = (tjo[0] / 1000., tjo[1] / 1000., tjo[2] / 1000., tjo[3], tjo[4], tjo[5], tjo[6])
+                    command_point = qc.get_command_pose(tjo)
+                    # rospy.loginfo(command_point)
+                    window.pose_pub.publish(command_point)
+                    self.settext_signal[str].emit(sentence)
+            except:
+                traceback.print_exc()
+            rate.sleep()
 
 app = QtWidgets.QApplication(sys.argv)
 window = Mywindow()

@@ -4,6 +4,7 @@ TCP=load('/home/lizq/win7share/auto_calibrate_TCP.txt');
 NDI=textread('/home/lizq/win7share/NDI.txt','',1,'delimiter',',');
 
 TBN=TOB\TON;  % TBO*TON 通过自己调整的TON获得此次标定时相对的TBN 或者通过标定的TBN计算TON，但是针太软，没法用NDI标定
+TBN=TOB*inv(TON)
 fid=fopen('/home/lizq/win7share/TBN.txt','wt');%改为你自己文件的位置
 [m,n]=size(TBN);
 for i=1:m

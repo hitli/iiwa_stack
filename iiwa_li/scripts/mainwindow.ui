@@ -898,6 +898,35 @@
       <string>启用病人空间坐标系</string>
      </property>
     </widget>
+    <widget class="QCheckBox" name="new_noodle_checkbox">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>0</y>
+       <width>141</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>穿刺针为z轴朝向</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="copy_thg_btn">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>0</y>
+       <width>111</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>病人空间标记点</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_calibrate">
     <property name="geometry">
@@ -1066,7 +1095,7 @@ p, li { white-space: pre-wrap; }
        <x>0</x>
        <y>30</y>
        <width>111</width>
-       <height>720</height>
+       <height>642</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1115,6 +1144,16 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="test_btn">
+        <property name="text">
+         <string>???</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="mfollow_pose_button">
         <property name="text">
          <string>反馈位姿跟随</string>
@@ -1135,23 +1174,6 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="ndi_distance_add_button">
-        <property name="text">
-         <string>NDI距离补偿</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="refresh_button">
-        <property name="text">
-         <string>刷新</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="label_37">
         <property name="text">
          <string>误差分析</string>
@@ -1159,23 +1181,9 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="tmn1_error_button">
-        <property name="text">
-         <string>tmn进点误差</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="tmn2_error_button">
-        <property name="text">
-         <string>tmn穿点误差</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="ndi_error_button">
         <property name="text">
-         <string>ndi误差比对</string>
+         <string>tjm误差</string>
         </property>
        </widget>
       </item>
@@ -1189,7 +1197,28 @@ p, li { white-space: pre-wrap; }
       <item>
        <widget class="QPushButton" name="save_error_button">
         <property name="text">
-         <string>指定点误差</string>
+         <string>小球指定误差</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_40">
+        <property name="text">
+         <string>探针误差</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tmg_error_p1_btn">
+        <property name="text">
+         <string>点1</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tmg_error_p2_btn">
+        <property name="text">
+         <string>点2</string>
         </property>
        </widget>
       </item>
@@ -1214,20 +1243,6 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="label_38">
-        <property name="text">
-         <string>针尖预留距离</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_zhenjianbuchang">
-        <property name="text">
-         <string>50</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
     <widget class="QWidget" name="verticalLayoutWidget_5">
@@ -1236,7 +1251,7 @@ p, li { white-space: pre-wrap; }
        <x>120</x>
        <y>30</y>
        <width>101</width>
-       <height>663</height>
+       <height>843</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -1248,7 +1263,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="test_cal_btn">
+       <widget class="QPushButton" name="puncture_strpath_btn">
         <property name="text">
          <string>文本路径</string>
         </property>
@@ -1297,7 +1312,56 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="test_dis_btn">
+       <widget class="QPushButton" name="fenduanjinzhen_btn">
+        <property name="text">
+         <string>多段进针</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_28">
+        <property name="text">
+         <string>分割段数</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_puncture_step">
+        <property name="text">
+         <string>10</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_43">
+        <property name="text">
+         <string>步时</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_puncture_step_time">
+        <property name="text">
+         <string>1</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_42">
+        <property name="text">
+         <string>旋转角度</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_puncture_degree">
+        <property name="text">
+         <string>90</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pork_dis_btn">
         <property name="text">
          <string>计算误差</string>
         </property>
@@ -1311,23 +1375,16 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_40">
+       <widget class="QLabel" name="label_38">
         <property name="text">
-         <string>探针误差</string>
+         <string>针尖预留距离</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="tmg_error_p1_btn">
+       <widget class="QLineEdit" name="lineEdit_zhenjianbuchang">
         <property name="text">
-         <string>点1</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="tmg_error_p2_btn">
-        <property name="text">
-         <string>点2</string>
+         <string>50</string>
         </property>
        </widget>
       </item>
@@ -1406,7 +1463,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QLineEdit" name="lineEdit_ip">
           <property name="text">
-           <string>127.0.0.1</string>
+           <string>192.168.168.10</string>
           </property>
          </widget>
         </item>
@@ -1438,11 +1495,24 @@ p, li { white-space: pre-wrap; }
       </item>
      </layout>
     </widget>
+    <widget class="QPushButton" name="refresh_button">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>0</y>
+       <width>109</width>
+       <height>33</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>刷新</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_pose_button_contorl">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>530</x>
       <y>600</y>
       <width>541</width>
       <height>261</height>
@@ -1813,6 +1883,38 @@ p, li { white-space: pre-wrap; }
       <string>姿态</string>
      </property>
     </widget>
+    <widget class="QRadioButton" name="world_radiobtn">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>190</y>
+       <width>117</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>基座坐标系</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="tool_radiobtn">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>210</y>
+       <width>117</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>工具坐标系</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -1979,8 +2081,8 @@ p, li { white-space: pre-wrap; }
    <slot>calibrate_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1095</x>
-     <y>571</y>
+     <x>1096</x>
+     <y>415</y>
     </hint>
     <hint type="destinationlabel">
      <x>1111</x>
@@ -2107,8 +2209,8 @@ p, li { white-space: pre-wrap; }
    <slot>refresh_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1133</x>
-     <y>386</y>
+     <x>1068</x>
+     <y>413</y>
     </hint>
     <hint type="destinationlabel">
      <x>1063</x>
@@ -2491,8 +2593,8 @@ p, li { white-space: pre-wrap; }
    <slot>ndi_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1143</x>
-     <y>532</y>
+     <x>1144</x>
+     <y>376</y>
     </hint>
     <hint type="destinationlabel">
      <x>1187</x>
@@ -2523,8 +2625,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_jinzhendian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>671</x>
-     <y>622</y>
+     <x>1211</x>
+     <y>162</y>
     </hint>
     <hint type="destinationlabel">
      <x>1189</x>
@@ -2539,8 +2641,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_chuancidian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>762</x>
-     <y>622</y>
+     <x>1211</x>
+     <y>201</y>
     </hint>
     <hint type="destinationlabel">
      <x>1196</x>
@@ -2555,8 +2657,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_move_jinzhendian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>967</x>
-     <y>622</y>
+     <x>1211</x>
+     <y>313</y>
     </hint>
     <hint type="destinationlabel">
      <x>1192</x>
@@ -2571,8 +2673,8 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_move_chuancidian_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1071</x>
-     <y>627</y>
+     <x>1212</x>
+     <y>391</y>
     </hint>
     <hint type="destinationlabel">
      <x>1188</x>
@@ -2587,8 +2689,8 @@ p, li { white-space: pre-wrap; }
    <slot>switch_auto_matrix_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1126</x>
-     <y>678</y>
+     <x>1127</x>
+     <y>629</y>
     </hint>
     <hint type="destinationlabel">
      <x>1084</x>
@@ -2603,8 +2705,8 @@ p, li { white-space: pre-wrap; }
    <slot>switch_manual_matrix_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1161</x>
-     <y>717</y>
+     <x>1162</x>
+     <y>668</y>
     </hint>
     <hint type="destinationlabel">
      <x>1072</x>
@@ -2620,7 +2722,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>1078</x>
-     <y>589</y>
+     <y>629</y>
     </hint>
     <hint type="destinationlabel">
      <x>524</x>
@@ -2635,8 +2737,8 @@ p, li { white-space: pre-wrap; }
    <slot>save_error_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1140</x>
-     <y>610</y>
+     <x>1141</x>
+     <y>454</y>
     </hint>
     <hint type="destinationlabel">
      <x>1084</x>
@@ -2741,22 +2843,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>ndi_distance_add_button</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>ndi_distance_add_button_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1183</x>
-     <y>347</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1209</x>
-     <y>281</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>distance_follow_button</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
@@ -2789,62 +2875,14 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>tmn1_error_button</sender>
+   <sender>pork_dis_btn</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>save_tmn1_error_button_clicked()</slot>
+   <slot>pork_dis_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1169</x>
-     <y>429</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1207</x>
-     <y>425</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tmn2_error_button</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>save_tmn2_error_button_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1174</x>
-     <y>476</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1207</x>
-     <y>482</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>test_cal_btn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>test_cal_btn_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1268</x>
-     <y>87</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1316</x>
-     <y>104</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>test_dis_btn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>test_dis_btn_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1234</x>
-     <y>293</y>
+     <x>1236</x>
+     <y>430</y>
     </hint>
     <hint type="destinationlabel">
      <x>1203</x>
@@ -2859,8 +2897,8 @@ p, li { white-space: pre-wrap; }
    <slot>test_cal_spd_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1288</x>
-     <y>332</y>
+     <x>1290</x>
+     <y>469</y>
     </hint>
     <hint type="destinationlabel">
      <x>1316</x>
@@ -2875,8 +2913,8 @@ p, li { white-space: pre-wrap; }
    <slot>tmg_error_p1_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1252</x>
-     <y>400</y>
+     <x>1199</x>
+     <y>522</y>
     </hint>
     <hint type="destinationlabel">
      <x>1314</x>
@@ -2891,8 +2929,8 @@ p, li { white-space: pre-wrap; }
    <slot>tmg_error_p2_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1299</x>
-     <y>439</y>
+     <x>1199</x>
+     <y>561</y>
     </hint>
     <hint type="destinationlabel">
      <x>1320</x>
@@ -2907,8 +2945,8 @@ p, li { white-space: pre-wrap; }
    <slot>pork1_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1277</x>
-     <y>507</y>
+     <x>1279</x>
+     <y>599</y>
     </hint>
     <hint type="destinationlabel">
      <x>1317</x>
@@ -2923,8 +2961,8 @@ p, li { white-space: pre-wrap; }
    <slot>pork2_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1297</x>
-     <y>546</y>
+     <x>1299</x>
+     <y>638</y>
     </hint>
     <hint type="destinationlabel">
      <x>1314</x>
@@ -2939,8 +2977,8 @@ p, li { white-space: pre-wrap; }
    <slot>pork3_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1298</x>
-     <y>585</y>
+     <x>1300</x>
+     <y>677</y>
     </hint>
     <hint type="destinationlabel">
      <x>1318</x>
@@ -2955,8 +2993,8 @@ p, li { white-space: pre-wrap; }
    <slot>pork_save_btn_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1297</x>
-     <y>663</y>
+     <x>1298</x>
+     <y>716</y>
     </hint>
     <hint type="destinationlabel">
      <x>1317</x>
@@ -2971,12 +3009,76 @@ p, li { white-space: pre-wrap; }
    <slot>puncture_pose_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>829</x>
-     <y>617</y>
+     <x>1211</x>
+     <y>240</y>
     </hint>
     <hint type="destinationlabel">
      <x>820</x>
      <y>593</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>puncture_strpath_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>puncture_strpath_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1294</x>
+     <y>105</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1318</x>
+     <y>99</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>test_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>test_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1175</x>
+     <y>736</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1319</x>
+     <y>729</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>copy_thg_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>copy_thg_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>145</x>
+     <y>431</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>409</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fenduanjinzhen_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>fenduanjinzhen_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1284</x>
+     <y>325</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1317</x>
+     <y>318</y>
     </hint>
    </hints>
   </connection>
@@ -3048,12 +3150,8 @@ p, li { white-space: pre-wrap; }
   <slot>cal_tbn_button_clicked()</slot>
   <slot>save_tmn1_error_button_clicked()</slot>
   <slot>save_tmn2_error_button_clicked()</slot>
-  <slot>test_cal_btn_clicked()</slot>
-  <slot>test_p1_btn_clicked()</slot>
-  <slot>test_p2_btn_clicked()</slot>
-  <slot>test_dis_btn_clicked()</slot>
+  <slot>pork_dis_btn_clicked()</slot>
   <slot>test_cal_spd_btn_clicked()</slot>
-  <slot>test_pose_btn_clicked()</slot>
   <slot>tmg_error_p1_btn_clicked()</slot>
   <slot>tmg_error_p2_btn_clicked()</slot>
   <slot>pork1_btn_clicked()</slot>
@@ -3061,5 +3159,9 @@ p, li { white-space: pre-wrap; }
   <slot>pork3_btn_clicked()</slot>
   <slot>pork4_btn_clicked()</slot>
   <slot>pork_save_btn_clicked()</slot>
+  <slot>puncture_strpath_btn_clicked()</slot>
+  <slot>test_btn_clicked()</slot>
+  <slot>copy_thg_btn_clicked()</slot>
+  <slot>fenduanjinzhen_btn_clicked()</slot>
  </slots>
 </ui>

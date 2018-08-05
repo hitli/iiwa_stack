@@ -12,6 +12,11 @@ def chacheng(x1, y1, z1, x2, y2, z2):
     return y1 * z2 - y2 * z1, z1 * x2 - z2 * x1, x1 * y2 - x2 * y1
 
 
+def normalization(x,y,z):
+    fenmu = math.sqrt(x**2+y**2+z**2)
+    return [i / fenmu for i in [x, y, z]]
+
+
 def quat2matrix((dx, dy, dz, x, y, z, w)):
     #输入tuple
     matrix = np.zeros((4,4))

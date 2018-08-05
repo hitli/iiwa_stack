@@ -48,6 +48,13 @@ def cali():
     # tf = eng.isprime(37)
     print tf
 
+def hanshu(a,b):
+    print a[0]
+    print b
+
+def normalization(x,y,z):
+    fenmu = math.sqrt(x**2+y**2+z**2)
+    return [i / fenmu for i in [x, y, z]]
 
 if __name__ == '__main__':
     # x = (-32.5000,-20.9000,-1128.1801,-0.6784,0.1082,-0.7137,0.1362)
@@ -194,27 +201,44 @@ if __name__ == '__main__':
     # print qc.point_distance(qc.inv_quat(q),qc.matrix2quat(np.linalg.inv(a)))
     # ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
     # qc.quat_pose_multipy(ndi[0], ndi[2])
-
-    ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
-    tmn = list(qc.quat_pose_multipy(ndi[0], ndi[2]))
-    print tmn
     #
-    # a = (1,1,1,1,1,1,1)
-    # tcp = list(a)
-    # tcp[0,3] *= 1000
-    # print  tcp
-
-    # tgn = (0., 0., 0., 0.5, -0.5, 0.5, 0.5)
-    # print qc.quat2matrix(tgn)
-    # a = np.array([[0.023253, 0.999753, 0.007923, 683.405138],
-    #               [-0.404332, 0.016806, -0.914669, -1312.145584],
-    #               [-0.914341, 0.022574, 0.404529, 999.771630],
-    #               [0.0, 0.0, 0.0, 1.0]])
-    # b=np.array([[0, 1, 0, -683],
-    #           [0, 0, 1, 1312],
-    #           [1, 0, 0, 999],
-    #           [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
-    # print a.dot(b)
-    path =(0,1,2,3,4,5,6)
-    p1 = (path[0:3],0,0,0,1)
-    print p1
+    # ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+    # tmn = list(qc.quat_pose_multipy(ndi[0], ndi[2]))
+    # print tmn
+    # #
+    # # a = (1,1,1,1,1,1,1)
+    # # tcp = list(a)
+    # # tcp[0,3] *= 1000
+    # # print  tcp
+    #
+    # # tgn = (0., 0., 0., 0.5, -0.5, 0.5, 0.5)
+    # # print qc.quat2matrix(tgn)
+    # # a = np.array([[0.023253, 0.999753, 0.007923, 683.405138],
+    # #               [-0.404332, 0.016806, -0.914669, -1312.145584],
+    # #               [-0.914341, 0.022574, 0.404529, 999.771630],
+    # #               [0.0, 0.0, 0.0, 1.0]])
+    # # b=np.array([[0, 1, 0, -683],
+    # #           [0, 0, 1, 1312],
+    # #           [1, 0, 0, 999],
+    # #           [0.0, 0.0, 0.0, 1.0]])  # 进针点TMN位恣矩阵
+    # # print a.dot(b)
+    # path =(0,1,2,3,4,5,6)
+    # p1 = (path[0:3],0,0,0,1)
+    # # print p1
+    #
+    # ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
+    # print ndi[0][0]
+    # tgn = np.array([[0., -1., 0., 0.],  # 垂直穿刺针
+    #                 [1., 0., 0., 0.],
+    #                 [0., 0., 1., 0.],
+    #                 [0., 0., 0., 1.]])  # 穿刺针z为钢针z方向，穿刺针y方向为钢针-x,因此穿刺针x方向为钢针y
+    # print qc.matrix2quat(tgn)
+    # x ,y,z = normalization(1, 2, 3)
+    # print x
+    # TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")
+    # print qc.inv_quat(qc.matrix2quat(TON))
+    tgg = np.genfromtxt('/home/lizq/win7share/TGG.txt', delimiter=",")
+    tgg = qc.matrix2quat(tgg)
+    a = (-115.03,-61.601,-170.533,0.918,0.329,-0.038,0.218)
+    print a[3]**2+a[4]**2+a[5]**2+a[6]**2
+    print qc.quat_pose_multipy(a,tgg)

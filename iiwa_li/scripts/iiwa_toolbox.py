@@ -45,9 +45,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.TON_quat_m = (self.TON_quat[0]/1000.,self.TON_quat[1]/1000.,self.TON_quat[2]/1000.,0.,0.,0.,1.)
         self.TOB = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
         self.TOB_quat = qc.matrix2quat(self.TOB)
-        self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
-        self.TBN_quat = qc.matrix2quat(self.TBN)
-        # self.TBN_quat = qc.quat_pose_multipy(qc.inv_quat(self.TOB_quat),self.TON_quat)
+        # self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+        # self.TBN_quat = qc.matrix2quat(self.TBN)
+        self.TBN_quat = qc.quat_pose_multipy(qc.inv_quat(self.TOB_quat),self.TON_quat)
+        self.TBN = qc.quat2matrix(self.TBN_quat)
         self.Server_TMN1 = []
         self.Server_TMN2 = []
         try:
@@ -178,8 +179,8 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             string = ','.join(str(i) for i in calibrate_start_pose)
             f.write(string)
         self.matlab_eng.solve_TBN(nargout=0)
-        self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
-        self.TBN_quat = qc.matrix2quat(self.TBN)
+        # self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
+        # self.TBN_quat = qc.matrix2quat(self.TBN)
         self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         self.TJM_quat = qc.matrix2quat(self.TJM)
 
@@ -234,14 +235,14 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def refresh_button_clicked(self):
         self.textEdit_calibrate.clear()
         self.textEdit_ct.clear()
-        # self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
-        # self.TBN_quat = qc.matrix2quat(self.TBN)
-        self.TBN_quat = qc.quat_pose_multipy(self.TOB_quat,self.TON_quat)
-        self.TBN = qc.quat2matrix(self.TBN_quat)
         self.TGG = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")
         self.TGG_quat = qc.matrix2quat(self.TGG)
         self.TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")
         self.TON_quat = qc.matrix2quat(self.TON)
+        self.TOB = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
+        self.TOB_quat = qc.matrix2quat(self.TOB)
+        self.TBN_quat = qc.quat_pose_multipy(qc.inv_quat(self.TOB_quat),self.TON_quat)
+        self.TBN = qc.quat2matrix(self.TBN_quat)
         try:
             self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
             self.TJM_quat = qc.matrix2quat(self.TJM)
@@ -255,8 +256,12 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         subprocess.call("cp /home/lizq/win7share/自动标定矩阵保存/TBN.txt /home/lizq/win7share", shell=True)
         self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         self.TJM_quat = qc.matrix2quat(self.TJM)
-        self.TBN = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
-        self.TBN_quat = qc.matrix2quat(self.TBN)
+        self.TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")
+        self.TON_quat = qc.matrix2quat(self.TON)
+        self.TOB = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
+        self.TOB_quat = qc.matrix2quat(self.TOB)
+        self.TBN_quat = qc.quat_pose_multipy(qc.inv_quat(self.TOB_quat),self.TON_quat)
+        self.TBN = qc.quat2matrix(self.TBN_quat)
         self.textEdit_calibrate.append("已切换至自动标定所获得TJM,TOB,TBN矩阵")
 
     def switch_manual_matrix_button_clicked(self):
@@ -265,6 +270,12 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         subprocess.call("cp /home/lizq/win7share/手动标定矩阵保存/TBN.txt /home/lizq/win7share", shell=True)
         self.TJM = np.loadtxt('/home/lizq/win7share/TJM.txt', delimiter=",")  # mm
         self.TJM_quat = qc.matrix2quat(self.TJM)
+        self.TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")
+        self.TON_quat = qc.matrix2quat(self.TON)
+        self.TOB = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
+        self.TOB_quat = qc.matrix2quat(self.TOB)
+        self.TBN_quat = qc.quat_pose_multipy(qc.inv_quat(self.TOB_quat),self.TON_quat)
+        self.TBN = qc.quat2matrix(self.TBN_quat)
         self.textEdit_calibrate.append("已切换至手动标定所获得TJM,TOB,TBN矩阵")
 
     def test_btn_clicked(self):
@@ -449,6 +460,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             return 1
 
+    def distance_degree(self,t):
+        distance = np.sqrt(t[0]**2+t[1]**2+t[2]**2)
+
     def tmn_pose_control(self,aim_pose):
         tno = (-self.TON[0][3],-self.TON[1][3],-self.TON[2][3],0.,0.,0.,1.)
         try:
@@ -459,15 +473,17 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             tcp[2] *= 1000
             # tjo = qc.quat_pose_multipy(qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,window.TOB_quat),
             #                                           qc.quat_pose_multipy(qc.inv_quat(ndi), aim_pose)),tno)
-            tjo = qc.quat_pose_multipy(qc.quat_pose_multipy(qc.matrix2quat(qc.quat2matrix(tcp).dot(window.TOB)),
+            tjo = qc.quat_pose_multipy(qc.quat_pose_multipy(qc.matrix2quat(qc.quat2matrix(tcp).dot(self.TOB)),
                                                             qc.quat_pose_multipy(qc.inv_quat(ndi), aim_pose)), tno)
             if math.isnan(tjo[0]):
                 return "丢失视野"
             else:
                 tmn = qc.quat_pose_multipy(ndi, self.TBN_quat)
                 distance, degree = qc.point_distance(tmn, aim_pose)
-                sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
-                    aim_pose, tmn, tmn[0] - aim_pose[0], tmn[1] - aim_pose[1], tmn[2] - aim_pose[2], distance, degree)
+                # sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (aim_pose, tmn, tmn[0] - aim_pose[0], tmn[1] - aim_pose[1], tmn[2] - aim_pose[2], distance, degree)
+                too = qc.quat_pose_multipy(qc.quat_pose_multipy(self.TOB_quat,qc.inv_quat(ndi)),qc.quat_pose_multipy(aim_pose,tno))
+                tnn = qc.quat_pose_multipy(qc.quat_pose_multipy(tno,too),self.TON_quat)
+                sentence = "针尖距离:%fmm\n角度差%f度\ntoo距离:%fmm\n角度差%f度\ntnn距离:%fmm\n角度差%f度" %(distance,degree,np.sqrt(too[0]**2+too[1]**2+too[2]**2),math.acos(too[6])*2.0*180.0/np.pi,np.sqrt(tnn[0]**2+tnn[1]**2+tnn[2]**2),math.acos(tnn[6])*2.0*180.0/np.pi)
                 tjo = (tjo[0] / 1000., tjo[1] / 1000., tjo[2] / 1000., tjo[3], tjo[4], tjo[5], tjo[6])
                 command_point = qc.get_command_pose(tjo)
                 # rospy.loginfo(command_point)
@@ -478,6 +494,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             return "失败"
 
     def tmn_position_control(self,aim_position):
+        tno = (-self.TON[0][3],-self.TON[1][3],-self.TON[2][3],0.,0.,0.,1.)
         try:
             ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
             tcp = list(self.tcp_pose)
@@ -488,14 +505,16 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # tjn = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,window.TOB_quat),
             #                            qc.quat_pose_multipy(qc.inv_quat(ndi), aim_position))
             tjn = (tjn[0],tjn[1],tjn[2],tcp[3],tcp[4],tcp[5],tcp[6])  # 目标位姿变换,此为位置跟随
-            tjo = qc.quat_pose_multipy(tjn,qc.inv_quat(self.TON_quat))
+            tjo = qc.quat_pose_multipy(tjn,tno)
             if math.isnan(tjo[0]):
                 return "丢失视野"
             else:
                 tmn = qc.quat_pose_multipy(ndi, self.TBN_quat)
                 distance, degree = qc.point_distance(tmn, aim_position)
-                sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (
-                    aim_position, tmn, tmn[0] - aim_position[0], tmn[1] - aim_position[1], tmn[2] - aim_position[2], distance, degree)
+                # sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (aim_position, tmn, tmn[0] - aim_position[0], tmn[1] - aim_position[1], tmn[2] - aim_position[2], distance, degree)
+                too = qc.quat_pose_multipy(qc.quat_pose_multipy(self.TOB_quat,qc.inv_quat(ndi)),qc.quat_pose_multipy(aim_position,tno))
+                tnn = qc.quat_pose_multipy(qc.quat_pose_multipy(tno,too),self.TON_quat)
+                sentence = "针尖距离:%fmm\n角度差%f度\ntoo距离:%fmm\n角度差%f度\ntnn距离:%fmm\n角度差%f度" %(distance,degree,np.sqrt(too[0]**2+too[1]**2+too[2]**2),math.acos(too[6])*2.0*180.0/np.pi,np.sqrt(tnn[0]**2+tnn[1]**2+tnn[2]**2),math.acos(tnn[6])*2.0*180.0/np.pi)
                 tjo = (tjo[0]/1000.,tjo[1]/1000.,tjo[2]/1000.,tjo[3],tjo[4],tjo[5],tjo[6])
                 command_point = qc.get_command_pose(tjo)
                 # rospy.loginfo(command_point)
@@ -1119,16 +1138,33 @@ class Calibrate_Error_Thread(QtCore.QThread):
 
     def run(self):
         try:
-            tmn = window.TMN
-            tcp = list(window.tcp_pose)
-            tcp[2] += 0.05
-            tcp[1] += 0.05
+            k = 0
+            x = []
+            y = []
+            z = []
+            rx = []
+            ry = []
+            rz = []
+            rw = []
+            tmn = []
+            for i in range(10):
+                x.append(window.TMN[0])
+                y.append(window.TMN[1])
+                z.append(window.TMN[2])
+                rx.append(window.TMN[3])
+                ry.append(window.TMN[4])
+                rz.append(window.TMN[5])
+                rw.append(window.TMN[6])
+                rospy.sleep(0.1)
+            for i in (x,y,z,rx,ry,rz,rw):
+                tmn.append((max(i)+min(i))/2.0)
+            tcp = (0.,90.,0.,-90.,0.,-90.,0.)
             command_line = qc.get_command_pose(tcp)
-            window.pose_pub.publish(command_line)
+            window.joint_pub.publish(command_line)
             rospy.sleep(3)
-            window.tmn_position_control(tmn)
+            window.tmn_pose_control(tmn)
             rospy.sleep(3)
-            sentence = window.tmn_position_control(tmn)
+            sentence = window.tmn_pose_control(tmn)
             self.settext_signal[str].emit(sentence)
         except:
             traceback.print_exc()

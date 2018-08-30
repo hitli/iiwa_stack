@@ -237,8 +237,17 @@ if __name__ == '__main__':
     # print x
     # TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")
     # print qc.inv_quat(qc.matrix2quat(TON))
-    tgg = np.genfromtxt('/home/lizq/win7share/TGG.txt', delimiter=",")
-    tgg = qc.matrix2quat(tgg)
-    a = (-115.03,-61.601,-170.533,0.918,0.329,-0.038,0.218)
-    print a[3]**2+a[4]**2+a[5]**2+a[6]**2
-    print qc.quat_pose_multipy(a,tgg)
+    # tgg = np.genfromtxt('/home/lizq/win7share/TGG.txt', delimiter=",")
+    # tgg = qc.matrix2quat(tgg)
+    # a = (-115.03,-61.601,-170.533,0.918,0.329,-0.038,0.218)
+    # print a[3]**2+a[4]**2+a[5]**2+a[6]**2
+    # print qc.quat_pose_multipy(a,tgg)
+    # tmn = []
+    # for i in range(10):
+    #     tmn.append((1,2,3))
+    # print tmn[1][1]
+    x = [1,2,3]
+    y = [3,4,5]
+    for i in (x, y):
+        i = (max(i) + min(i)) / 2.0
+    print x

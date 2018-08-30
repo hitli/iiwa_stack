@@ -3,20 +3,20 @@ TOB=load('/home/lizq/win7share/TOB.txt');
 TCP=load('/home/lizq/win7share/auto_calibrate_TCP.txt');
 NDI=textread('/home/lizq/win7share/NDI.txt','',1,'delimiter',',');
 
-TBN=TOB\TON;  % TBO*TON 通过自己调整的TON获得此次标定时相对的TBN 或者通过标定的TBN计算TON，但是针太软，没法用NDI标定
-TBN=TOB*inv(TON)
-fid=fopen('/home/lizq/win7share/TBN.txt','wt');%改为你自己文件的位置
-[m,n]=size(TBN);
-for i=1:m
-   for j=1:n
-     if j==n
-        fprintf(fid,'%f\n',double(TBN(i,j)));
-     else
-        fprintf(fid,'%f,',double(TBN(i,j))); 
-     end
-   end
-end
-fclose(fid);
+% TBN=TOB\TON;  % TBO*TON 通过自己调整的TON获得此次标定时相对的TBN 或者通过标定的TBN计算TON，但是针太软，没法用NDI标定
+% TBN=TOB*inv(TON)
+% fid=fopen('/home/lizq/win7share/TBN.txt','wt');%改为你自己文件的位置
+% [m,n]=size(TBN);
+% for i=1:m
+%    for j=1:n
+%      if j==n
+%         fprintf(fid,'%f\n',double(TBN(i,j)));
+%      else
+%         fprintf(fid,'%f,',double(TBN(i,j))); 
+%      end
+%    end
+% end
+% fclose(fid);
 
 x=TCP(1,4);y=TCP(1,5);z=TCP(1,6);w=TCP(1,7);
 TJO(4,1)=0;TJO(4,2)=0;TJO(4,3)=0;TJO(4,4)=1;

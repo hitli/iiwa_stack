@@ -97,7 +97,7 @@ def point_distance(p1,p2):  # 计算两点位姿差
     # z = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2
     w = w1 * w2 + x1 * x2 + y1 * y2 + z1 * z2
     if w>1:
-        w=2-w
+        w=w-1
     degree = math.acos(w)*2.0*180.0/np.pi
     return distance,degree
 

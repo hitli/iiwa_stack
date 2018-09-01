@@ -188,8 +188,6 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.calibrate_error_thread.start()
 
     def ndi_error_button_clicked(self):  # 比较ndi所视乘tjm和编码器所得tjo的差
-        tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")  # mm
-        tbo = np.linalg.inv(tob)
         ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")  # 可以识别miss
         try:
             tjo1 = qc.quat2matrix(self.tcp_pose)  # m
@@ -198,11 +196,8 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         except:
             self.textEdit_calibrate.append("计算出错")
         else:
-            tjm = self.TJM
-            tmb = qc.quat2matrix(ndi[0].tolist())
-            # print type(tjm),type(tmb)
-            tjo2 = tjm.dot(tmb).dot(tbo)
-            p2 = qc.matrix2quat(tjo2)
+            tbo = qc.inv_quat(self.TOB_quat)
+            p2 = qc.quat_pose_multipy(qc.quat_pose_multipy(self.TJM_quat,ndi[0]),tbo)
             distance,degree = qc.point_distance(p1,p2)
             self.textEdit_calibrate.setText(str(p1) + '\n' + str(p2))
             sentence = "位置偏差: %s mm" %distance
@@ -211,23 +206,28 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.textEdit_calibrate.append(sentence)
 
     def save_error_button_clicked(self):  # tjm控制被动刚体运动到视觉空间点,计算误差
-        tbo = np.linalg.inv(np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=","))  # mm
-        point = list(eval(self.textEdit_calibrate.toPlainText()))
-        tmb = qc.quat2matrix(point)
-        tjo = self.TJM.dot(tmb).dot(tbo)  # 可能误差出现在tjm,tbo
-        tjo[0:3][:, 3] /= 1000.0  # mm->m
-        command_point = qc.matrix2quat(tjo)
-        command_line = qc.get_command_pose(command_point)
-        rospy.loginfo(command_line)
-        self.pose_pub.publish(command_line)
-        rospy.sleep(3)
-        p2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
-        with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
-            p2_output = ndi.read().splitlines()[0]
-        self.textEdit_calibrate.append(p2_output)
-        distance, degree = qc.point_distance(point, p2)
-        sentence = "%s mm %s °" % (distance, degree)
-        self.textEdit_calibrate.append(sentence)
+        tmn = self.test_aim_point
+        sentence = self.tmn_pose_control(tmn)
+        self.textEdit_calibrate.setText(sentence)
+
+
+        # tbo = np.linalg.inv(np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=","))  # mm
+        # point = list(eval(self.textEdit_calibrate.toPlainText()))
+        # tmb = qc.quat2matrix(point)
+        # tjo = self.TJM.dot(tmb).dot(tbo)  # 可能误差出现在tjm,tbo
+        # tjo[0:3][:, 3] /= 1000.0  # mm->m
+        # command_point = qc.matrix2quat(tjo)
+        # command_line = qc.get_command_pose(command_point)
+        # rospy.loginfo(command_line)
+        # self.pose_pub.publish(command_line)
+        # rospy.sleep(3)
+        # p2 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+        # with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+        #     p2_output = ndi.read().splitlines()[0]
+        # self.textEdit_calibrate.append(p2_output)
+        # distance, degree = qc.point_distance(point, p2)
+        # sentence = "%s mm %s °" % (distance, degree)
+        # self.textEdit_calibrate.append(sentence)
 
     def distance_follow_button_clicked(self):
         self.distance_follow_thread.start()
@@ -460,14 +460,35 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             return 1
 
-    def distance_degree(self,t):
-        distance = np.sqrt(t[0]**2+t[1]**2+t[2]**2)
-
     def tmn_pose_control(self,aim_pose):
         tno = (-self.TON[0][3],-self.TON[1][3],-self.TON[2][3],0.,0.,0.,1.)
         try:
             tcp = list(self.tcp_pose)
             ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+
+            #去除噪声
+            # x = []
+            # y = []
+            # z = []
+            # rx = []
+            # ry = []
+            # rz = []
+            # rw = []
+            # ndi = []
+            # for i in range(20):
+            #     ndi449 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+            #     x.append(ndi449[0])
+            #     y.append(ndi449[1])
+            #     z.append(ndi449[2])
+            #     rx.append(ndi449[3])
+            #     ry.append(ndi449[4])
+            #     rz.append(ndi449[5])
+            #     rw.append(ndi449[6])
+            #     rospy.sleep(0.1)
+            # for i in (x,y,z,rx,ry,rz,rw):
+            #     ndi.append((max(i)+min(i))/2.0)
+            # ndi = qc.normalization_quat(ndi)
+
             tcp[0] *= 1000
             tcp[1] *= 1000
             tcp[2] *= 1000
@@ -478,12 +499,13 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if math.isnan(tjo[0]):
                 return "丢失视野"
             else:
-                tmn = qc.quat_pose_multipy(ndi, self.TBN_quat)
-                distance, degree = qc.point_distance(tmn, aim_pose)
+                # tmn = qc.quat_pose_multipy(ndi, self.TBN_quat)
+                # distance, degree = qc.point_distance(tmn, aim_pose)
                 # sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (aim_pose, tmn, tmn[0] - aim_pose[0], tmn[1] - aim_pose[1], tmn[2] - aim_pose[2], distance, degree)
                 too = qc.quat_pose_multipy(qc.quat_pose_multipy(self.TOB_quat,qc.inv_quat(ndi)),qc.quat_pose_multipy(aim_pose,tno))
-                tnn = qc.quat_pose_multipy(qc.quat_pose_multipy(tno,too),self.TON_quat)
-                sentence = "针尖距离:%fmm\n角度差%f度\ntoo距离:%fmm\n角度差%f度\ntnn距离:%fmm\n角度差%f度" %(distance,degree,np.sqrt(too[0]**2+too[1]**2+too[2]**2),math.acos(too[6])*2.0*180.0/np.pi,np.sqrt(tnn[0]**2+tnn[1]**2+tnn[2]**2),math.acos(tnn[6])*2.0*180.0/np.pi)
+                tnn = qc.quat_pose_multipy(qc.quat_pose_multipy(tno, too), self.TON_quat)
+                #测得tnn大于too,因为有角度差,会放大距离
+                sentence = "针尖距离:%fmm\n角度差%f度\ntoo距离:%fmm\n角度差%f度" % (np.sqrt(tnn[0] ** 2 + tnn[1] ** 2 + tnn[2] ** 2),math.acos(tnn[6]) * 2.0 * 180.0 / np.pi, np.sqrt(too[0] ** 2 + too[1] ** 2 + too[2] ** 2),math.acos(too[6]) * 2.0 * 180.0 / np.pi)
                 tjo = (tjo[0] / 1000., tjo[1] / 1000., tjo[2] / 1000., tjo[3], tjo[4], tjo[5], tjo[6])
                 command_point = qc.get_command_pose(tjo)
                 # rospy.loginfo(command_point)
@@ -514,7 +536,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 # sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (aim_position, tmn, tmn[0] - aim_position[0], tmn[1] - aim_position[1], tmn[2] - aim_position[2], distance, degree)
                 too = qc.quat_pose_multipy(qc.quat_pose_multipy(self.TOB_quat,qc.inv_quat(ndi)),qc.quat_pose_multipy(aim_position,tno))
                 tnn = qc.quat_pose_multipy(qc.quat_pose_multipy(tno,too),self.TON_quat)
-                sentence = "针尖距离:%fmm\n角度差%f度\ntoo距离:%fmm\n角度差%f度\ntnn距离:%fmm\n角度差%f度" %(distance,degree,np.sqrt(too[0]**2+too[1]**2+too[2]**2),math.acos(too[6])*2.0*180.0/np.pi,np.sqrt(tnn[0]**2+tnn[1]**2+tnn[2]**2),math.acos(tnn[6])*2.0*180.0/np.pi)
+                sentence = "针尖距离:%fmm\n角度差%f度\ntoo距离:%fmm\n角度差%f度\ntnn距离:%fmm\n角度差%f度\ntoo:%s" %(distance,degree,np.sqrt(too[0]**2+too[1]**2+too[2]**2),math.acos(too[6])*2.0*180.0/np.pi,np.sqrt(tnn[0]**2+tnn[1]**2+tnn[2]**2),math.acos(tnn[6])*2.0*180.0/np.pi,too)
                 tjo = (tjo[0]/1000.,tjo[1]/1000.,tjo[2]/1000.,tjo[3],tjo[4],tjo[5],tjo[6])
                 command_point = qc.get_command_pose(tjo)
                 # rospy.loginfo(command_point)
@@ -1082,6 +1104,10 @@ class Calibrate_Thread(QtCore.QThread):
         freq = 1.0/float(window.lineEdit_calibrate_time.text())
         # print step, type(step), lengh, type(lengh)
         try:
+            with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+                ndi449 = ndi.read().splitlines()[0]
+                with open('/home/lizq/win7share/auto_calibrate_NDI.txt', 'w') as f:  # 覆盖从头写入
+                    f.write(ndi449)
             for axs in ('rx', 'ry', 'rz', 'dx', 'dy', 'dz'):  # x,y,z旋转,x,y,z平移
                 self.settext_signal[str].emit(axs)
                 for n in range(1, step + 1):
@@ -1112,6 +1138,11 @@ class Calibrate_Thread(QtCore.QThread):
                 window.pose_pub.publish(command_point)
                 rate = rospy.Rate(0.3)  # 0.3hz
                 rate.sleep()
+                with open('/home/lizq/win7share/NDI.txt', 'r') as ndi:
+                    ndi449 = ndi.read().splitlines()[0]
+                    with open('/home/lizq/win7share/auto_calibrate_NDI.txt', 'a') as f:  # 从末尾写入
+                        f.write('\r\n')
+                        f.write(ndi449)
                 if not window.auto_calibrate_button.isChecked():
                     exit()  # sys.exit()会引发一个异常：SystemExit 被except捕捉
             window.matlab_eng.MinTwoSolveTJM(nargout=0)
@@ -1138,7 +1169,6 @@ class Calibrate_Error_Thread(QtCore.QThread):
 
     def run(self):
         try:
-            k = 0
             x = []
             y = []
             z = []
@@ -1147,7 +1177,7 @@ class Calibrate_Error_Thread(QtCore.QThread):
             rz = []
             rw = []
             tmn = []
-            for i in range(10):
+            for i in range(20):
                 x.append(window.TMN[0])
                 y.append(window.TMN[1])
                 z.append(window.TMN[2])
@@ -1155,17 +1185,33 @@ class Calibrate_Error_Thread(QtCore.QThread):
                 ry.append(window.TMN[4])
                 rz.append(window.TMN[5])
                 rw.append(window.TMN[6])
-                rospy.sleep(0.1)
+                if i == 1:
+                    with open('/home/lizq/win7share/calibrate_error_tmn.txt', 'w') as f:
+                        f.write(str(window.TMN))
+                else:
+                    with open('/home/lizq/win7share/calibrate_error_tmn.txt', 'a') as f:
+                        f.write('\r\n')
+                        f.write(str(window.TMN))
+                rospy.sleep(0.2)
             for i in (x,y,z,rx,ry,rz,rw):
                 tmn.append((max(i)+min(i))/2.0)
-            tcp = (0.,90.,0.,-90.,0.,-90.,0.)
-            command_line = qc.get_command_pose(tcp)
+            tmn = qc.normalization_quat(tmn)
+            with open('/home/lizq/win7share/calibrate_error_tmn.txt', 'a') as f:
+                f.write('\r\n\r\n')
+                f.write(str(tmn))
+            tcp = (0.0,np.pi/6.0,0.0,-np.pi/3.0,0.0,0.0,0.0)
+            command_line = qc.get_command_joint(tcp)
+            print command_line
             window.joint_pub.publish(command_line)
-            rospy.sleep(3)
-            window.tmn_pose_control(tmn)
-            rospy.sleep(3)
-            sentence = window.tmn_pose_control(tmn)
+            window.test_aim_point = tmn
+            sentence = ','.join(str(i) for i in tmn)
             self.settext_signal[str].emit(sentence)
+            # rospy.sleep(3)
+            # window.tmn_pose_control(tmn)
+            # rospy.sleep(3)
+            # window.tmn_pose_control(tmn)
+            # sentence = window.tmn_pose_control(tmn)
+            # self.settext_signal[str].emit(sentence)
         except:
             traceback.print_exc()
 
@@ -1522,7 +1568,6 @@ class Server_Thread(QtCore.QThread):
             tno = np.linalg.inv(ton)
             tgg = np.loadtxt('/home/lizq/win7share/TGG.txt', delimiter=",")  # mm 需要有话
             tob = np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=",")
-            tbn = np.loadtxt('/home/lizq/win7share/TBN.txt', delimiter=",")
             # # while i<5:  # 等待NDI数据
             ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")
             if math.isnan(ndi[0][0]):

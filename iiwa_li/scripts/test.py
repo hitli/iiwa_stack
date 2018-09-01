@@ -246,8 +246,17 @@ if __name__ == '__main__':
     # for i in range(10):
     #     tmn.append((1,2,3))
     # print tmn[1][1]
-    x = [1,2,3]
-    y = [3,4,5]
-    for i in (x, y):
-        i = (max(i) + min(i)) / 2.0
-    print x
+    # x = [1,2,3]
+    # y = [3,4,5]
+    # for i in (x, y):
+    #     i = (max(i) + min(i)) / 2.0
+    # print x
+    TON = np.loadtxt('/home/lizq/win7share/TON.txt', delimiter=",")
+    tno = (-TON[0][3], -TON[1][3], -TON[2][3], 0., 0., 0., 1.)
+    TON_quat = qc.matrix2quat(TON)
+    # too = (-0.83963888104813122, 0.06318205948900868, -0.32905497717041499, 0.0018369972441633557, 0.0034237864364687056, 0.0015511079453492112, 0.99999124855755828)
+    too = (-0.83963888104813122, 0.06318205948900868, -0.32905497717041499, 0.0, 0.5, 0.0, 0.5)
+    tnn = qc.quat_pose_multipy(qc.quat_pose_multipy(tno, too), TON_quat)
+    print np.sqrt(too[0] ** 2 + too[1] ** 2 + too[2] ** 2)
+    print np.sqrt(tnn[0] ** 2 + tnn[1] ** 2 + tnn[2] ** 2)
+    print tnn

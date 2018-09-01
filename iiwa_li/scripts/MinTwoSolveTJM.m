@@ -17,7 +17,8 @@ file7='/home/lizq/win7share/auto_calibrate_TCP.txt';
 TCP=load(file7);
 TON=load('/home/lizq/win7share/TON.txt');
 [m,n]=size(Rx);
-NDI=textread('/home/lizq/win7share/NDI.txt','',1,'delimiter',',');
+%NDI=textread('/home/lizq/win7share/NDI.txt','',1,'delimiter',',');
+NDIS=load('/home/lizq/win7share/auto_calibrate_NDI.txt');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Rxx=Rx(:,1);Ryy=Rx(:,2);Rzz=Rx(:,3);
 for i=2:m
@@ -126,11 +127,15 @@ fclose(fid);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%由NDI求TMB继而得到TOB%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%四元数转旋转矩阵,第一行为449被动刚体%%%%%%%%%%%%%%%%%%
-x=NDI(1,4);y=NDI(1,5);z=NDI(1,6);w=NDI(1,7);
+NDI = mean(NDIS);
+x = NDIS(1,4);
+y = NDIS(1,5);
+z = NDIS(1,6);
+w = NDIS(1,7);
+TMB(1,:)=[2*(w*w+x*x)-1 , 2*(x*y-w*z) , 2*(x*z+w*y) , NDI(1)];
+TMB(2,:)=[2*(x*y+w*z) , 2*(w*w+y*y)-1 , 2*(y*z-w*x) , NDI(2)];
+TMB(3,:)=[2*(x*z-w*y) , 2*(y*z+w*x) , 2*(w*w+z*z)-1 , NDI(3)];
 TMB(4,1)=0;TMB(4,2)=0;TMB(4,3)=0;TMB(4,4)=1;
-TMB(1,:)=[2*(w*w+x*x)-1 , 2*(x*y-w*z) , 2*(x*z+w*y) , NDI(1,1)];
-TMB(2,:)=[2*(x*y+w*z) , 2*(w*w+y*y)-1 , 2*(y*z-w*x) , NDI(1,2)];
-TMB(3,:)=[2*(x*z-w*y) , 2*(y*z+w*x) , 2*(w*w+z*z)-1 , NDI(1,3)];
 
 TOB=TMO\TMB;%inv(TMO)*TMB
 fid=fopen('/home/lizq/win7share/TOB.txt','wt');%改为你自己文件的位置

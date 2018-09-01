@@ -910,8 +910,11 @@
      <property name="text">
       <string>穿刺针为z轴朝向</string>
      </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QPushButton" name="copy_thg_btn">
@@ -1190,14 +1193,14 @@ p, li { white-space: pre-wrap; }
       <item>
        <widget class="QPushButton" name="calibrate_error_button">
         <property name="text">
-         <string>重定位误差</string>
+         <string>重定位误差1</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="save_error_button">
         <property name="text">
-         <string>小球指定误差</string>
+         <string>重定位误差2</string>
         </property>
        </widget>
       </item>

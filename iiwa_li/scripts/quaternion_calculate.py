@@ -17,6 +17,15 @@ def normalization(x,y,z):
     return [i / fenmu for i in [x, y, z]]
 
 
+def normalization_quat((x,y,z,rx,ry,rz,rw)):
+    fenmu = math.sqrt(rx**2+ry**2+rz**2+rw**2)
+    rx /= fenmu
+    ry /= fenmu
+    rz /= fenmu
+    rw /= fenmu
+    return (x,y,z,rx,ry,rz,rw)
+
+
 def quat2matrix((dx, dy, dz, x, y, z, w)):
     #输入tuple
     matrix = np.zeros((4,4))

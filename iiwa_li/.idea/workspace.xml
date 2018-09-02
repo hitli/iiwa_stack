@@ -14,12 +14,31 @@
       <file leaf-file-name="iiwa_toolbox.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="715" selection-start-line="715" selection-end-line="715" />
+            <state relative-caret-position="75">
+              <caret line="497" lean-forward="true" selection-start-line="497" selection-end-line="497" />
               <folding>
                 <element signature="e#14475#14490#0" />
                 <element signature="e#17200#17213#0" />
+                <element signature="e#36339#36362#0" />
+                <element signature="e#40655#40669#0" />
+                <element signature="e#44310#44325#0" />
+                <element signature="e#57297#59498#0" />
+                <element signature="e#59547#61833#0" />
+                <element signature="e#61877#62590#0" />
+                <element signature="e#62640#66229#0" />
+                <element signature="e#66282#68368#0" />
+                <element signature="e#68412#80770#0" />
+                <element signature="e#80811#83100#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/test.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="575">
+              <caret line="264" column="9" lean-forward="true" selection-start-line="264" selection-start-column="9" selection-end-line="264" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -376,16 +395,16 @@
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49462366" visible="true" weight="0.123908296" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49462366" visible="true" weight="0.123908296" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32948583" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5013477" side_tool="true" weight="0.37670514" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.2864638" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49865228" weight="0.2583784" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49865228" weight="0.25813222" />
       <window_info id="Structure" order="1" sideWeight="0.50537634" side_tool="true" weight="0.29060772" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32948583" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49945414" weight="0.39135134" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49945414" weight="0.3903463" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -415,7 +434,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="25" />
+      <option name="time" value="26" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -426,6 +445,16 @@
           <folding>
             <element signature="e#14475#14490#0" />
             <element signature="e#17200#17213#0" />
+            <element signature="e#36339#36362#0" />
+            <element signature="e#40655#40669#0" />
+            <element signature="e#44310#44325#0" />
+            <element signature="e#57297#59498#0" />
+            <element signature="e#59547#61833#0" />
+            <element signature="e#61877#62590#0" />
+            <element signature="e#62640#66229#0" />
+            <element signature="e#66282#68368#0" />
+            <element signature="e#68412#80770#0" />
+            <element signature="e#80811#83100#0" />
           </folding>
         </state>
       </provider>
@@ -675,13 +704,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="499">
-          <caret line="254" column="62" lean-forward="true" selection-start-line="254" selection-start-column="62" selection-end-line="254" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/mainwindow.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -689,13 +711,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="264" column="9" lean-forward="true" selection-start-line="264" selection-start-column="9" selection-end-line="264" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/iiwa_toolbox.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="715" selection-start-line="715" selection-end-line="715" />
+        <state relative-caret-position="75">
+          <caret line="497" lean-forward="true" selection-start-line="497" selection-end-line="497" />
           <folding>
             <element signature="e#14475#14490#0" />
             <element signature="e#17200#17213#0" />
+            <element signature="e#36339#36362#0" />
+            <element signature="e#40655#40669#0" />
+            <element signature="e#44310#44325#0" />
+            <element signature="e#57297#59498#0" />
+            <element signature="e#59547#61833#0" />
+            <element signature="e#61877#62590#0" />
+            <element signature="e#62640#66229#0" />
+            <element signature="e#66282#68368#0" />
+            <element signature="e#68412#80770#0" />
+            <element signature="e#80811#83100#0" />
           </folding>
         </state>
       </provider>

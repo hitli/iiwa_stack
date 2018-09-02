@@ -206,9 +206,83 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.textEdit_calibrate.append(sentence)
 
     def save_error_button_clicked(self):  # tjm控制被动刚体运动到视觉空间点,计算误差
-        tmn = self.test_aim_point
-        sentence = self.tmn_pose_control(tmn)
-        self.textEdit_calibrate.setText(sentence)
+        tno = (-self.TON[0][3], -self.TON[1][3], -self.TON[2][3], 0., 0., 0., 1.)
+        try:
+            tcp = list(self.tcp_pose)
+            # ndi = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+            # 去除噪声
+            x = []
+            y = []
+            z = []
+            rx = []
+            ry = []
+            rz = []
+            rw = []
+            ndi = []
+            for i in range(10):
+                ndi449 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+                x.append(ndi449[0])
+                y.append(ndi449[1])
+                z.append(ndi449[2])
+                rx.append(ndi449[3])
+                ry.append(ndi449[4])
+                rz.append(ndi449[5])
+                rw.append(ndi449[6])
+                rospy.sleep(0.2)
+            for i in (x,y,z,rx,ry,rz,rw):
+                ndi.append(np.median(i))
+            ndi = qc.normalization_quat(ndi)
+
+            tcp[0] *= 1000
+            tcp[1] *= 1000
+            tcp[2] *= 1000
+            # tjo = qc.quat_pose_multipy(qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,window.TOB_quat),
+            #                                           qc.quat_pose_multipy(qc.inv_quat(ndi), aim_pose)),tno)
+            tjo = qc.quat_pose_multipy(qc.quat_pose_multipy(qc.matrix2quat(qc.quat2matrix(tcp).dot(self.TOB)),
+                                                            qc.quat_pose_multipy(qc.inv_quat(ndi), self.test_aim_point)), tno)
+            if math.isnan(tjo[0]):
+                self.textEdit_calibrate.setText("丢失视野")
+            else:
+                tjo = (tjo[0] / 1000., tjo[1] / 1000., tjo[2] / 1000., tjo[3], tjo[4], tjo[5], tjo[6])
+                command_point = qc.get_command_pose(tjo)
+                # rospy.loginfo(command_point)
+                self.pose_pub.publish(command_point)
+                # tmn = qc.quat_pose_multipy(ndi, self.TBN_quat)
+                # distance, degree = qc.point_distance(tmn, aim_pose)
+                # sentence = "ndi下目标位置：\n%s\nndi下穿刺针位置\n%s\n针尖距离：x方向%f,y方向%f,z方向%f,%fmm\n角度差%f度" % (aim_pose, tmn, tmn[0] - aim_pose[0], tmn[1] - aim_pose[1], tmn[2] - aim_pose[2], distance, degree)
+                rospy.sleep(1)
+                x = []
+                y = []
+                z = []
+                rx = []
+                ry = []
+                rz = []
+                rw = []
+                ndi = []
+                for i in range(10):
+                    ndi449 = np.genfromtxt('/home/lizq/win7share/NDI.txt', delimiter=",")[0]
+                    x.append(ndi449[0])
+                    y.append(ndi449[1])
+                    z.append(ndi449[2])
+                    rx.append(ndi449[3])
+                    ry.append(ndi449[4])
+                    rz.append(ndi449[5])
+                    rw.append(ndi449[6])
+                    rospy.sleep(0.2)
+                for i in (x, y, z, rx, ry, rz, rw):
+                    ndi.append(np.median(i))
+                ndi = qc.normalization_quat(ndi)
+                too = qc.quat_pose_multipy(qc.quat_pose_multipy(self.TOB_quat, qc.inv_quat(ndi)),
+                                           qc.quat_pose_multipy(self.test_aim_point, tno))
+                tnn = qc.quat_pose_multipy(qc.quat_pose_multipy(tno, too), self.TON_quat)
+                # 测得tnn大于too,因为有角度差,会放大距离
+                sentence = "针尖距离:%fmm\n角度差%f度\ntoo距离:%fmm\n角度差%f度" % (
+                np.sqrt(tnn[0] ** 2 + tnn[1] ** 2 + tnn[2] ** 2), math.acos(tnn[6]) * 2.0 * 180.0 / np.pi,
+                np.sqrt(too[0] ** 2 + too[1] ** 2 + too[2] ** 2), math.acos(too[6]) * 2.0 * 180.0 / np.pi)
+                self.textEdit_calibrate.setText(sentence)
+        except:
+            traceback.print_exc()
+
 
 
         # tbo = np.linalg.inv(np.loadtxt('/home/lizq/win7share/TOB.txt', delimiter=","))  # mm
@@ -1194,7 +1268,7 @@ class Calibrate_Error_Thread(QtCore.QThread):
                         f.write(str(window.TMN))
                 rospy.sleep(0.2)
             for i in (x,y,z,rx,ry,rz,rw):
-                tmn.append((max(i)+min(i))/2.0)
+                tmn.append(np.median(i))
             tmn = qc.normalization_quat(tmn)
             with open('/home/lizq/win7share/calibrate_error_tmn.txt', 'a') as f:
                 f.write('\r\n\r\n')

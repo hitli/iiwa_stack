@@ -264,3 +264,4 @@ if __name__ == '__main__':
     a.append(1)
     a =[]
     print a
+    print math.sin(3.14)

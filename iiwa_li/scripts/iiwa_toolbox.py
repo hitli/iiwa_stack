@@ -786,6 +786,15 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def test_cal_spd_btn_clicked(self):
         pass
 
+    def pork_button_clicked(self):
+        i=0
+        while i<float(window.lineEdit_porkstep.text()):
+            tcp = list(self.tcp_pose)
+            tcp = qc.quat_pose_multipy(tcp,(float(window.lineEdit_porkmm.text())*0.001,0.,0.,0.,0.,0.,1.))
+            command_line = qc.get_command_pose(tcp)
+            self.pose_pub.publish(command_line)
+            rospy.sleep(1)
+            i+=1
     # endregion
 
     # region 输入姿态控制,复制对话框函数
@@ -994,9 +1003,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def position_z_add_button_clicked(self):
         tcp = list(self.tcp_pose)
         if self.tool_radiobtn.isChecked():
-            tcp = qc.quat_pose_multipy(tcp,(0.,0.,0.005,0.,0.,0.,1.))
+            tcp = qc.quat_pose_multipy(tcp,(0.,0.,float(window.lineEdit_stepmm.text())*0.001,0.,0.,0.,1.))
         else:
-            tcp[2] += 0.005  # 5毫米
+            tcp[2] += float(window.lineEdit_stepmm.text())*0.001  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -1004,9 +1013,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def position_z_min_button_clicked(self):
         tcp = list(self.tcp_pose)
         if self.tool_radiobtn.isChecked():
-            tcp = qc.quat_pose_multipy(tcp,(0.,0.,-0.005,0.,0.,0.,1.))
+            tcp = qc.quat_pose_multipy(tcp,(0.,0.,-float(window.lineEdit_stepmm.text())*0.001,0.,0.,0.,1.))
         else:
-            tcp[2] -= 0.005  # 5毫米
+            tcp[2] -= float(window.lineEdit_stepmm.text())*0.001  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -1014,9 +1023,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def position_y_add_button_clicked(self):
         tcp = list(self.tcp_pose)
         if self.tool_radiobtn.isChecked():
-            tcp = qc.quat_pose_multipy(tcp,(0.,0.005,0.0,0.,0.,0.,1.))
+            tcp = qc.quat_pose_multipy(tcp,(0.,float(window.lineEdit_stepmm.text())*0.001,0.0,0.,0.,0.,1.))
         else:
-            tcp[1] += 0.005  # 5毫米
+            tcp[1] += float(window.lineEdit_stepmm.text())*0.001  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -1024,9 +1033,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def position_y_min_button_clicked(self):
         tcp = list(self.tcp_pose)
         if self.tool_radiobtn.isChecked():
-            tcp = qc.quat_pose_multipy(tcp,(0.,-0.005,0.,0.,0.,0.,1.))
+            tcp = qc.quat_pose_multipy(tcp,(0.,-float(window.lineEdit_stepmm.text())*0.001,0.,0.,0.,0.,1.))
         else:
-            tcp[1] -= 0.005  # 5毫米
+            tcp[1] -= float(window.lineEdit_stepmm.text())*0.001  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -1034,9 +1043,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def position_x_add_button_clicked(self):
         tcp = list(self.tcp_pose)
         if self.tool_radiobtn.isChecked():
-            tcp = qc.quat_pose_multipy(tcp,(0.005,0.,0.,0.,0.,0.,1.))
+            tcp = qc.quat_pose_multipy(tcp,(float(window.lineEdit_stepmm.text())*0.001,0.,0.,0.,0.,0.,1.))
         else:
-            tcp[0] += 0.005  # 5毫米
+            tcp[0] += float(window.lineEdit_stepmm.text())*0.001  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -1044,9 +1053,9 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def position_x_min_button_clicked(self):
         tcp = list(self.tcp_pose)
         if self.tool_radiobtn.isChecked():
-            tcp = qc.quat_pose_multipy(tcp,(-0.005,0.,0.,0.,0.,0.,1.))
+            tcp = qc.quat_pose_multipy(tcp,(-float(window.lineEdit_stepmm.text())*0.001,0.,0.,0.,0.,0.,1.))
         else:
-            tcp[0] -= 0.005  # 5毫米
+            tcp[0] -= float(window.lineEdit_stepmm.text())*0.001  # 5毫米
         command_line = qc.get_command_pose(tcp)
         self.pose_pub.publish(command_line)
         rospy.loginfo(command_line)
@@ -1054,7 +1063,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def orientation_z_add_button_clicked(self):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.008726535, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+            0.0, 0.0, 0.0, 0.0, 0.0, math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0), math.cos(float(window.lineEdit_stepdegree.text())*math.pi/360.0))  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
         if self.tool_radiobtn.isChecked():
             command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
         else:
@@ -1066,7 +1075,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def orientation_z_min_button_clicked(self):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
-            0.0, 0.0, 0.0, 0.0, 0.0, -0.008726535, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+            0.0, 0.0, 0.0, 0.0, 0.0, -math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0), math.cos(float(window.lineEdit_stepdegree.text())*math.pi/360.0))  # math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0) = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
         if self.tool_radiobtn.isChecked():
             command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
         else:
@@ -1078,7 +1087,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def orientation_y_add_button_clicked(self):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
-            0.0, 0.0, 0.0, 0.0, 0.008726535, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+            0.0, 0.0, 0.0, 0.0, math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0), 0.0, math.cos(float(window.lineEdit_stepdegree.text())*math.pi/360.0))  # math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0) = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
         if self.tool_radiobtn.isChecked():
             command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
         else:
@@ -1090,7 +1099,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def orientation_y_min_button_clicked(self):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
-            0.0, 0.0, 0.0, 0.0, -0.008726535, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+            0.0, 0.0, 0.0, 0.0, -math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0), 0.0, math.cos(float(window.lineEdit_stepdegree.text())*math.pi/360.0))  # math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0) = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
         if self.tool_radiobtn.isChecked():
             command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
         else:
@@ -1102,7 +1111,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def orientation_x_add_button_clicked(self):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
-            0.0, 0.0, 0.0, 0.008726535, 0.0, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+            0.0, 0.0, 0.0, math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0), 0.0, 0.0, math.cos(float(window.lineEdit_stepdegree.text())*math.pi/360.0))  # math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0) = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
         if self.tool_radiobtn.isChecked():
             command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
         else:
@@ -1114,7 +1123,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def orientation_x_min_button_clicked(self):
         tcp = tuple(self.tcp_pose)
         add_tcp = (
-            0.0, 0.0, 0.0, -0.008726535, 0.0, 0.0, 0.999961923)  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
+            0.0, 0.0, 0.0, -math.sin(float(window.lineEdit_stepdegree.text())*math.pi/360.0), 0.0, 0.0, math.cos(float(window.lineEdit_stepdegree.text())*math.pi/360.0))  # 0.008726535 = sin(0.5度) 0.999961923 = cos(0.5度) 即转1度
         if self.tool_radiobtn.isChecked():
             command_tcp = qc.quat_pose_multipy(qc.quat_pose_multipy(tcp,self.TON_quat_m),qc.quat_pose_multipy(add_tcp,qc.inv_quat(self.TON_quat_m)))
         else:

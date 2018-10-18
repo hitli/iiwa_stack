@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import time
 
-ati = pd.read_csv('/home/lizq/实验数据整理/0730粗针穿刺/ni_v90_xie/ati_ni_v90_xie2.csv',header=7,names=['Fx','Fy','Fz','Tx','Ty','Tz'],usecols=[3,4,5,6,7,8])  # 十万行 0.064s
+ati = pd.read_csv('/home/lizq/实验数据整理/1018多段穿肉/ati_v60_step30_2mm_pork_3.csv',header=7,names=['Fx','Fy','Fz','Tx','Ty','Tz'],usecols=[3,4,5,6,7,8])  # 十万行 0.064s
 # ati = pd.read_csv('/home/lizq/桌面/ati_test3.csv',header=7,usecols=[3,4,5,6,7,8])  # 五百行 0.0036秒
 # ati = pd.read_csv('/home/lizq/桌面/nditest_000.csv',header=0)
 # print ati.columns
